@@ -1,0 +1,11 @@
+---
+const { class: extraClass = "" } = Astro.props;
+const flag_style = {
+  backgroundImage:
+    "linear-gradient(to right, #FFFFFF 33.33%, #0057B8 33.33%, #0057B8 66.67%, #FFD100 66.67%)",
+};
+---
+
+<div id={Astro.self.name} class={`w-full ${extraClass}`}>
+  <div class="h-6 md:h-8 w-full" style={flag_style}></div>
+</div>

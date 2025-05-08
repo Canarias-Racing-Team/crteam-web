@@ -1,0 +1,32 @@
+---
+
+const nabItem = [
+  { name: "El Coche", href: "/#the-car" },
+  { name: "Noticias", href: "/news", span: "99+" },
+  { name: "Contacto", href: "/contact" },
+];
+---
+
+<div id={Astro.self.name} class="navbar bg-base-100 shadow-sm fixed top-0 left-0 w-full z-50">
+  <div class="flex-1">
+    <a class="btn btn-ghost text-xl" href="/">[CRTeam Logo]</a>
+  </div>
+  <div class="flex-none">
+    <ul class="menu menu-horizontal px-1 place-items-center">
+      {
+        nabItem.map((item) => (
+          <li>
+            <a href={item.href}>
+              {item.name}
+              {item.span && (
+                <span class="indicator-item badge badge-secondary">
+                  {item.span}
+                </span>
+              )}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>

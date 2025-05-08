@@ -1,0 +1,37 @@
+---
+import { Image } from "astro:assets";
+
+const {
+  id = Astro.self.name,
+  title = "Título de ejemplo",
+  // description = "Descripción de ejemplo para la sección.",
+  image = "https://img.daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.webp",
+  link = {
+    href: "#",
+    text: "Contáctanos",
+  },
+  className = "",
+} = Astro.props;
+---
+
+<section id={id} class={`container mx-auto px-4 py-10 ${className}`}>
+  <div class="card lg:card-side bg-base-100 shadow-sm">
+    <figure>
+      <Image
+        src={image}
+        alt={title}
+        inferSize={true}
+        loading="lazy"
+        class="object-cover w-full"
+      />
+    </figure>
+    <div class="card-body">
+      <h2 class="card-title">{title}</h2>
+      <!-- <p>{description}</p> -->
+      <slot />
+      <div class="card-actions justify-end">
+        <a href={link.href} class="btn btn-primary">{link.text}</a>
+      </div>
+    </div>
+  </div>
+</section>

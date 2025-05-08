@@ -6,9 +6,15 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "check": "astro check",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.7.12"
+    "@astrojs/check": "^0.9.4",
+    "@tailwindcss/vite": "^4.1.5",
+    "astro": "^5.7.12",
+    "daisyui": "^5.0.35",
+    "tailwindcss": "^4.1.5",
+    "typescript": "^5.8.3"
   }
 }

@@ -1,11 +1,93 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Carousel from "../components/Carousel.astro";
+import FlagDivider from "../components/FlagDivider.astro";
+import Hero from "../components/Hero.astro";
+import SectionSample from "../components/SectionSample.astro";
+import Layout from "../layouts/Layout.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const principalPartners = [
+  {
+    src: "https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp",
+    alt: "Coche CRTeam 1",
+  },
+  {
+    src: "https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp",
+    alt: "Coche CRTeam 2",
+  },
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout id={Astro.self.name}>
+  <Hero />
+
+  <FlagDivider />
+
+  <Carousel items={principalPartners} size={40} units={4} />
+
+  <SectionSample
+    title="Bienvenido a Canarias Racing Team"
+    id="the-team"
+    link={{ href: "/team", text: "Conócenos" }}
+  >
+    <p>
+      Somos el primer equipo de Fórmula Student de Canarias, y estamos aquí para
+      hacer historia.<br />Únete a nosotros en este emocionante viaje y descubre
+      lo que significa ser parte de un equipo innovador y apasionado.
+    </p>
+  </SectionSample>
+
+  <SectionSample
+    title="El Coche"
+    id="the-car"
+    link={{ href: "/car", text: "Descubre más" }}
+  >
+    <p>
+      Nuestro coche es el resultado de meses de trabajo duro y dedicación. Con
+      un diseño innovador y tecnología de vanguardia, estamos listos para
+      competir en la Fórmula Student.<br />Descubre más sobre nuestro coche y
+      cómo lo construimos.
+    </p>
+  </SectionSample>
+
+  <SectionSample
+    title="La Competición"
+    id="the-competition"
+    link={{ href: "/competition", text: "Más información" }}
+  >
+    <p>
+      La Fórmula Student es una competición internacional que desafía a los
+      estudiantes a diseñar, construir y competir con un monoplaza eléctrico.
+      Conoce más sobre la competición y cómo nos preparamos para el desafío.
+    </p>
+  </SectionSample>
+
+  <section id="partners" class="container mx-auto px-4 mt-10">
+    <h2 class="text-2xl font-bold text-center">Nuestros Patrocinadores</h2>
+    <p class="text-center mt-4">
+      Gracias a nuestros patrocinadores, podemos hacer realidad nuestro sueño de
+      competir en la Fórmula Student.
+    </p><Carousel
+      items={principalPartners}
+      size={20}
+      units={8}
+      id="partners-carousel"
+    />
+    <p class="text-center mt-4">
+      Descubre más sobre nuestros patrocinadores y cómo puedes unirte a
+      nosotros.
+    </p>
+  </section>
+
+  <FlagDivider class="mt-4"/>
+
+  <section id="contact" class="container mx-auto px-4 mt-10">
+    <h2 class="text-2xl font-bold text-center">Contacto</h2>
+    <p class="text-center mt-4">
+      Si tienes alguna pregunta o quieres unirte a nuestro equipo, no dudes en
+      ponerte en contacto con nosotros.
+    </p>
+    <p class="text-center mt-4">
+      Estamos aquí para ayudarte y responder a todas tus preguntas.
+    </p>
+  </section>
 </Layout>
