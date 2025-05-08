@@ -60,6 +60,43 @@ Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss
 - `Carousel.astro`: Galería horizontal de imágenes/avatares.
 - `SectionSample.astro`: Sección reutilizable para contenido destacado.
 
+## ✅ Lista de tareas
+
+1. **Configuración inicial**
+   - [x] Clonar repo y crear rama `main`
+   - [x] Instalar dependencias (`npm install`)
+
+2. **Configuración de Tailwind y DaisyUI**
+   - [x] Instalar Tailwind, DaisyUI y tailwindcss/vite
+   - [x] Configurar Tailwind y DaisyUI
+
+3. **Estructura de la web**
+   - [x] Crear página principal (`index.astro`)
+   - [ ] Crear páginas adicionales (`about.astro`, `projects.astro`, `contact.astro`)
+   - [ ] Crear componentes reutilizables (`Navbar`, `Footer`, `Button`, `FlagDivider`, `Carousel`, `SectionSample`)
+
+4. **Funcionalidad**
+   - [ ] Agregar formularios de contacto
+   - [ ] Galería/carrusel de imágenes y avatares
+   - [ ] Diseño responsive y moderno
+
+5. **Configurar Notion CMS**
+   - [ ] Instalar NotionQH
+   - [x] Configurar base de datos en Notion
+   - [ ] Configurar webhook en Notion
+   - [ ] Enlazar con web Astro
+
+6. **Despliegue**
+   - [ ] Configurar despliegue en Vercel
+   - [ ] Desplegar y comprobar funcionamiento
+
+7. **SEO y rendimiento**
+   - [ ] Configurar metadatos y mejoras de accesibilidad
+   - [ ] Optimizar imágenes y recursos
+
+8. **Documentación**
+   - [ ] Crear una Wiki en GitHub con instrucciones sobre el codigo para el futuro
+
 ## 🌐 Despliegue
 
 El sitio es estático y puede desplegarse en cualquier hosting compatible (Vercel, Netlify, GitHub Pages, etc).
