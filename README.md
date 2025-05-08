@@ -1,48 +1,76 @@
-# Astro Starter Kit: Basics
+# Canarias Racing Team Web
 
-```sh
-npm create astro@latest -- --template basics
-```
+[![Astro](https://img.shields.io/badge/Built_with-Astro-0f172a?style=for-the-badge&logo=astro&logoColor=white)](https://astro.build)
+[![TailwindCSS](https://img.shields.io/badge/Styled_with-TailwindCSS-06b6d4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![DaisyUI](https://img.shields.io/badge/UI-DaisyUI-5a0fc8?style=for-the-badge&logo=daisyui&logoColor=white)](https://daisyui.com)
+![Repo](https://img.shields.io/badge/Repo_Private-yes-4b5563?style=for-the-badge&logo=github&logoColor=white)
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+---
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Sitio web oficial del primer equipo de Fórmula Student de Canarias.  
+Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss.com/), [DaisyUI](https://daisyui.com/).  
+**Próximamente:** CMS con [Notion](https://notion.so) y despliegue en [Vercel](https://vercel.com).
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## 🚀 Estructura del proyecto
 
 ```text
 /
 ├── public/
 │   └── favicon.svg
 ├── src/
+│   ├── assets/
+│   ├── components/
+│   │   ├── Avatar.astro
+│   │   ├── Carousel.astro
+│   │   ├── FlagDivider.astro
+│   │   ├── Hero.astro
+│   │   ├── Navbar.astro
+│   │   └── SectionSample.astro
 │   ├── layouts/
 │   │   └── Layout.astro
 │   └── pages/
 │       └── index.astro
-└── package.json
+├── package.json
+└── README.md
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## 🧑‍💻 Scripts útiles
 
-## 🧞 Commands
+| Comando           | Acción                                              |
+| ----------------- | --------------------------------------------------- |
+| `npm install`     | Instala las dependencias                            |
+| `npm run dev`     | Inicia el servidor de desarrollo (`localhost:4321`) |
+| `npm run build`   | Genera el sitio para producción en `./dist/`        |
+| `npm run preview` | Previsualiza el sitio generado                      |
+| `npm run check`   | Revisa el tipado y errores de Astro                 |
+| `npm run astro`   | Ejecuta cualquier comando de astro (`astro check`)  |
 
-All commands are run from the root of the project, from a terminal:
+## 🛠️ Tecnologías principales
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+- **Astro**: Framework principal para el desarrollo del sitio.
+- **TailwindCSS**: Utilidad CSS para estilos rápidos y responsivos.
+- **DaisyUI**: Componentes UI sobre Tailwind para desarrollo ágil.
+- **TypeScript**: Tipado estático opcional.
 
-## 👀 Want to learn more?
+## 📦 Componentes destacados
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- `Hero.astro`: Sección principal de bienvenida.
+- `Navbar.astro`: Barra de navegación fija.
+- `FlagDivider.astro`: Separador con los colores de la bandera de Canarias.
+- `Carousel.astro`: Galería horizontal de imágenes/avatares.
+- `SectionSample.astro`: Sección reutilizable para contenido destacado.
+
+## 🌐 Despliegue
+
+El sitio es estático y puede desplegarse en cualquier hosting compatible (Vercel, Netlify, GitHub Pages, etc).
+
+## 🤝 Contribuir
+
+1. Haz un fork del repositorio.
+2. Crea una rama nueva (`git checkout -b feature/nueva-funcionalidad`).
+3. Realiza tus cambios y haz commit.
+4. Abre un Pull Request.
+
+---
+
+Desarrollado por Canarias Racing Team 🚗💨
