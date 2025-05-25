@@ -14,11 +14,15 @@ const buttons = [
 <div
   id={Astro.self.name}
   class="hero min-h-screen relative"
-  style="background-image: url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp);"
+  style="
+    background-image:
+      radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 80%),
+      url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp);
+  "
 >
   <div class="hero-overlay bg-opacity-70"></div>
   <div class="hero-content text-neutral-content text-center">
-    <div class="max-w-md bg-black/40 rounded-xl p-8 shadow-lg">
+    <div class="max-w-md rounded-xl p-8">
       <h1 class="mb-5 text-5xl font-extrabold drop-shadow-lg">
         Ocho Islas<br /><span class="text-primary">Tres Colores</span>
       </h1>

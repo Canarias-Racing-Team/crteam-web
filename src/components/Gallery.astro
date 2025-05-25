@@ -1,0 +1,31 @@
+---
+import Avatar from "../components/Avatar.astro";
+const { items = [], units, size } = Astro.props;
+
+type Avatar = {
+  src: string;
+  alt: string;
+};
+
+const defaultAvatar = {
+  src: "https://img.daisyui.com/images/profile/demo/batperson@192.webp",
+  alt: "Avatar por defecto",
+  size,
+};
+const count = units ?? items.length;
+const filledItems = [
+  ...items.slice(0, count),
+  ...Array(Math.max(0, count - items.length)).fill(defaultAvatar),
+];
+---
+
+<div
+  id={Astro.self.name}
+  class="flex flex-wrap flex-row overflow-x-auto mt-4 py-4 gap-4 px-2 justify-center w-full"
+>
+  {
+    filledItems.map((item: Avatar, idx: number) => (
+      <Avatar src={item.src} alt={item.alt && `Avatar ${idx}`} size={size} />
+    ))
+  }
+</div>

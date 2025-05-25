@@ -1,10 +1,14 @@
 ---
+import { Image } from "astro:assets";
 import Avatar from "../components/Avatar.astro";
-const { items = [], units, size } = Astro.props;
+const { items = [], units, size, controls = false } = Astro.props;
 
-type Avatar = {
+type CarouselItem = {
   src: string;
   alt: string;
+  name?: string;
+  icon?: string;
+  brief?: string;
 };
 
 const defaultAvatar = {
@@ -13,19 +17,104 @@ const defaultAvatar = {
   size,
 };
 const count = units ?? items.length;
-const filledItems = [
+const filledItems: CarouselItem[] = [
   ...items.slice(0, count),
   ...Array(Math.max(0, count - items.length)).fill(defaultAvatar),
 ];
 ---
 
-<div
-  id={Astro.self.name}
-  class="flex flex-wrap flex-row overflow-x-auto mt-4 py-4 gap-4 px-2 justify-center w-full"
->
-  {
-    filledItems.map((item: Avatar, idx: number) => (
-      <Avatar src={item.src} alt={item.alt && `Avatar ${idx}`} size={size} />
-    ))
-  }
+<div id={Astro.self.name} class="carousel-container">
+  <div class="carousel w-full">
+    {
+      filledItems.map((item: CarouselItem, idx: number) => {
+        const prev = `#slide${((idx - 1 + filledItems.length) % filledItems.length) + 1}`;
+        const next = `#slide${((idx + 1) % filledItems.length) + 1}`;
+        return (
+          <div
+            id={`slide${idx + 1}`}
+            class="carousel-item image-full relative w-full h-full flex items-center justify-center"
+          >
+            <div class="card lg:card-side bg-base-300 shadow-sm w-full max-w-3xl mx-auto">
+              <figure>
+                <Image
+                  src={item.src}
+                  alt={item.alt ?? `Avatar ${idx}`}
+                  class="w-full h-64 object-cover rounded-2xl"
+                  inferSize={true}
+                  loading="lazy"
+                />
+              </figure>
+              <div class="card-body">
+                {item.name && (
+                  <h2 class="card-title flex items-center gap-2">
+                    {item.icon && (
+                      // Si tienes Icon importado, puedes usarlo aquí
+                      // <Icon name={`mdi:${item.icon}`} />
+                      <span class="inline-block align-middle">
+                        <i class={`mdi mdi-${item.icon}`} />
+                      </span>
+                    )}
+                    {item.name}
+                  </h2>
+                )}
+                {item.brief && <p>{item.brief}</p>}
+              </div>
+            </div>
+            {controls && (
+              <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+                <a href={prev} class="btn btn-circle" aria-label="Anterior">
+                  ❮
+                </a>
+                <a href={next} class="btn btn-circle" aria-label="Siguiente">
+                  ❯
+                </a>
+              </div>
+            )}
+          </div>
+        );
+      })
+    }
+  </div>
+  <div class="flex w-full justify-center gap-2 py-2" id="carousel-pagination">
+    {
+      filledItems.map((_, idx: number) => (
+        <a
+          href={`#slide${idx + 1}`}
+          class="btn btn-xs btn-circle"
+          id={`carousel-btn-${idx + 1}`}
+        >
+          {idx + 1}
+        </a>
+      ))
+    }
+  </div>
 </div>
+<script is:inline>
+  // Espera a que el DOM esté listo y luego usa window.location.hash
+  function setActiveCarouselBtn() {
+    const hash = window.location.hash || "#slide1";
+    const total = document.querySelectorAll('[id^="carousel-btn-"]').length;
+    for (let i = 1; i <= total; i++) {
+      const btn = document.getElementById(`carousel-btn-${i}`);
+      if (btn) {
+        if (hash === `#slide${i}` || (!window.location.hash && i === 1)) {
+          btn.classList.add("btn-primary");
+          btn.setAttribute("aria-current", "page");
+        } else {
+          btn.classList.remove("btn-primary");
+          btn.removeAttribute("aria-current");
+        }
+      }
+    }
+  }
+  window.addEventListener("hashchange", setActiveCarouselBtn);
+  window.addEventListener("DOMContentLoaded", () =>
+    setTimeout(setActiveCarouselBtn, 10)
+  );
+  // También refresca al hacer clic por si el hash no cambia
+  document.addEventListener("click", function (e) {
+    if (e.target && e.target.matches('[id^="carousel-btn-"]')) {
+      setTimeout(setActiveCarouselBtn, 10);
+    }
+  });
+</script>

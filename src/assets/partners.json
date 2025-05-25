@@ -1,0 +1,17 @@
+[
+  {
+    "src": "https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp",
+    "alt": "Partner 1",
+    "principal": true
+  },
+  {
+    "src": "https://img.daisyui.com/images/stock/photo-1494253109108-2e30c049369b.webp",
+    "alt": "Partner 3",
+    "principal": true
+  },
+  {
+    "src": "https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp",
+    "alt": "Partner 2",
+    "principal": false
+  }
+]

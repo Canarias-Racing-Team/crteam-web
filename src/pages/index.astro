@@ -1,20 +1,19 @@
 ---
 import Carousel from "../components/Carousel.astro";
+import Carousel2 from "../components/Carousel2.astro";
+import Gallery from "../components/Gallery.astro";
 import FlagDivider from "../components/FlagDivider.astro";
 import Hero from "../components/Hero.astro";
 import SectionSample from "../components/SectionSample.astro";
 import Layout from "../layouts/Layout.astro";
+import Image from "astro/components/Image.astro";
+import { Icon } from "astro-icon/components";
+import CarTabs from "../components/CarTabs.astro";
 
-const principalPartners = [
-  {
-    src: "https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp",
-    alt: "Coche CRTeam 1",
-  },
-  {
-    src: "https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp",
-    alt: "Coche CRTeam 2",
-  },
-];
+// Partners data
+import partners from "../assets/partners.json";
+// Car components data
+import carComponents from "../assets/carComponents.json";
 ---
 
 <Layout id={Astro.self.name}>
@@ -22,34 +21,74 @@ const principalPartners = [
 
   <FlagDivider />
 
-  <Carousel items={principalPartners} size={40} units={4} />
+  <section id="partners-top" class="container mx-auto px-4 mt-10">
+    <Gallery
+      items={partners.filter((partner) => partner.principal === true)}
+      size={40}
+      units={4}
+    />
+  </section>
 
-  <SectionSample
-    title="Bienvenido a Canarias Racing Team"
-    id="the-team"
-    link={{ href: "/team", text: "Conócenos" }}
-  >
-    <p>
-      Somos el primer equipo de Fórmula Student de Canarias, y estamos aquí para
-      hacer historia.<br />Únete a nosotros en este emocionante viaje y descubre
-      lo que significa ser parte de un equipo innovador y apasionado.
-    </p>
-  </SectionSample>
+  <section id="team" class="container mx-auto px-4 mt-10">
+    <div class="flex w-full flex-col lg:flex-row">
+      <div class="card w-full lg:w-2/3 bg-base-300 card-xl shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title">Canarias Racing Team</h2>
+          <p class="text-sm text-gray-500">
+            El primer equipo de Fórmula Student de Canarias
+          </p><p>
+            Canarias Racing Team es el equipo automovilístico de la Universidad
+            de La Laguna. Desafiando fronteras hemos conseguido ser los primeros
+            en representar a las ocho islas canarias en la FS, la máxima
+            competición estudiantil dentro del mundo del motor. Lo hemos logrado
+            con un monoplaza eléctrico capaz de sortear cualquier distancia,
+            incluida la que nos separa de la península ibérica.
+          </p><p>
+            La resiliencia y el coraje son rasgos propios de nuestra formación,
+            sin miedo a los obstáculos de la geografía. Un equipo absolutamente
+            interdisciplinar, cuyo corazón es la ingeniería, pero con la
+            comunicación y las finanzas como arterias. Soñamos con que la
+            innovación automovilística canaria consiga acelerar el futuro y el
+            corremos hacia el éxito inspirados por la pasión y la determinación.
+            Crecemos gracias a aquellos que nos hacen grandes: todos los que
+            creen que lo pequeño puede llegar a ser gigante.
+          </p>
+          <div class="justify-end card-actions">
+            <a href="#contact" class="btn btn-primary">Únete</a>
+          </div>
+        </div>
+      </div>
+      <div class="divider lg:divider-horizontal"></div>
+      <div
+        class="w-full lg:w-1/3 flex flex-col items-center justify-cente"
+      >
+        <Carousel2 items={partners} units=4 id="team-carousel" />
+      </div>
+    </div>
+  </section>
 
-  <SectionSample
-    title="El Coche"
-    id="the-car"
-    link={{ href: "/car", text: "Descubre más" }}
-  >
-    <p>
-      Nuestro coche es el resultado de meses de trabajo duro y dedicación. Con
-      un diseño innovador y tecnología de vanguardia, estamos listos para
-      competir en la Fórmula Student.<br />Descubre más sobre nuestro coche y
-      cómo lo construimos.
-    </p>
-  </SectionSample>
+  <section id="car" class="container mx-auto px-4 mt-10">
+    <div class="flex w-full flex-col lg:flex-row">
+      <div class="card w-full lg:w-1/3 bg-base-300 card-xl shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title">El Coche</h2>
+          <p class="text-sm text-gray-500">
+            Un coche único, para unas islas únicas.
+          </p><p>
+            Nuestro coche es el resultado de meses de trabajo duro y dedicación.
+            Con un diseño innovador y tecnología de vanguardia, estamos listos
+            para competir en la Fórmula Student.
+          </p>
+        </div>
+      </div>
+      <div class="divider lg:divider-horizontal"></div>
+      <div class="w-full lg:w-2/3 flex flex-col items-center justify-center">
+        <CarTabs carComponents={carComponents} id="car-components" />
+      </div>
+    </div>
+  </section>
 
-  <SectionSample
+  <!-- <SectionSample
     title="La Competición"
     id="the-competition"
     link={{ href: "/competition", text: "Más información" }}
@@ -59,26 +98,21 @@ const principalPartners = [
       estudiantes a diseñar, construir y competir con un monoplaza eléctrico.
       Conoce más sobre la competición y cómo nos preparamos para el desafío.
     </p>
-  </SectionSample>
+  </SectionSample> -->
 
   <section id="partners" class="container mx-auto px-4 mt-10">
     <h2 class="text-2xl font-bold text-center">Nuestros Patrocinadores</h2>
     <p class="text-center mt-4">
       Gracias a nuestros patrocinadores, podemos hacer realidad nuestro sueño de
       competir en la Fórmula Student.
-    </p><Carousel
-      items={principalPartners}
-      size={20}
-      units={8}
-      id="partners-carousel"
-    />
+    </p><Gallery items={partners} size={20} units={8} id="partners-gallery" />
     <p class="text-center mt-4">
       Descubre más sobre nuestros patrocinadores y cómo puedes unirte a
       nosotros.
     </p>
   </section>
 
-  <FlagDivider class="mt-4"/>
+  <FlagDivider class="mt-4" />
 
   <section id="contact" class="container mx-auto px-4 mt-10">
     <h2 class="text-2xl font-bold text-center">Contacto</h2>

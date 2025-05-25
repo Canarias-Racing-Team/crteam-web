@@ -1,0 +1,64 @@
+---
+import Image from "astro/components/Image.astro";
+import { Icon } from "astro-icon/components";
+
+// Define the type for a car component
+type CarComponent = {
+  name: string;
+  icon?: string;
+  src: string;
+  brief: string;
+};
+
+const { carComponents = [], id } = Astro.props;
+// Input on left "flex flex-col items-center justify-center"
+---
+
+<div
+  id={id}
+  class="tabs tabs-border tabs-xl w-full h-full"
+  role="tablist"
+  aria-label="Car Components Tabs"
+>
+  {
+    carComponents.map((component: CarComponent) => (
+      <>
+        <label
+          class="tab gap-2 cursor-pointer"
+          for={`tab-${component.name.toLowerCase().replace(/\s+/g, "-")}`}
+        >
+          <input
+            type="radio"
+            name="car_components_tabs"
+            aria-label={component.name}
+            id={`tab-${component.name.toLowerCase().replace(/\s+/g, "-")}`}
+            checked={component.name === "Componente 1"}
+            role="tab"
+          />
+          {component.icon && <Icon name={`mdi:${component.icon}`} />}
+          {component.name}
+        </label>
+        <div
+          class="tab-content bg-transparent border-none p-0"
+          aria-labelledby={`tab-${component.name.toLowerCase().replace(/\s+/g, "-")}`}
+        >
+          <div class="card lg:card-side bg-base-300 shadow-sm w-full mx-auto">
+            <figure>
+              <Image
+                src={component.src}
+                alt={component.name}
+                class="w-full h-64 object-cover"
+                loading="lazy"
+                inferSize={true}
+              />
+            </figure>
+            <div class="card-body">
+              <h2 class="card-title">{component.name}</h2>
+              <p>{component.brief}</p>
+            </div>
+          </div>
+        </div>
+      </>
+    ))
+  }
+</div>

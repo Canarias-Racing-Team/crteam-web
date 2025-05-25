@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Componente 1",
+    "icon": "engine-outline",
+    "brief": "Descripción breve del componente 1.",
+    "src": "https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp"
+  },
+  {
+    "name": "Componente 2",
+    "icon": "car-battery",
+    "brief": "Descripción breve del componente 2.",
+    "src": "https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
+  },
+  {
+    "name": "Componente 3",
+    "icon": "connection",
+    "brief": "Descripción breve del componente 3.",
+    "src": "https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp"
+  }
+]
