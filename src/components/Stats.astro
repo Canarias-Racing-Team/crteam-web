@@ -1,0 +1,26 @@
+---
+interface Stat {
+  title: string;
+  value: string | number;
+  desc?: string;
+}
+const {
+  stats = [
+    { title: "Downloads", value: "31K", desc: "Jan 1st - Feb 1st" },
+    { title: "New Users", value: "4,200", desc: "↗︎ 400 (22%)" },
+    { title: "New Registers", value: "1,200", desc: "↘︎ 90 (14%)" },
+  ],
+}: { stats?: Stat[] } = Astro.props;
+---
+
+<div class="stats shadow">
+  {
+    stats.map((stat) => (
+      <div class="stat stats-vertical lg:stats-horizontal shadow">
+        <div class="stat-title">{stat.title}</div>
+        <div class="stat-value">{stat.value}</div>
+        {stat.desc && <div class="stat-desc">{stat.desc}</div>}
+      </div>
+    ))
+  }
+</div>

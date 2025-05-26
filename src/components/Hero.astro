@@ -31,11 +31,11 @@ const buttons = [
         Con el objetivo de diseñar, construir y competir con un monoplaza eléctrico
         en la competición internacional de Fórmula Student.
       </p>
-      <div id="buttons" class="flex flex-col md:flex-row gap-4 mt-5">
+      <div id="buttons" class="join mt-5 gap-2">
         {
           buttons.map((button) => (
             <a href={button.href}>
-              <button class="btn btn-primary btn-lg shadow">
+              <button class="btn btn-primary join-item btn-lg shadow">
                 {button.text}
               </button>
             </a>

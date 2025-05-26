@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+.divider {
+  visibility: hidden;
+}

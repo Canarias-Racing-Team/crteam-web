@@ -1,6 +1,7 @@
 ---
 import "../assets/app.css";
 import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
 ---
 
 <!doctype html>
@@ -31,9 +32,10 @@ import Navbar from "../components/Navbar.astro";
       type="text/css"
     />
   </head>
-  <body style="padding-bottom:4rem">
+  <body>
     <Navbar />
     <slot />
+    <Footer />
   </body>
 </html>
 

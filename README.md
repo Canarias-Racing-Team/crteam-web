@@ -11,6 +11,11 @@ Sitio web oficial del primer equipo de Fórmula Student de Canarias.
 Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss.com/), [DaisyUI](https://daisyui.com/).  
 **Próximamente:** CMS con [Notion](https://notion.so) y despliegue en [Vercel](https://vercel.com).
 
+## 🎬 Preview v0.1
+
+[![Preview v0.1](https://img.youtube.com/vi/preview/0.jpg)](https://github.com/CanariasRacingTeam/crteam-web/assets/preview-v0.1.mp4)
+> _Haz clic en la imagen para ver el video de la versión 0.1 mostrando la estructura, navegación y componentes principales de la web._
+
 ## 🚀 Estructura del proyecto
 
 ```text
@@ -25,6 +30,9 @@ Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss
 │   │   ├── FlagDivider.astro
 │   │   ├── Hero.astro
 │   │   ├── Navbar.astro
+│   │   ├── Card.astro
+│   │   ├── Section.astro
+│   │   ├── Stats.astro
 │   │   └── SectionSample.astro
 │   ├── layouts/
 │   │   └── Layout.astro
@@ -59,6 +67,9 @@ Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss
 - `FlagDivider.astro`: Separador con los colores de la bandera de Canarias.
 - `Carousel.astro`: Galería horizontal de imágenes/avatares.
 - `SectionSample.astro`: Sección reutilizable para contenido destacado.
+- `Card.astro`: Componente de tarjeta flexible.
+- `Section.astro`: Componente de sección adaptable.
+- `Stats.astro`: Estadísticas visuales.
 
 ## ✅ Lista de tareas
 

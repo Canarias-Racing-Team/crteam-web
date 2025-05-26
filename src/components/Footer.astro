@@ -1,0 +1,55 @@
+---
+import { Icon } from "astro-icon/components";
+const year = new Date().getFullYear();
+
+const links = [
+  { href: "/about", label: "Sobre nosotros" },
+  { href: "/contact", label: "Contacto" },
+  { href: "/jobs", label: "Trabaja con nosotros" },
+  { href: "/press", label: "Prensa" },
+];
+
+const socials = [
+  { href: "https://twitter.com/", icon: "mdi:twitter", label: "Twitter" },
+  { href: "https://youtube.com/", icon: "mdi:youtube", label: "YouTube" },
+  { href: "https://facebook.com/", icon: "mdi:facebook", label: "Facebook" },
+];
+---
+
+<footer
+  class="footer bg-base-200 text-base-content rounded p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-8 md:gap-4 text-center md:text-left"
+>
+  <aside class="w-full md:w-auto flex flex-col items-center md:items-start">
+    <p class="font-bold mb-1">© {year} Canarias Racing Team</p>
+    <p class="text-xs">Todos los derechos reservados</p>
+  </aside>
+  <nav class="flex flex-col items-center w-full md:w-auto">
+    <span class="font-semibold mb-1">Enlaces</span>
+    <div class="flex flex-wrap justify-center gap-4">
+      {
+        links.map((link) => (
+          <a class="link link-hover" href={link.href}>
+            {link.label}
+          </a>
+        ))
+      }
+    </div>
+  </nav>
+  <nav class="flex flex-col items-center w-full md:w-auto">
+    <span class="font-semibold mb-1">Redes sociales</span>
+    <div class="flex justify-center gap-4">
+      {
+        socials.map((social) => (
+          <a
+            href={social.href}
+            target="_blank"
+            rel="noopener"
+            aria-label={social.label}
+          >
+            <Icon name={social.icon} class="h-6 w-6" />
+          </a>
+        ))
+      }
+    </div>
+  </nav>
+</footer>
