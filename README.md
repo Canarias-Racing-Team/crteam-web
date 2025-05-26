@@ -13,7 +13,7 @@ Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss
 
 ## 🎬 Preview v0.1
 
-[![Preview v0.1](https://img.youtube.com/vi/preview/0.jpg)](https://github.com/CanariasRacingTeam/crteam-web/assets/preview-v0.1.mp4)
+[![Preview v0.1](https://img.youtube.com/vi/preview/0.jpg)](public\web-v0.1.mp4)
 > _Haz clic en la imagen para ver el video de la versión 0.1 mostrando la estructura, navegación y componentes principales de la web._
 
 ## 🚀 Estructura del proyecto
