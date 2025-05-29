@@ -13,6 +13,10 @@ import Stats from "../components/Stats.astro";
 import partners from "../assets/partners.json";
 // Car components data
 import carComponents from "../assets/carComponents.json";
+import { getNotionPages } from "../lib/notion.ts";
+const noticias = await getNotionPages();
+console.log("Noticias:", noticias);
+
 ---
 
 <Layout id={Astro.self.name}>
@@ -99,6 +103,7 @@ import carComponents from "../assets/carComponents.json";
           "Tu apoyo es fundamental para que podamos seguir adelante. Si quieres unirte a nosotros como patrocinador o simplemente apoyarnos, aquí tienes algunas formas de hacerlo.",
           "Puedes contactarnos directamente a través de nuestro correo electrónico o seguirnos en nuestras redes sociales para estar al tanto de nuestras novedades.",
         ]}
+        buttonsVertical=true
         buttons={[
           {
             text: "Visita nuestro Patreon",

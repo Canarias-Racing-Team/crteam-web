@@ -7,6 +7,7 @@ const {
   buttonClass = "btn btn-primary join-item",
   className = "",
   paragraphs = [],
+  buttonsVertical = false,
 } = Astro.props;
 ---
 
@@ -16,19 +17,21 @@ const {
     {subtitle && <p class="text-sm text-gray-500">{subtitle}</p>}
     {paragraphs && paragraphs.map((text: string) => <p>{text}</p>)}
     <slot />
-    {buttons && Array.isArray(buttons) && (
-      <div class="justify-end card-actions md:join mt-4">
-      {buttons.map(
-        ({ text, href, icon }) =>
-        text &&
-        href && (
-          <a href={href} class={buttonClass}>
-            {icon && <Icon name={icon} class="h-5 w-5 mr-2" />}
-          {text}
-          </a>
-        )
-      )}
-      </div>
-    )}
+    {
+      buttons && Array.isArray(buttons) && (
+        <div class={`justify-end card-actions md:join mt-4${buttonsVertical ? " md:join-vertical self-end w-fit" : ""}`}>
+          {buttons.map(
+            ({ text, href, icon }) =>
+              text &&
+              href && (
+                <a href={href} class={buttonClass}>
+                  {icon && <Icon name={icon} class="h-5 w-5 mr-2" />}
+                  {text}
+                </a>
+              )
+          )}
+        </div>
+      )
+    }
   </div>
 </div>

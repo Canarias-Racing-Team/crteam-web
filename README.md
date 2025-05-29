@@ -13,7 +13,7 @@ Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss
 
 ## 🎬 Preview v0.1
 
-[![Preview v0.1](https://img.youtube.com/vi/preview/0.jpg)](public\web-v0.1.mp4)
+[![Preview v0.1](https://img.youtube.com/vi/preview/0.jpg)](/public/web-v0.1.mp4)
 > _Haz clic en la imagen para ver el video de la versión 0.1 mostrando la estructura, navegación y componentes principales de la web._
 
 ## 🚀 Estructura del proyecto
@@ -21,9 +21,11 @@ Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss
 ```text
 /
 ├── public/
-│   └── favicon.svg
+│   ├── favicon.svg
+│   └── web-v0.1.mp4
 ├── src/
-│   ├── assets/
+│   ├── lib/
+│   │   └── notion.ts
 │   ├── components/
 │   │   ├── Avatar.astro
 │   │   ├── Carousel.astro
@@ -37,7 +39,10 @@ Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss
 │   ├── layouts/
 │   │   └── Layout.astro
 │   └── pages/
-│       └── index.astro
+│       ├── index.astro
+│       ├── about.astro
+│       ├── projects.astro
+│       └── contact.astro
 ├── package.json
 └── README.md
 ```
@@ -84,15 +89,15 @@ Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss
 3. **Estructura de la web**
    - [x] Crear página principal (`index.astro`)
    - [ ] Crear páginas adicionales (`about.astro`, `projects.astro`, `contact.astro`)
-   - [ ] Crear componentes reutilizables (`Navbar`, `Footer`, `Button`, `FlagDivider`, `Carousel`, `SectionSample`)
+   - [x] Crear componentes reutilizables (`Navbar`, `Footer`, `Button`, `FlagDivider`, `Carousel`, `SectionSample`)
 
 4. **Funcionalidad**
    - [ ] Agregar formularios de contacto
-   - [ ] Galería/carrusel de imágenes y avatares
-   - [ ] Diseño responsive y moderno
+   - [x] Galería/carrusel de imágenes y avatares
+   - [x] Diseño responsive y moderno
 
 5. **Configurar Notion CMS**
-   - [ ] Instalar NotionQH
+   - [x] Instalar NotionHQ
    - [x] Configurar base de datos en Notion
    - [ ] Configurar webhook en Notion
    - [ ] Enlazar con web Astro
@@ -106,7 +111,7 @@ Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss
    - [ ] Optimizar imágenes y recursos
 
 8. **Documentación**
-   - [ ] Crear una Wiki en GitHub con instrucciones sobre el codigo para el futuro
+   - [ ] Crear una Wiki en GitHub con instrucciones sobre el código para el futuro
 
 ## 🌐 Despliegue
 

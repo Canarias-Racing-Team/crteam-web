@@ -2,11 +2,11 @@
 const buttons = [
   {
     text: "Quiero Patrocinar",
-    href: "/partners",
+    href: "#partners-bottom",
   },
   {
     text: "Únete al Equipo",
-    href: "/contact",
+    href: "#contact",
   },
 ];
 ---
@@ -22,22 +22,20 @@ const buttons = [
 >
   <div class="hero-overlay bg-opacity-70"></div>
   <div class="hero-content text-neutral-content text-center">
-    <div class="max-w-md rounded-xl p-8">
-      <h1 class="mb-5 text-5xl font-extrabold drop-shadow-lg">
+    <div class="max-w-2xl rounded-xl p-8">
+      <h1 class="mb-5 text-6xl font-extrabold drop-shadow-lg">
         Ocho Islas<br /><span class="text-primary">Tres Colores</span>
       </h1>
-      <p class="mb-5 text-lg">
-        1º Equipo de Fórmula Student de Canarias.<br />
-        Con el objetivo de diseñar, construir y competir con un monoplaza eléctrico
-        en la competición internacional de Fórmula Student.
-      </p>
+      <p class="mb-5 text-2xl">1º Equipo de Fórmula Student de Canarias</p>
       <div id="buttons" class="join mt-5 gap-2">
         {
           buttons.map((button) => (
-            <a href={button.href}>
-              <button class="btn btn-primary join-item btn-lg shadow">
-                {button.text}
-              </button>
+            <a
+              href={button.href}
+              class="btn btn-primary join-item btn-xl shadow"
+              role="button"
+            >
+              {button.text}
             </a>
           ))
         }
