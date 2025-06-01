@@ -1,5 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import logoCRT from "../assets/logos-crteam/CRTEAM BLANCO.png"; // Importa la imagen
 const year = new Date().getFullYear();
 
 const links = [
@@ -16,27 +18,40 @@ const socials = [
 ];
 ---
 
-<footer
-  class="footer bg-base-200 text-base-content rounded p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-8 md:gap-4 text-center md:text-left"
->
-  <aside class="w-full md:w-auto flex flex-col items-center md:items-start">
-    <p class="font-bold mb-1">© {year} Canarias Racing Team</p>
+<footer class="footer sm:footer-horizontal bg-base-200 text-base-content p-10">
+  <aside>
+    <Image
+      src={logoCRT}
+      alt="Canarias Racing Team Logo"
+      inferSize={true}
+      class="h-8 w-auto mb-4"
+    />
+    <div class="inline-flex place-items-flex-start gap-2">
+      <Icon
+        name="mdi:copyright"
+        class="h-5 w-5"
+        aria-label="Copyright Icon"
+      />
+      <p class="font-bold mb-1">
+        {year} Canarias Racing Team
+      </p>
+    </div>
     <p class="text-xs">Todos los derechos reservados</p>
   </aside>
-  <nav class="flex flex-col items-center w-full md:w-auto">
-    <span class="font-semibold mb-1">Enlaces</span>
-    <div class="flex flex-wrap justify-center gap-4">
-      {
-        links.map((link) => (
-          <a class="link link-hover" href={link.href}>
-            {link.label}
-          </a>
-        ))
-      }
-    </div>
+
+  <nav>
+    <h6 class="footer-title">Enlaces</h6>
+    {
+      links.map((link) => (
+        <a class="link link-hover" href={link.href}>
+          {link.label}
+        </a>
+      ))
+    }
   </nav>
-  <nav class="flex flex-col items-center w-full md:w-auto">
-    <span class="font-semibold mb-1">Redes sociales</span>
+
+  <nav>
+    <h6 class="footer-title">Redes Sociales</h6>
     <div class="flex justify-center gap-4">
       {
         socials.map((social) => (
@@ -46,10 +61,24 @@ const socials = [
             rel="noopener"
             aria-label={social.label}
           >
-            <Icon name={social.icon} class="h-6 w-6" />
+            <Icon name={social.icon} class="h-5 w-5" />
           </a>
         ))
       }
     </div>
   </nav>
+  <form id="contact">
+    <h6 class="footer-title">Contactanos</h6>
+    <fieldset class="w-80">
+      <label>Introduce tu mail</label>
+      <div class="join gap-2 mt-2">
+        <input
+          type="text"
+          placeholder="username@site.com"
+          class="input input-bordered join-item"
+        />
+        <button class="btn btn-primary join-item">Contactar</button>
+      </div>
+    </fieldset>
+  </form>
 </footer>

@@ -4,12 +4,18 @@
 [![TailwindCSS](https://img.shields.io/badge/Styled_with-TailwindCSS-06b6d4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![DaisyUI](https://img.shields.io/badge/UI-DaisyUI-5a0fc8?style=for-the-badge&logo=daisyui&logoColor=white)](https://daisyui.com)
 ![Repo](https://img.shields.io/badge/Repo_Private-yes-4b5563?style=for-the-badge&logo=github&logoColor=white)
+[![Notion](https://img.shields.io/badge/CMS-Notion-000000?style=for-the-badge&logo=notion&logoColor=white)](https://notion.so)
 
 ---
 
 Sitio web oficial del primer equipo de Fórmula Student de Canarias.  
 Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss.com/), [DaisyUI](https://daisyui.com/).  
-**Próximamente:** CMS con [Notion](https://notion.so) y despliegue en [Vercel](https://vercel.com).
+**Ahora incluye:** Sección de blog/noticias conectada a Notion como CMS.
+
+## 📰 Noticias y Blog
+
+Las noticias y posts del blog se gestionan desde una base de datos de Notion y se muestran automáticamente en la sección `/news` del sitio.  
+Cada noticia se presenta como un post de blog, usando el componente `SectionSample` para mostrar imagen, título, descripción y enlace a la noticia completa.
 
 ## 🎬 Preview v0.1
 
@@ -40,6 +46,7 @@ Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss
 │   │   └── Layout.astro
 │   └── pages/
 │       ├── index.astro
+│       ├── news.astro
 │       ├── about.astro
 │       ├── projects.astro
 │       └── contact.astro
@@ -64,6 +71,7 @@ Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss
 - **TailwindCSS**: Utilidad CSS para estilos rápidos y responsivos.
 - **DaisyUI**: Componentes UI sobre Tailwind para desarrollo ágil.
 - **TypeScript**: Tipado estático opcional.
+- **Notion**: CMS para gestionar noticias y posts del blog.
 
 ## 📦 Componentes destacados
 
@@ -71,7 +79,7 @@ Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss
 - `Navbar.astro`: Barra de navegación fija.
 - `FlagDivider.astro`: Separador con los colores de la bandera de Canarias.
 - `Carousel.astro`: Galería horizontal de imágenes/avatares.
-- `SectionSample.astro`: Sección reutilizable para contenido destacado.
+- `SectionSample.astro`: Componente de post de blog/noticia (imagen, título, descripción, contenido, enlace).
 - `Card.astro`: Componente de tarjeta flexible.
 - `Section.astro`: Componente de sección adaptable.
 - `Stats.astro`: Estadísticas visuales.
@@ -88,6 +96,7 @@ Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss
 
 3. **Estructura de la web**
    - [x] Crear página principal (`index.astro`)
+   - [x] Crear página de noticias/blog (`news.astro`)
    - [ ] Crear páginas adicionales (`about.astro`, `projects.astro`, `contact.astro`)
    - [x] Crear componentes reutilizables (`Navbar`, `Footer`, `Button`, `FlagDivider`, `Carousel`, `SectionSample`)
 
@@ -95,12 +104,13 @@ Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss
    - [ ] Agregar formularios de contacto
    - [x] Galería/carrusel de imágenes y avatares
    - [x] Diseño responsive y moderno
+   - [x] Integración con Notion para noticias/blog
 
 5. **Configurar Notion CMS**
    - [x] Instalar NotionHQ
    - [x] Configurar base de datos en Notion
    - [ ] Configurar webhook en Notion
-   - [ ] Enlazar con web Astro
+   - [x] Enlazar con web Astro para mostrar noticias/blog
 
 6. **Despliegue**
    - [ ] Configurar despliegue en Vercel

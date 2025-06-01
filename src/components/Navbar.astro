@@ -1,9 +1,21 @@
 ---
+import { Image } from "astro:assets";
+import logoCRT from "../assets/logos-crteam/CRT BLANCO.png"; // Importa la imagen
+import { getNotionPages } from "../lib/notion";
+const newsCount = await getNotionPages();
+const newsCountSpan =
+  newsCount.length > 99 ? "99+" : newsCount.length.toString();
+
 const currentPath = new URL(Astro.request.url).pathname;
 const nabItem = [
+  { name: "El Equipo", href: "#team" },
   { name: "El Coche", href: "/#car" },
-  { name: "Noticias", href: "/news", span: "99+" },
-  { name: "Contacto", href: "/contact" },
+  { name: "Noticias", href: "/news", span: newsCountSpan },
+  // { name: "La Competición", href: "#competition" },
+  { name: "Patrocinadores", href: "#partners" },
+  // { name: "Únete", href: "#join" },
+  // { name: "Sobre nosotros", href: "/about" },
+  { name: "Contacto", href: "#contact" },
 ];
 ---
 
@@ -18,7 +30,12 @@ const nabItem = [
       function handleScroll() {
         if (window.scrollY > 10) {
           navbar.classList.remove("bg-transparent");
-          navbar.classList.add("bg-base-100", "bg-opacity-90", "backdrop-blur", "navbar-gradient");
+          navbar.classList.add(
+            "bg-base-100",
+            "bg-opacity-90",
+            "backdrop-blur",
+            "navbar-gradient"
+          );
         } else {
           navbar.classList.add("bg-transparent");
           navbar.classList.remove(
@@ -35,7 +52,15 @@ const nabItem = [
   </script>
 
   <div class="flex-1">
-    <a class="btn btn-ghost text-xl" href="/">[CRTeam Logo]</a>
+    <a class="btn btn-link text-xl" href="/">
+      <Image
+        src={logoCRT}
+        alt="Canarias Racing Team Logo"
+        inferSize={true}
+        loading="eager"
+        class="h-full w-auto"
+      />
+    </a>
   </div>
   <div class="flex-none">
     <div role="tablist" class="tabs tabs-border py-2">
