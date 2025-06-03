@@ -1,7 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
-import logoCRT from "../assets/logos-crteam/CRTEAM BLANCO.png"; // Importa la imagen
+import logoCRT from "@assets/logos-crteam/CRTEAM BLANCO.png"; // Importa la imagen
 const year = new Date().getFullYear();
 
 const links = [
@@ -23,7 +23,8 @@ const socials = [
     <Image
       src={logoCRT}
       alt="Canarias Racing Team Logo"
-      inferSize={true}
+      width={logoCRT.width}
+      height={logoCRT.height}
       class="h-8 w-auto mb-4"
     />
     <div class="inline-flex place-items-flex-start gap-2">
@@ -70,7 +71,7 @@ const socials = [
   <form id="contact">
     <h6 class="footer-title">Contactanos</h6>
     <fieldset class="w-80">
-      <label>Introduce tu mail</label>
+      <label for="Contactar con CRTeam">Introduce tu mail</label>
       <div class="join gap-2 mt-2">
         <input
           type="text"

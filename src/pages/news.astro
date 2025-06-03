@@ -1,25 +1,10 @@
 ---
-import SectionSample from "../components/SectionSample.astro";
-import Layout from "../layouts/Layout.astro";
-import { getNotionPages } from "../lib/notion";
-const notionPages = await getNotionPages();
-console.log("Noticias:", notionPages);
-import type { NotionPage } from "../lib/notion";
+import SectionSample from "@components/SectionSample.astro";
+import Layout from "@layouts/Layout.astro";
+import { getNotionPages } from "@utils/notion";
+import type { NotionPageType } from "@/types";
 
-// Adapt NotionPage objects to Noticia type
-const noticias: NotionPage[] = notionPages.map((page: any) => ({
-  id: page.id,
-  title: page.title,
-  description: page.description,
-  date: page.date,
-  Publicado: page.Publicado ?? false,
-  Contenido: page.Contenido ?? "",
-  Fecha: page.Fecha ?? "",
-  Imagen: page.Imagen ?? "",
-  url: page.url ?? "",
-  Nombre: page.Nombre ?? "",
-  // Agrega aquí cualquier otra propiedad requerida por NotionPage con valores predeterminados si es necesario
-}));
+const noticias: NotionPageType[] = await getNotionPages();
 ---
 
 <Layout id={Astro.self.name}>

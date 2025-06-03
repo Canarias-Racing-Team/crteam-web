@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import logoCRT from "../assets/logos-crteam/CRT BLANCO.png"; // Importa la imagen
-import { getNotionPages } from "../lib/notion";
+import logoCRT from "@assets/logos-crteam/CRT BLANCO.png"; // Importa la imagen
+import { getNotionPages } from "@utils/notion";
 const newsCount = await getNotionPages();
 const newsCountSpan =
   newsCount.length > 99 ? "99+" : newsCount.length.toString();
@@ -9,7 +9,7 @@ const newsCountSpan =
 const currentPath = new URL(Astro.request.url).pathname;
 const nabItem = [
   { name: "El Equipo", href: "#team" },
-  { name: "El Coche", href: "/#car" },
+  { name: "El Coche", href: "#car" },
   { name: "Noticias", href: "/news", span: newsCountSpan },
   // { name: "La Competición", href: "#competition" },
   { name: "Patrocinadores", href: "#partners" },
@@ -56,34 +56,129 @@ const nabItem = [
       <Image
         src={logoCRT}
         alt="Canarias Racing Team Logo"
-        inferSize={true}
+        width={logoCRT.width}
+        height={logoCRT.height}
         loading="eager"
         class="h-full w-auto"
       />
     </a>
   </div>
   <div class="flex-none">
-    <div role="tablist" class="tabs tabs-border py-2">
+    <div role="tablist" class="tabs tabs-border py-2" id="navbar-tabs">
       {
-        nabItem.map((item) => (
-          <a
-            role="tab"
-            class={`text-lg tab${currentPath === item.href ? " tab-active" : ""}`}
-            href={item.href}
-          >
-            {item.name}
-            {item.span && (
-              <span
-                class={`indicator-item badge ml-2 badge-${
-                  currentPath === item.href ? "secondary" : "ghost"
-                }`}
-              >
-                {item.span}
-              </span>
-            )}
-          </a>
-        ))
+        nabItem.map((item) => {
+          const isAnchor = item.href.startsWith("#");
+          const isActive = !isAnchor && currentPath === item.href;
+          return (
+            <a
+              role="tab"
+              class={`text-lg tab${isActive ? " tab-active" : ""}`}
+              href={item.href}
+              {...(isAnchor
+                ? { "data-anchor": item.href.replace("#", "") }
+                : {})}
+            >
+              {item.name}
+              {item.span && (
+                <span
+                  class={`indicator-item badge ml-2 badge-${
+                    isActive ? "secondary" : "ghost"
+                  }`}
+                >
+                  {item.span}
+                </span>
+              )}
+            </a>
+          );
+        })
       }
     </div>
   </div>
 </div>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", function () {
+    const navbar = document.getElementById("navbar");
+    function handleScroll() {
+      if (window.scrollY > 10) {
+        navbar.classList.remove("bg-transparent");
+        navbar.classList.add(
+          "bg-base-100",
+          "bg-opacity-90",
+          "backdrop-blur",
+          "navbar-gradient"
+        );
+      } else {
+        navbar.classList.add("bg-transparent");
+        navbar.classList.remove(
+          "bg-base-100",
+          "bg-opacity-90",
+          "backdrop-blur",
+          "navbar-gradient"
+        );
+      }
+    }
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+  });
+
+  // Activar tab de ancla según la sección visible
+  document.addEventListener("DOMContentLoaded", function () {
+    const anchorTabs = document.querySelectorAll("[data-anchor]");
+    if (anchorTabs.length === 0) return;
+
+    const anchors = Array.from(anchorTabs).map((tab) =>
+      tab.getAttribute("data-anchor")
+    );
+    const sections = anchors
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+
+    if (sections.length === 0) return;
+
+    const activateTab = (id) => {
+      anchorTabs.forEach((tab) => {
+        if (tab.getAttribute("data-anchor") === id) {
+          tab.classList.add("tab-active");
+        } else {
+          tab.classList.remove("tab-active");
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Encuentra la sección más cercana a la parte superior visible
+        let activeId = null;
+        let minTop = window.innerHeight;
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const rect = entry.target.getBoundingClientRect();
+            if (rect.top >= 0 && rect.top < minTop) {
+              minTop = rect.top;
+              activeId = entry.target.id;
+            }
+          }
+        });
+        if (activeId) activateTab(activeId);
+      },
+      {
+        root: null,
+        rootMargin: "-30% 0px -60% 0px", // Ajusta para activar antes/después
+        threshold: [0.1, 0.3, 0.5, 0.7, 1.0],
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    // Activar tab correcta al hacer clic en el tab (ancla)
+    anchorTabs.forEach((tab) => {
+      tab.addEventListener("click", function (e) {
+        const id = tab.getAttribute("data-anchor");
+        if (id) {
+          setTimeout(() => activateTab(id), 100);
+        }
+      });
+    });
+  });
+</script>

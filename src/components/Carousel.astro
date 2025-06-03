@@ -1,39 +1,25 @@
 ---
 import Image from "astro/components/Image.astro";
 import { Icon } from "astro-icon/components";
+import type { CarouselItemType } from "@types";
 
-type CarouselItem = {
-  src: string;
-  alt?: string;
-  name?: string;
-  icon?: string;
-  brief?: string;
-};
-
-const { items = [], id, units } = Astro.props;
-// Add default item if no matching units are found
-const defaultAvatar = {
-  src: "https://img.daisyui.com/images/profile/demo/batperson@192.webp",
-  alt: "Avatar por defecto",
-};
-const count = units ?? items.length;
-const filledItems: CarouselItem[] = [
-  ...items.slice(0, count),
-  ...Array(Math.max(0, count - items.length)).fill(defaultAvatar),
-];
+const { items = [], id } = Astro.props;
 ---
 
 {
-  filledItems.length > 0 && (
+  items.length > 0 && (
     <>
       <div class="carousel w-full" id={id}>
         {/* Carousel items */}
-        {filledItems.map((image: CarouselItem, i: number) => {
+        {items.map((image: CarouselItemType, i: number) => {
           const slideId = `slide${i + 1}`;
-          const prevId = `#slide${((i - 1 + filledItems.length) % filledItems.length) + 1}`;
-          const nextId = `#slide${((i + 1) % filledItems.length) + 1}`;
+          const prevId = `#slide${((i - 1 + items.length) % items.length) + 1}`;
+          const nextId = `#slide${((i + 1) % items.length) + 1}`;
           return (
-            <div id={slideId} class="carousel-item relative w-full items-center justify-center">
+            <div
+              id={slideId}
+              class="carousel-item relative w-full items-center justify-center"
+            >
               <Image
                 alt={image.alt ?? `Imagen ${i + 1}`}
                 class="w-max rounded-xl object-cover m-2"
@@ -61,7 +47,7 @@ const filledItems: CarouselItem[] = [
         })}
       </div>
       <div class="join py-2 flex justify-center" id="carousel-pagination">
-        {filledItems.map((_, i) => (
+        {items.map((_: CarouselItemType, i: number) => (
           <a
             href={`#slide${i + 1}`}
             class="btn btn-sm join-item"

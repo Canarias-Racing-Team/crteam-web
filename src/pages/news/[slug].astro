@@ -1,0 +1,46 @@
+---
+import SectionSample from "../../components/SectionSample.astro";
+import Layout from "../../layouts/Layout.astro";
+import { getNotionPages } from "../../utils/notion";
+import type { NotionPageType } from "@/types";
+
+// Generación de rutas estáticas para cada noticia
+export async function getStaticPaths() {
+  const pages = await getNotionPages();
+  return pages
+    .filter((page) => !!page.url)
+    .map((page) => ({
+      params: { slug: page.url },
+      props: { noticia: page },
+    }));
+}
+
+const { noticia } = Astro.props;
+
+if (!noticia) {
+  throw new Error("Noticia no encontrada");
+}
+---
+
+<Layout id={Astro.self.name}>
+  <div class="flex min-h-screen mt-10 justify-center bg-base-100">
+    <main class="flex-1 max-w-2xl p-4 sm:p-8">
+      <div class="mb-8">
+        <a
+          href="/news"
+          class="btn btn-sm btn-ghost text-primary hover:underline"
+        >
+          ← Volver a noticias
+        </a>
+      </div>
+      <SectionSample
+        title={noticia.Nombre}
+        description={noticia.Contenido || "No hay descripción disponible."}
+        image={noticia.Imagen}
+        id={noticia.url}
+      >
+        {/* Aquí puedes renderizar más contenido si lo hay */}
+      </SectionSample>
+    </main>
+  </div>
+</Layout>

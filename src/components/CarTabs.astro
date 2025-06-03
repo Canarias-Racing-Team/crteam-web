@@ -1,6 +1,7 @@
 ---
 import Image from "astro/components/Image.astro";
 import { Icon } from "astro-icon/components";
+import type { CarComponentType } from "@/types";
 
 // Define the type for a car component
 type CarComponent = {
@@ -21,7 +22,7 @@ const { carComponents = [], id } = Astro.props;
   aria-label="Car Components Tabs"
 >
   {
-    carComponents.map((component: CarComponent) => (
+    carComponents.map((component: CarComponentType) => (
       <>
         <label
           class="tab gap-2 cursor-pointer"
