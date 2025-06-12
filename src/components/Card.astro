@@ -11,10 +11,10 @@ const {
 } = Astro.props;
 ---
 
-<div class={`card ${className}`}>
+<div class={`card ${className} card-xl`}>
   <div class="card-body">
     {title && <h2 class="card-title">{title}</h2>}
-    {subtitle && <p class="text-sm text-gray-500">{subtitle}</p>}
+    {subtitle && <p class="text-md text-gray-500">{subtitle}</p>}
     {paragraphs && paragraphs.map((text: string) => <p>{text}</p>)}
     <slot />
     {

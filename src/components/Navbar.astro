@@ -8,14 +8,14 @@ const newsCountSpan =
 
 const currentPath = new URL(Astro.request.url).pathname;
 const nabItem = [
-  { name: "El Equipo", href: "#team" },
-  { name: "El Coche", href: "#car" },
+  { name: "El Equipo", href: "/#team" },
+  { name: "El Coche", href: "/#car" },
   { name: "Noticias", href: "/news", span: newsCountSpan },
   // { name: "La Competición", href: "#competition" },
-  { name: "Patrocinadores", href: "#partners" },
+  { name: "Patrocinadores", href: "/#partners" },
   // { name: "Únete", href: "#join" },
   // { name: "Sobre nosotros", href: "/about" },
-  { name: "Contacto", href: "#contact" },
+  { name: "Contacto", href: "/#contact" },
 ];
 ---
 
@@ -82,7 +82,7 @@ const nabItem = [
               {item.span && (
                 <span
                   class={`indicator-item badge ml-2 badge-${
-                    isActive ? "secondary" : "ghost"
+                    isActive ? "primary" : "ghost"
                   }`}
                 >
                   {item.span}

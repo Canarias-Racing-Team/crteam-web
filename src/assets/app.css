@@ -1,9 +1,34 @@
 @import "tailwindcss";
 
+[data-theme="forest"] {
+  --color-base-100: #000000;
+  --color-base-300: #1e1e1e;
+  --color-primary: #FFD100;
+  --color-secondary: #0057B8;
+}
+
 .divider {
   visibility: hidden;
 }
 
 [id] {
-  scroll-margin-top: 5rem; /* Ajusta según la altura real del navbar */
+  scroll-margin-top: 5rem;
+  /* Ajusta según la altura real del navbar */
+}
+
+/* Para "ISLAS" */
+.text-outline-white {
+  color: transparent;
+  /* Hace el relleno del texto transparente */
+  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-color: white;
+}
+
+/* Para "COLORES" */
+.text-outline-primary {
+  color: transparent;
+  /* Hace el relleno del texto transparente */
+  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-color: var(--color-primary);
+  /* Usa tu variable CSS para el amarillo */
 }

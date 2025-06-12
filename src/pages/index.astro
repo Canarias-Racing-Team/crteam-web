@@ -8,11 +8,11 @@ import CarTabs from "@components/CarTabs.astro";
 import Card from "@components/Card.astro";
 import Section from "@components/Section.astro";
 import Stats from "@components/Stats.astro";
+import { loadImageEntries } from "@utils/imageUtils";
 
 // Image data
-import { loadImageEntries } from "@utils/imageUtils";
-import imagesExample from "@assets/imagesExample.json";
 const partners = await loadImageEntries("logos-partners-2425");
+import imagesExample from "@assets/imagesExample.json";
 
 // Car components data
 import carComponents from "@assets/carComponents.json";
@@ -114,11 +114,11 @@ import carComponents from "@assets/carComponents.json";
             icon: "mdi:patreon",
             href: "https://www.patreon.com/",
           },
-          {
-            text: "Donar por PayPal",
-            icon: "mdi:paypal",
-            href: "https://www.paypal.com/",
-          },
+          // {
+          //   text: "Donar por PayPal",
+          //   icon: "mdi:paypal",
+          //   href: "https://www.paypal.com/",
+          // },
           {
             text: "Contactar para Patrocinio",
             icon: "mdi:email",
@@ -132,6 +132,4 @@ import carComponents from "@assets/carComponents.json";
       </Card>
     </div>
   </Section>
-
-  <FlagDivider class="mt-15" />
 </Layout>

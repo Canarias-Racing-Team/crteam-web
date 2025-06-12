@@ -1,5 +1,5 @@
 ---
-import Image from "astro/components/Image.astro";
+import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import type { CarComponentType } from "@/types";
 
@@ -43,7 +43,7 @@ const { carComponents = [], id } = Astro.props;
           class="tab-content bg-transparent border-none p-0"
           aria-labelledby={`tab-${component.name.toLowerCase().replace(/\s+/g, "-")}`}
         >
-          <div class="card lg:card-side bg-base-300 shadow-sm w-full mx-auto">
+          <div class="card card-xl lg:card-side bg-base-300 shadow-sm w-full mx-auto">
             <figure>
               <Image
                 src={component.src}
