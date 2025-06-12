@@ -11,6 +11,10 @@
   visibility: hidden;
 }
 
+.stat {
+  overflow: hidden;
+}
+
 [id] {
   scroll-margin-top: 5rem;
   /* Ajusta según la altura real del navbar */

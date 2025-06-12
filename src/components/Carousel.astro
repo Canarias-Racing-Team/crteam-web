@@ -22,7 +22,7 @@ const { items = [], id } = Astro.props;
             >
               <Image
                 alt={image.alt ?? `Imagen ${i + 1}`}
-                class="w-max rounded-xl object-cover m-2"
+                class="w-full h-120 rounded-xl object-cover m-2"
                 src={image.src}
                 inferSize={true}
               />

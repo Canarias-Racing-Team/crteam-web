@@ -18,7 +18,9 @@ const socials = [
 ];
 ---
 
-<footer class="footer sm:footer-horizontal bg-base-200 text-base-content p-10">
+<footer
+  class="footer sm:footer-horizontal bg-base-200 text-base-content flex flex-col lg:flex-row justify-around lg:place-items-start place-items-center place-content-center p-10"
+>
   <aside>
     <Image
       src={logoCRT}
@@ -28,11 +30,7 @@ const socials = [
       class="h-8 w-auto mb-4"
     />
     <div class="inline-flex place-items-flex-start gap-2">
-      <Icon
-        name="mdi:copyright"
-        class="h-5 w-5"
-        aria-label="Copyright Icon"
-      />
+      <Icon name="mdi:copyright" class="h-5 w-5" aria-label="Copyright Icon" />
       <p class="font-bold mb-1">
         {year} Canarias Racing Team
       </p>

@@ -18,6 +18,7 @@ export type StatType = {
   title: string;
   value: string | number;
   desc?: string;
+  color?: string;
 };
 
 export type CarComponentType = {
