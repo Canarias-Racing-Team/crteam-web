@@ -3,6 +3,15 @@ import type { ImageEntry } from "@types";
 
 const DEBUG = false; // Cambia a true para ver los logs de depuración
 
+/**
+ * Función de depuración para mostrar información sobre las imágenes destacadas
+ * y los archivos en la carpeta.
+ * @param featuredPath Ruta al archivo featured.txt
+ * @param featuredTxtModule Módulo importado de featured.txt
+ * @param featuredList Lista de archivos destacados
+ * @param fileNames Nombres de los archivos encontrados
+ * @param filesInfo Información de los archivos con estado de destacado
+ */
 function debugFeatured({
   featuredPath,
   featuredTxtModule,
@@ -41,13 +50,34 @@ export async function loadImageEntries(folder: string): Promise<ImageEntry[]> {
   );
 
   // Construye la ruta relativa desde src/utils a src/assets
-  const featuredPath = `../assets/${folder}/featured.txt?raw`;
+  const featuredPath = `/src/assets/${folder}/featured.txt?raw`; // Cambiar a ruta absoluta
   const featuredTxt = await import(/* @vite-ignore */ featuredPath).catch(
-    () => ({ default: "" })
+    (error) => {
+      console.error(`Error al importar ${featuredPath}:`, error);
+      return { default: "" };
+    }
   );
 
   const featuredTxtModule: { default: string } = featuredTxt;
-  const featuredList: string[] = featuredTxtModule.default
+  const rawContent = featuredTxtModule.default;
+
+  // Limpia el contenido eliminando caracteres invisibles o innecesarios
+  const cleanedContent = rawContent
+    .replace(/\r/g, "") // Elimina retornos de carro (Windows)
+    .trim();
+
+  if (DEBUG) {
+    console.log(
+      "Contenido original de featured.txt:",
+      JSON.stringify(rawContent)
+    );
+    console.log(
+      "Contenido limpio de featured.txt:",
+      JSON.stringify(cleanedContent)
+    );
+  }
+
+  const featuredList: string[] = cleanedContent
     .split("\n")
     .map((f: string) => f.trim())
     .filter((line: string) => Boolean(line));
@@ -69,6 +99,10 @@ export async function loadImageEntries(folder: string): Promise<ImageEntry[]> {
       fileNames,
       filesInfo,
     });
+  }
+
+  if (!featuredTxtModule.default) {
+    console.warn(`El archivo ${featuredPath} está vacío o no existe.`);
   }
 
   return filteredEntries.map(([path, mod]) => {

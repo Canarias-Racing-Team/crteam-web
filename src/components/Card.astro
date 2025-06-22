@@ -4,7 +4,7 @@ const {
   title,
   subtitle,
   buttons,
-  buttonClass = "btn btn-primary join-item",
+  buttonClass = "btn btn-primary",
   className = "",
   paragraphs = [],
   buttonsVertical = false,
@@ -13,18 +13,42 @@ const {
 
 <div class={`card ${className} card-xl`}>
   <div class="card-body">
-    {title && <h2 class="card-title">{title}</h2>}
-    {subtitle && <p class="text-md text-gray-500">{subtitle}</p>}
-    {paragraphs && paragraphs.map((text: string) => <p>{text}</p>)}
+    {
+      title && (
+        <h2 class="card-title" aria-label={title}>
+          {title}
+        </h2>
+      )
+    }
+    {
+      subtitle && (
+        <p class="text-md text-gray-500" aria-label={subtitle}>
+          {subtitle}
+        </p>
+      )
+    }
+    {
+      paragraphs &&
+        paragraphs.map((text: string, index: number) => (
+          <p id={`paragraph-${index}`}>{text}</p>
+        ))
+    }
     <slot />
     {
       buttons && Array.isArray(buttons) && (
-        <div class={`justify-end card-actions md:join mt-4${buttonsVertical ? " md:join-vertical self-end w-fit" : ""}`}>
+        <div
+          class={`justify-end card-actions mt-4${buttonsVertical ? " self-end w-fit" : ""}`}
+        >
           {buttons.map(
-            ({ text, href, icon }) =>
+            ({ text, href, icon }, index: number) =>
               text &&
               href && (
-                <a href={href} class={buttonClass}>
+                <a
+                  href={href}
+                  class={buttonClass}
+                  id={`button-${index}`}
+                  aria-label={text}
+                >
                   {icon && <Icon name={icon} class="h-5 w-5 mr-2" />}
                   {text}
                 </a>

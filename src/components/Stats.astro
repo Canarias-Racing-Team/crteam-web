@@ -2,20 +2,26 @@
 import type { StatType } from "@types";
 const {
   stats = [
-    // { title: "Patrocinadores", value: "12"},
     { title: "Islas", value: "8" },
     { title: "Colores", value: "3", color: "secondary" },
     { title: "Coche", value: "1", color: "primary" },
   ],
-}: { stats?: StatType[] } = Astro.props;
+  className = "",
+}: { stats?: StatType[]; className?: string } = Astro.props;
 ---
 
-<div class="stats w-full stats-horizontal bg-base-300 shadow-sm">
+<div
+  class={`stats stats-horizontal bg-base-300 shadow-sm p-4 ${className || ""}`}
+>
   {
     stats.map((stat) => (
-      <div class="stat place-items-center">
-        <div class="stat-title text-xl">{stat.title}</div>
-        <div class={`stat-value text-${stat.color}`}>{stat.value}</div>
+      <div class="stat place-items-center px-0 w-1/3" id={stat.title}>
+        <div class="stat-title text-xl mx-2">{stat.title}</div>
+        <div
+          class={`stat-value ${stat.color ? `text-${stat.color}` : "text-base-content"}`}
+        >
+          {stat.value}
+        </div>
         {stat.desc && <div class="stat-desc text-xl">{stat.desc}</div>}
       </div>
     ))

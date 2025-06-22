@@ -11,7 +11,17 @@ import Stats from "@components/Stats.astro";
 import { loadImageEntries } from "@utils/imageUtils";
 
 // Image data
-const partners = await loadImageEntries("logos-partners-2425");
+type Partner = {
+  featured?: boolean;
+  [key: string]: any;
+};
+let partners: Partner[] = [];
+try {
+  partners = await loadImageEntries("logos-partners-2425");
+} catch (error) {
+  console.error("Error loading partners data:", error);
+}
+
 import imagesExample from "@assets/imagesExample.json";
 
 // Car components data
@@ -25,20 +35,20 @@ import carComponents from "@assets/carComponents.json";
 
   <Section id="partners-principal" className="container mx-auto px-4 mt-15">
     <div class="flex w-full flex-col lg:flex-row">
-      <div class="w-full lg:w-3/4 flex flex-col justify-center items-center">
-        <Gallery
-          items={partners.filter((partner) => partner.featured === true)}
-          size={60}
-        />
-      </div>
+      <Gallery
+        items={partners.filter((partner) => partner.featured === true)}
+        size={60}
+        alt="Logos de socios destacados"
+        className="w-full lg:w-3/4 justify-evenly"
+      />
       <div class="divider lg:divider-horizontal"></div>
-      <div class="w-full lg:w-1/4 flex flex-col justify-center items-center">
-        <Stats />
-      </div>
+      <!-- <div class="w-full lg:w-1/4 flex flex-col justify-center items-center"> -->
+        <Stats className="w-full lg:w-1/4 flex justify-evenly items-center h-max self-center" />
+      <!-- </div> -->
     </div>
   </Section>
 
-  <Section id="team" className="container mx-auto px-4">
+  <Section id="team" className="container mx-auto px-4 mt-15 lg:mt-0">
     <div class="flex w-full flex-col lg:flex-row">
       <Card
         title="Canarias Racing Team"
@@ -79,22 +89,10 @@ import carComponents from "@assets/carComponents.json";
     </div>
   </Section>
 
-  <!-- <SectionSample
-    title="La Competición"
-    id="the-competition"
-    link={{ href: "/competition", text: "Más información" }}
-  >
-    <p>
-      La Fórmula Student es una competición internacional que desafía a los
-      estudiantes a diseñar, construir y competir con un monoplaza eléctrico.
-      Conoce más sobre la competición y cómo nos preparamos para el desafío.
-    </p>
-  </SectionSample> -->
-
   <Section id="partners" className="container mx-auto px-4 mt-15">
     <div class="flex w-full flex-col lg:flex-row">
       <div class="w-full lg:w-2/3 flex flex-col justify-center items-center">
-        <Gallery items={partners} size={40} />
+        <Gallery items={partners} size={40} alt="Logos de todos los socios" />
       </div>
       <div class="divider lg:divider-horizontal"></div>
       <Card
@@ -112,22 +110,13 @@ import carComponents from "@assets/carComponents.json";
             icon: "mdi:patreon",
             href: "https://www.patreon.com/",
           },
-          // {
-          //   text: "Donar por PayPal",
-          //   icon: "mdi:paypal",
-          //   href: "https://www.paypal.com/",
-          // },
           {
             text: "Contactar para Patrocinio",
             icon: "mdi:email",
             href: "mailto:info@canariasracingteam.com",
           },
         ]}
-      >
-        <!-- <div class="mt-6">
-          <Stats />
-        </div> -->
-      </Card>
+      />
     </div>
   </Section>
 </Layout>

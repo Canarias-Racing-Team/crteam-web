@@ -19,64 +19,76 @@ const socials = [
 ---
 
 <footer
-  class="footer sm:footer-horizontal bg-base-200 text-base-content flex flex-col lg:flex-row justify-around lg:place-items-start place-items-center place-content-center p-10"
+  class="bg-base-300 text-base-content flex flex-col lg:flex-row justify-center lg:justify-around items-center lg:items-start gap-8 py-12 px-8"
+  role="contentinfo"
+  aria-label="Footer"
 >
-  <aside>
+  <aside class="text-center lg:text-left max-w-xs">
     <Image
       src={logoCRT}
       alt="Canarias Racing Team Logo"
       width={logoCRT.width}
       height={logoCRT.height}
-      class="h-8 w-auto mb-4"
+      class="h-8 w-auto mb-4 mx-auto lg:mx-0"
     />
-    <div class="inline-flex place-items-flex-start gap-2">
-      <Icon name="mdi:copyright" class="h-5 w-5" aria-label="Copyright Icon" />
-      <p class="font-bold mb-1">
+    <div class="flex items-center justify-center lg:justify-start gap-2 mb-1">
+      <Icon name="mdi:copyright" class="h-4 w-4" aria-label="Copyright Icon" />
+      <p class="font-bold text-sm">
         {year} Canarias Racing Team
       </p>
     </div>
-    <p class="text-xs">Todos los derechos reservados</p>
+    <p class="text-xs opacity-75">Todos los derechos reservados</p>
   </aside>
 
-  <nav>
-    <h6 class="footer-title">Enlaces</h6>
-    {
-      links.map((link) => (
-        <a class="link link-hover" href={link.href}>
-          {link.label}
-        </a>
-      ))
-    }
-  </nav>
-
-  <nav>
-    <h6 class="footer-title">Redes Sociales</h6>
-    <div class="flex justify-center gap-4">
+  <div class="flex flex-row gap-16 lg:gap-20">
+    <nav aria-label="Enlaces principales" class="text-center lg:text-left">
+      <h6 class="text-sm font-bold uppercase mb-4 text-gray-400">Enlaces</h6>
       {
-        socials.map((social) => (
+        links.map((link) => (
           <a
-            href={social.href}
-            target="_blank"
-            rel="noopener"
-            aria-label={social.label}
+            class="link link-hover block text-sm mb-1"
+            href={link.href}
+            aria-label={link.label}
           >
-            <Icon name={social.icon} class="h-5 w-5" />
+            {link.label}
           </a>
         ))
       }
-    </div>
-  </nav>
-  <form id="contact">
-    <h6 class="footer-title">Contactanos</h6>
-    <fieldset class="w-80">
-      <label for="Contactar con CRTeam">Introduce tu mail</label>
-      <div class="join gap-2 mt-2">
+    </nav>
+
+    <nav aria-label="Redes sociales" class="text-center lg:text-left">
+      <h6 class="text-sm font-bold uppercase mb-4 text-gray-400">Síguenos</h6>
+      {
+        socials.map((social) => (
+          <a
+            class="link link-hover flex items-center justify-center lg:justify-start text-sm mb-2 hover:text-white"
+            href={social.href}
+            aria-label={social.label}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon name={social.icon} class="h-4 w-4 mr-2" />
+            <span>{social.label}</span>
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+
+  <form id="contact" class="text-center lg:text-left">
+    <h6 class="text-sm font-bold uppercase mb-4 text-gray-400">Contáctanos</h6>
+    <fieldset class="w-full max-w-xs">
+      <div class="flex flex-row gap-3 join">
         <input
-          type="text"
+          id="email"
+          type="email"
           placeholder="username@site.com"
-          class="input input-bordered join-item"
+          class="input join-item bg-neutral-700 border-neutral-600 text-center text-white placeholder-gray-400 w-full"
         />
-        <button class="btn btn-primary join-item">Contactar</button>
+        <button
+          class="btn join-item bg-yellow-500 hover:bg-yellow-600 text-black border-none font-semibold"
+          >Contactar</button
+        >
       </div>
     </fieldset>
   </form>

@@ -21,29 +21,36 @@ const buttons = [
   "
 >
   <div class="hero-overlay bg-opacity-70"></div>
-  <div class="hero-content text-neutral-content text-center">
-    <div class="max-w-2xl rounded-xl p-8">
-      <h1
-        class="mb-8 text-8xl font-extrabold drop-shadow-lg w-full flex justify-center items-center"
-      >
-        <div class="flex items-center justify-center gap-6">
-          <div class="text-right">
-            <span class="text-white">OCHO</span><br />
-            <span class="text-secondary">TRES</span>
-          </div>
-          <div class="text-left w-1/2">
-            <span class="text-outline-white">ISLAS</span>
-            <span class="text-outline-primary">COLORES</span>
-          </div>
+  <div
+    class="hero-content text-neutral-content text-center flex flex-col items-center justify-evenly"
+  >
+    <h1
+      class="mb-6 md:mb-8 text-4xl md:text-6xl lg:text-8xl font-extrabold drop-shadow-lg w-full flex justify-center items-center"
+    >
+      <div class="flex items-center justify-center gap-2 w-full">
+        <div class="text-right">
+          <span class="text-white">OCHO</span><br />
+          <span class="text-secondary">TRES</span>
         </div>
-      </h1>
-      <p class="pt-8 text-2xl">1º Equipo de Fórmula Student de Canarias</p>
-      <div id="buttons" class="join mt-5 gap-2">
+        <div class="text-left w-1/2">
+          <span class="text-outline-white">ISLAS</span>
+          <span class="text-outline-primary">COLORES</span>
+        </div>
+      </div>
+    </h1>
+    <div id="subtitle" class="flex flex-col items-center">
+      <p class="text-lg md:text-2xl">
+        1º Equipo de Fórmula Student de Canarias
+      </p>
+      <div
+        id="buttons"
+        class="mt-4 md:mt-5 gap-3 flex flex-col"
+      >
         {
           buttons.map((button) => (
             <a
               href={button.href}
-              class="btn btn-primary join-item btn-xl shadow"
+              class="btn btn-primary btn-md md:btn-xl shadow"
               role="button"
             >
               {button.text}

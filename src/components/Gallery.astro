@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import type { ImageEntry } from "@types";
 
-const { items, size = 24 } = Astro.props;
+const { items, size = 24, className } = Astro.props;
 
 const resolvedItems = await Promise.all(
   items.map(async (item: ImageEntry) => ({
@@ -14,7 +14,7 @@ const resolvedItems = await Promise.all(
 
 <div
   id={Astro.self.name}
-  class="flex flex-wrap flex-row overflow-x-auto mt-4 py-4 px-2 justify-center w-full"
+  class={`flex flex-wrap flex-row overflow-x-auto w-full items-center gap-4 ${className}`}
 >
   {
     resolvedItems.map((item) => (

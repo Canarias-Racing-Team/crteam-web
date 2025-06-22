@@ -10,12 +10,20 @@
 
 Sitio web oficial del primer equipo de Fórmula Student de Canarias.  
 Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss.com/), [DaisyUI](https://daisyui.com/).  
-**Ahora incluye:** Sección de blog/noticias conectada a Notion como CMS.
+**Ahora incluye:** Sección de blog/noticias conectada a Notion como CMS y diseño completamente responsive.
 
 ## 📰 Noticias y Blog
 
 Las noticias y posts del blog se gestionan desde una base de datos de Notion y se muestran automáticamente en la sección `/news` del sitio.  
 Cada noticia se presenta como un post de blog, usando el componente `SectionSample` para mostrar imagen, título, descripción y enlace a la noticia completa.
+
+## 📱 Diseño Responsive
+
+El sitio web cuenta con un diseño completamente responsive optimizado para:
+
+- **Desktop**: Experiencia completa con navegación horizontal y componentes expandidos
+- **Tablet**: Adaptación fluida de componentes y navegación
+- **Mobile**: Menú hamburguesa, componentes apilados y optimización táctil
 
 ## 🎬 Preview v0.1
 
@@ -75,14 +83,14 @@ Cada noticia se presenta como un post de blog, usando el componente `SectionSamp
 
 ## 📦 Componentes destacados
 
-- `Hero.astro`: Sección principal de bienvenida.
-- `Navbar.astro`: Barra de navegación fija.
+- `Hero.astro`: Sección principal de bienvenida con diseño responsive.
+- `Navbar.astro`: Barra de navegación fija con menú hamburguesa para móviles.
 - `FlagDivider.astro`: Separador con los colores de la bandera de Canarias.
-- `Carousel.astro`: Galería horizontal de imágenes/avatares.
+- `Carousel.astro`: Galería horizontal de imágenes/avatares adaptable.
 - `SectionSample.astro`: Componente de post de blog/noticia (imagen, título, descripción, contenido, enlace).
-- `Card.astro`: Componente de tarjeta flexible.
+- `Card.astro`: Componente de tarjeta flexible y responsive.
 - `Section.astro`: Componente de sección adaptable.
-- `Stats.astro`: Estadísticas visuales.
+- `Stats.astro`: Estadísticas visuales optimizadas para todos los dispositivos.
 
 ## ✅ Lista de tareas
 
@@ -101,15 +109,17 @@ Cada noticia se presenta como un post de blog, usando el componente `SectionSamp
    - [x] Crear componentes reutilizables (`Navbar`, `Footer`, `Button`, `FlagDivider`, `Carousel`, `SectionSample`)
 
 4. **Funcionalidad**
-   - [ ] Agregar formularios de contacto
+   - [x] Agregar formularios de contacto
    - [x] Galería/carrusel de imágenes y avatares
    - [x] Diseño responsive y moderno
    - [x] Integración con Notion para noticias/blog
+   - [x] Corrección de errores en navbar y componente stats
+   - [x] Optimización del diseño móvil
 
 5. **Configurar Notion CMS**
    - [x] Instalar NotionHQ
    - [x] Configurar base de datos en Notion
-   - [ ] Configurar webhook en Notion
+   - [x] Configurar webhook en Notion
    - [x] Enlazar con web Astro para mostrar noticias/blog
 
 6. **Despliegue**

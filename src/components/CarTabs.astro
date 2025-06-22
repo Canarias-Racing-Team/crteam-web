@@ -12,7 +12,6 @@ type CarComponent = {
 };
 
 const { carComponents = [], id } = Astro.props;
-// Input on left "flex flex-col items-center justify-center"
 ---
 
 <div
@@ -22,7 +21,7 @@ const { carComponents = [], id } = Astro.props;
   aria-label="Car Components Tabs"
 >
   {
-    carComponents.map((component: CarComponentType) => (
+    carComponents.map((component: CarComponentType, index: number) => (
       <>
         <label
           class="tab gap-2 cursor-pointer"
@@ -33,7 +32,7 @@ const { carComponents = [], id } = Astro.props;
             name="car_components_tabs"
             aria-label={component.name}
             id={`tab-${component.name.toLowerCase().replace(/\s+/g, "-")}`}
-            checked={component.name === "Componente 1"}
+            checked={index === 0}
             role="tab"
           />
           {component.icon && <Icon name={`mdi:${component.icon}`} />}
@@ -44,13 +43,13 @@ const { carComponents = [], id } = Astro.props;
           aria-labelledby={`tab-${component.name.toLowerCase().replace(/\s+/g, "-")}`}
         >
           <div class="card card-xl lg:card-side bg-base-300 shadow-sm w-full mx-auto">
-            <figure>
+            <figure class="w-full lg:w-2/4 flex justify-center items-center">
               <Image
                 src={component.src}
                 alt={component.name}
-                class="w-full h-64 object-cover"
-                loading="lazy"
+                class="object-cover rounded-xl w-full h-48 lg:h-64"
                 inferSize={true}
+                loading="lazy"
               />
             </figure>
             <div class="card-body">

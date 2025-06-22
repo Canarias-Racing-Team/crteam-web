@@ -11,8 +11,27 @@
   visibility: hidden;
 }
 
+.hero-overlay {
+  background-color: color-mix(in oklab, var(--color-base-100)50%, transparent);
+}
+
 .stat {
   overflow: hidden;
+  width: fit-content;
+}
+
+.stats-horizontal {
+  & .stat:not(:last-child) {
+    border-inline-end: none;
+    border-block-end: none
+  }
+}
+
+.stats-vertical {
+  & .stat:not(:last-child) {
+    border-inline-end: none;
+    border-block-end: none
+  }
 }
 
 [id] {

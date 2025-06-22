@@ -6,6 +6,11 @@ const flag_style = {
 };
 ---
 
-<div id={Astro.self.name} class={`w-full ${extraClass}`}>
+<div
+  id={Astro.self.name}
+  class={`w-full ${extraClass}`}
+  role="separator"
+  aria-label="Flag Divider"
+>
   <div class="h-6 md:h-8 w-full" style={flag_style}></div>
 </div>

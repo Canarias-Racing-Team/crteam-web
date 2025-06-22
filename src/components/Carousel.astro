@@ -9,7 +9,7 @@ const { items = [], id } = Astro.props;
 {
   items.length > 0 && (
     <>
-      <div class="carousel w-full" id={id}>
+      <div class="carousel w-full" id={id} role="region" aria-label="Carousel">
         {/* Carousel items */}
         {items.map((image: CarouselItemType, i: number) => {
           const slideId = `slide${i + 1}`;
@@ -19,12 +19,15 @@ const { items = [], id } = Astro.props;
             <div
               id={slideId}
               class="carousel-item relative w-full items-center justify-center"
+              role="tabpanel"
+              aria-labelledby={`carousel-slide-${i + 1}`}
             >
               <Image
                 alt={image.alt ?? `Imagen ${i + 1}`}
-                class="w-full h-120 rounded-xl object-cover m-2"
+                class="w-full h-120 rounded-xl object-cover"
                 src={image.src}
                 inferSize={true}
+                loading="lazy"
               />
               <div
                 class="absolute top-1/2 right-5 left-5 flex -translate-y-1/2 transform justify-between"
@@ -46,17 +49,22 @@ const { items = [], id } = Astro.props;
           );
         })}
       </div>
-      <div class="join py-2 flex justify-center" id="carousel-pagination">
-        {items.map((_: CarouselItemType, i: number) => (
-          <a
-            href={`#slide${i + 1}`}
-            class="btn btn-sm join-item"
-            id={`carousel-btn-${i + 1}`}
-            aria-label={`Go to slide ${i + 1}`}
-          >
-            {i + 1}
-          </a>
-        ))}
+      <div class="carousel-buttons flex justify-center join mt-4">
+        {/* Carousel buttons */}
+        {items.map((_: CarouselItemType, i: number) => {
+          const idx = i + 1;
+          return (
+            <a
+              href={`#slide${idx}`}
+              id={`carousel-btn-${idx}`}
+              class="btn btn-circle btn-sm join-item btn-primary"
+              aria-label={`Go to slide ${idx}`}
+              aria-current={idx === 1 ? "page" : undefined}
+            >
+              {idx}
+            </a>
+          );
+        })}
       </div>
     </>
   )

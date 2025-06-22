@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
 import logoCRT from "@assets/logos-crteam/CRT BLANCO.png"; // Importa la imagen
 import { getNotionPages } from "@utils/notion";
 const newsCount = await getNotionPages();
@@ -63,7 +64,9 @@ const nabItem = [
       />
     </a>
   </div>
-  <div class="flex-none">
+
+  <!-- Menu Desktop -->
+  <div class="flex-none hidden lg:block">
     <div role="tablist" class="tabs tabs-border py-2" id="navbar-tabs">
       {
         nabItem.map((item) => {
@@ -93,6 +96,62 @@ const nabItem = [
         })
       }
     </div>
+  </div>
+
+  <!-- Menu Mobile -->
+  <div class="flex-none lg:hidden pe-4">
+    <button class="btn btn-square btn-ghost btn-xl" id="mobile-menu-toggle">
+      <Icon name="mdi:menu" class="w-10 h-10" />
+    </button>
+  </div>
+</div>
+
+<!-- Mobile Menu Drawer -->
+<div id="mobile-menu" class="fixed inset-0 z-[60] lg:hidden hidden">
+  <div class="fixed inset-0 bg-black bg-opacity-50" id="mobile-menu-overlay">
+  </div>
+  <div
+    class="fixed top-0 right-0 h-full w-80 bg-base-100 shadow-xl transform translate-x-full transition-transform duration-300 z-[70]"
+    id="mobile-menu-drawer"
+  >
+    <div class="flex justify-between items-center p-4 border-b border-base-300">
+      <h2 class="text-xl font-semibold text-base-content">Menú</h2>
+      <button class="btn btn-square btn-ghost btn-xl" id="mobile-menu-close">
+        <Icon name="mdi:close" class="w-10 h-10" />
+      </button>
+    </div>
+    <nav class="p-4">
+      <ul class="space-y-2">
+        {
+          nabItem.map((item) => {
+            const isAnchor = item.href.startsWith("#");
+            const isActive = !isAnchor && currentPath === item.href;
+            return (
+              <li>
+                <a
+                  class={`block px-4 py-3 rounded-lg transition-colors hover:bg-base-300 ${
+                    isActive ? "bg-primary text-primary-content" : ""
+                  }`}
+                  href={item.href}
+                  {...(isAnchor
+                    ? { "data-anchor": item.href.replace("#", "") }
+                    : {})}
+                >
+                  <div class="flex items-center justify-between">
+                    <span class="text-lg">{item.name}</span>
+                    {item.span && (
+                      <span class="badge badge-lg badge-ghost">
+                        {item.span}
+                      </span>
+                    )}
+                  </div>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
   </div>
 </div>
 
@@ -146,38 +205,86 @@ const nabItem = [
       });
     };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // Encuentra la sección más cercana a la parte superior visible
-        let activeId = null;
-        let minTop = window.innerHeight;
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const rect = entry.target.getBoundingClientRect();
-            if (rect.top >= 0 && rect.top < minTop) {
-              minTop = rect.top;
-              activeId = entry.target.id;
-            }
-          }
-        });
-        if (activeId) activateTab(activeId);
-      },
-      {
-        root: null,
-        rootMargin: "-30% 0px -60% 0px", // Ajusta para activar antes/después
-        threshold: [0.1, 0.3, 0.5, 0.7, 1.0],
-      }
-    );
+    const findActiveSection = () => {
+      let activeId = null;
+      const navbarHeight = navbar.offsetHeight;
+      const scrollPos = window.scrollY + navbarHeight + 100;
 
-    sections.forEach((section) => observer.observe(section));
+      for (let i = 0; i < sections.length; i++) {
+        const section = sections[i];
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + section.offsetHeight;
+
+        if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
+          activeId = section.id;
+          break;
+        }
+      }
+
+      // Si no encontramos ninguna sección, usar la primera si estamos cerca del top
+      if (!activeId && window.scrollY < sections[0].offsetTop + 200) {
+        activeId = sections[0].id;
+      }
+
+      return activeId;
+    };
+
+    const updateActiveTab = () => {
+      const activeId = findActiveSection();
+      if (activeId) activateTab(activeId);
+    };
+
+    // Actualizar en scroll
+    window.addEventListener("scroll", updateActiveTab);
+
+    // Activar tab inicial
+    updateActiveTab();
 
     // Activar tab correcta al hacer clic en el tab (ancla)
     anchorTabs.forEach((tab) => {
       tab.addEventListener("click", function (e) {
         const id = tab.getAttribute("data-anchor");
         if (id) {
-          setTimeout(() => activateTab(id), 100);
+          setTimeout(() => activateTab(id), 300);
         }
+      });
+    });
+
+    // Recalcular al redimensionar la ventana
+    window.addEventListener("resize", updateActiveTab);
+  });
+
+  // Mobile menu functionality
+  document.addEventListener("DOMContentLoaded", function () {
+    const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const mobileMenuDrawer = document.getElementById("mobile-menu-drawer");
+    const mobileMenuClose = document.getElementById("mobile-menu-close");
+    const mobileMenuOverlay = document.getElementById("mobile-menu-overlay");
+
+    const openMobileMenu = () => {
+      mobileMenu.classList.remove("hidden");
+      setTimeout(() => {
+        mobileMenuDrawer.classList.remove("translate-x-full");
+      }, 10);
+    };
+
+    const closeMobileMenu = () => {
+      mobileMenuDrawer.classList.add("translate-x-full");
+      setTimeout(() => {
+        mobileMenu.classList.add("hidden");
+      }, 300);
+    };
+
+    mobileMenuToggle.addEventListener("click", openMobileMenu);
+    mobileMenuClose.addEventListener("click", closeMobileMenu);
+    mobileMenuOverlay.addEventListener("click", closeMobileMenu);
+
+    // Close mobile menu on navigation
+    const mobileNavLinks = mobileMenu.querySelectorAll("a");
+    mobileNavLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        setTimeout(closeMobileMenu, 100);
       });
     });
   });
