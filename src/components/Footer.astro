@@ -85,55 +85,16 @@ const socials = [
     <fieldset class="w-full max-w-xs">
       <div class="flex flex-row gap-2 join">
         <input
-          id="contact-email"
+          id="email"
           type="email"
-          placeholder="tu@email.com"
+          placeholder="username@site.com"
           class="input join-item bg-neutral-700 border-neutral-600 text-center text-white placeholder-gray-400 w-full"
-          required
         />
         <button
-          type="submit"
           class="btn join-item bg-yellow-500 hover:bg-yellow-600 text-black border-none font-semibold"
           >Contactar</button
         >
       </div>
     </fieldset>
   </form>
-
-  <script is:inline>
-    document.addEventListener("DOMContentLoaded", function () {
-      const contactForm = document.getElementById("contact-form");
-      const emailInput = document.getElementById("contact-email");
-
-      contactForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const userEmail = emailInput.value.trim();
-        if (!userEmail) {
-          alert("Por favor, introduce tu email");
-          return;
-        }
-
-        // Email del equipo (cambiar por el email real del equipo)
-        const teamEmail = "info@canariasracingteam.com";
-        const subject = "Contacto desde la web - Canarias Racing Team";
-        const body = `Hola,
-
-Me gustaría contactar con el equipo Canarias Racing Team.
-
-Mi email de contacto es: ${userEmail}
-
-Un saludo.`;
-
-        // Crear el enlace mailto
-        const mailtoLink = `mailto:${teamEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-        // Abrir el cliente de correo
-        window.location.href = mailtoLink;
-
-        // Limpiar el formulario
-        emailInput.value = "";
-      });
-    });
-  </script>
 </footer>

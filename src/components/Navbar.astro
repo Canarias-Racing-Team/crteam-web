@@ -22,7 +22,7 @@ const navItem = [
   class="navbar bg-transparent transition-colors duration-300 fixed top-0 left-0 w-full z-50 mx-auto px-4 md:px-8 lg:px-16 xl:px-24 2xl:px-32"
 >
   <!-- Transparente por defecto y si hay scroll opaco -->
-  <script is:inline>
+  <script type="text/javascript" is:inline>
     document.addEventListener("DOMContentLoaded", function () {
       const navbar = document.getElementById("navbar");
       function handleScroll() {
@@ -151,95 +151,109 @@ const navItem = [
 </div>
 
 <script is:inline>
+  // Activar tab de ancla según la sección visible
   document.addEventListener("DOMContentLoaded", function () {
-    // Navbar scroll effect
     const navbar = document.getElementById("navbar");
-    function handleScroll() {
-      if (window.scrollY > 10) {
-        navbar.classList.remove("bg-transparent");
-        navbar.classList.add(
-          "bg-base-100",
-          "bg-opacity-90",
-          "backdrop-blur",
-          "navbar-gradient"
-        );
-      } else {
-        navbar.classList.add("bg-transparent");
-        navbar.classList.remove(
-          "bg-base-100",
-          "bg-opacity-90",
-          "backdrop-blur",
-          "navbar-gradient"
-        );
-      }
-    }
-    window.addEventListener("scroll", handleScroll);
-
-    // Active section tracking
     const anchorTabs = document.querySelectorAll("[data-anchor]");
-    if (anchorTabs.length > 0) {
-      let manualClick = false;
+    if (anchorTabs.length === 0) return;
 
-      const updateActiveTab = () => {
-        // Skip update if manual click is active
-        if (manualClick) return;
+    const anchors = Array.from(anchorTabs).map((tab) =>
+      tab.getAttribute("data-anchor")
+    );
+    const sections = anchors
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
 
-        const scrollPos = window.scrollY + 400;
-        let activeId = null;
+    if (sections.length === 0) return;
 
-        // Check if we're at the bottom of the page
-        if (
-          window.scrollY + window.innerHeight >=
-          document.documentElement.scrollHeight - 50
-        ) {
-          // Activate the last section (contact)
-          activeId = "contact";
-        } else {
-          // Find active section
-          anchorTabs.forEach((tab) => {
-            const id = tab.getAttribute("data-anchor");
-            const section = document.getElementById(id);
-            if (section && scrollPos >= section.offsetTop) {
-              activeId = id;
+    const findActiveSection = () => {
+      const scrollPos = window.scrollY + 500; // Offset reducido para activar antes
+
+      // Si llegamos al final, activar contact
+      if (
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight - 50
+      ) {
+        return "contact";
+      }
+
+      // Buscar sección activa
+      for (let i = sections.length - 1; i >= 0; i--) {
+        if (scrollPos >= sections[i].offsetTop) {
+          const sectionId = sections[i].id;
+
+          // Si es partners, añadir un buffer pequeño para que tarde un poco más en cambiar
+          if (sectionId === "partners") {
+            const nextSection = sections[i + 1];
+
+            // Solo añadir buffer si hay una sección siguiente y no hemos avanzado mucho
+            if (nextSection && scrollPos < nextSection.offsetTop + 150) {
+              return sectionId;
             }
-          });
+          }
+
+          return sectionId;
         }
+      }
 
-        // Update active tab
-        anchorTabs.forEach((tab) => {
-          const tabId = tab.getAttribute("data-anchor");
-          tab.classList.toggle("tab-active", tabId === activeId);
-        });
-      };
+      return null;
+    };
 
-      // Handle manual clicks on tabs
+    const updateActiveTab = () => {
+      const activeId = findActiveSection();
+
       anchorTabs.forEach((tab) => {
-        tab.addEventListener("click", function () {
-          manualClick = true;
-          const id = tab.getAttribute("data-anchor");
-
-          // Immediately activate the clicked tab
-          anchorTabs.forEach((t) => {
-            t.classList.toggle(
-              "tab-active",
-              t.getAttribute("data-anchor") === id
-            );
-          });
-
-          // Reset manual click flag after scroll animation completes
-          setTimeout(() => {
-            manualClick = false;
-            // Force update after manual click to ensure correct state
-            updateActiveTab();
-          }, 2000);
-        });
+        const tabId = tab.getAttribute("data-anchor");
+        if (tabId === activeId) {
+          tab.classList.add("tab-active");
+        } else {
+          tab.classList.remove("tab-active");
+        }
       });
+    };
 
-      window.addEventListener("scroll", updateActiveTab);
-      updateActiveTab();
-    }
+    // Escuchar scroll con throttling suave
+    let scrollTimeout;
+    let isScrolling = false;
 
-    // Mobile menu
+    window.addEventListener("scroll", () => {
+      if (!isScrolling) {
+        isScrolling = true;
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          updateActiveTab();
+          isScrolling = false;
+        }, 100); // Reducir delay
+      }
+    });
+
+    // Activar inicial
+    updateActiveTab();
+
+    // Click en tabs
+    anchorTabs.forEach((tab) => {
+      tab.addEventListener("click", function () {
+        const id = tab.getAttribute("data-anchor");
+        if (id) {
+          setTimeout(() => {
+            anchorTabs.forEach((t) => {
+              if (t.getAttribute("data-anchor") === id) {
+                t.classList.add("tab-active");
+              } else {
+                t.classList.remove("tab-active");
+              }
+            });
+          }, 200);
+        }
+      });
+    });
+
+    // Resize
+    window.addEventListener("resize", updateActiveTab);
+  });
+
+  // Mobile menu functionality
+  document.addEventListener("DOMContentLoaded", function () {
     const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
     const mobileMenu = document.getElementById("mobile-menu");
     const mobileMenuDrawer = document.getElementById("mobile-menu-drawer");
@@ -248,15 +262,16 @@ const navItem = [
 
     const openMobileMenu = () => {
       mobileMenu.classList.remove("hidden");
-      setTimeout(
-        () => mobileMenuDrawer.classList.remove("translate-x-full"),
-        10
-      );
+      setTimeout(() => {
+        mobileMenuDrawer.classList.remove("translate-x-full");
+      }, 10);
     };
 
     const closeMobileMenu = () => {
       mobileMenuDrawer.classList.add("translate-x-full");
-      setTimeout(() => mobileMenu.classList.add("hidden"), 300);
+      setTimeout(() => {
+        mobileMenu.classList.add("hidden");
+      }, 300);
     };
 
     mobileMenuToggle.addEventListener("click", openMobileMenu);
@@ -264,8 +279,11 @@ const navItem = [
     mobileMenuOverlay.addEventListener("click", closeMobileMenu);
 
     // Close mobile menu on navigation
-    mobileMenu.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => setTimeout(closeMobileMenu, 100));
+    const mobileNavLinks = mobileMenu.querySelectorAll("a");
+    mobileNavLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        setTimeout(closeMobileMenu, 100);
+      });
     });
   });
 </script>

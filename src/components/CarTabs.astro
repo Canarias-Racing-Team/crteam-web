@@ -3,14 +3,13 @@ import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import type { CarComponentType } from "@/types";
 
-const { carComponents = [], id } = Astro.props;
+const { carComponents = [], id, className } = Astro.props;
 ---
 
 <div
   id={id}
-  class="tabs tabs-border tabs-xl"
+  class={`tabs tabs-border tabs-xl ${className || ""}`}
   role="tablist"
-  aria-label="Car Components Tabs"
 >
   {
     carComponents.map((component: CarComponentType, index: number) => {
@@ -18,29 +17,25 @@ const { carComponents = [], id } = Astro.props;
 
       return (
         <>
-          <label class="tab gap-2 cursor-pointer" for={tabId}>
+          <label class="tab gap-2 sm:py-0 cursor-pointer" for={tabId}>
             <input
               type="radio"
               name={`car_components_tabs_${id}`}
-              aria-label={component.name}
               id={tabId}
               checked={index === 0}
               role="tab"
             />
             {component.icon && <Icon name={`mdi:${component.icon}`} />}
-            {component.name}
+            <span class="hidden sm:inline">{component.name}</span>
           </label>
-          <div
-            class="tab-content bg-transparent border-none p-0"
-            aria-labelledby={tabId}
-          >
-            <div class="card card-xl lg:card-side bg-base-300 shadow-sm w-full mx-auto">
-              <figure class="w-full lg:w-2/4 flex justify-center items-center">
+          <div class="tab-content bg-transparent border-none p-0">
+            <div class="card card-xl lg:card-side bg-base-300 shadow-xl">
+              <figure class="w-full lg:w-2/4">
                 <Image
                   src={component.src}
                   alt={component.name}
-                  class="object-cover rounded-xl w-full h-48 lg:h-64"
-                  inferSize={true}
+                  class="object-cover w-full h-48 lg:h-85"
+                  inferSize
                   loading="lazy"
                 />
               </figure>
