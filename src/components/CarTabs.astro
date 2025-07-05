@@ -3,62 +3,55 @@ import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import type { CarComponentType } from "@/types";
 
-// Define the type for a car component
-type CarComponent = {
-  name: string;
-  icon?: string;
-  src: string;
-  brief: string;
-};
-
 const { carComponents = [], id } = Astro.props;
 ---
 
 <div
   id={id}
-  class="tabs tabs-border tabs-xl w-full h-full"
+  class="tabs tabs-border tabs-xl"
   role="tablist"
   aria-label="Car Components Tabs"
 >
   {
-    carComponents.map((component: CarComponentType, index: number) => (
-      <>
-        <label
-          class="tab gap-2 cursor-pointer"
-          for={`tab-${component.name.toLowerCase().replace(/\s+/g, "-")}`}
-        >
-          <input
-            type="radio"
-            name="car_components_tabs"
-            aria-label={component.name}
-            id={`tab-${component.name.toLowerCase().replace(/\s+/g, "-")}`}
-            checked={index === 0}
-            role="tab"
-          />
-          {component.icon && <Icon name={`mdi:${component.icon}`} />}
-          {component.name}
-        </label>
-        <div
-          class="tab-content bg-transparent border-none p-0"
-          aria-labelledby={`tab-${component.name.toLowerCase().replace(/\s+/g, "-")}`}
-        >
-          <div class="card card-xl lg:card-side bg-base-300 shadow-sm w-full mx-auto">
-            <figure class="w-full lg:w-2/4 flex justify-center items-center">
-              <Image
-                src={component.src}
-                alt={component.name}
-                class="object-cover rounded-xl w-full h-48 lg:h-64"
-                inferSize={true}
-                loading="lazy"
-              />
-            </figure>
-            <div class="card-body">
-              <h2 class="card-title">{component.name}</h2>
-              <p>{component.brief}</p>
+    carComponents.map((component: CarComponentType, index: number) => {
+      const tabId = `tab-${component.name.toLowerCase().replace(/\s+/g, "-")}`;
+
+      return (
+        <>
+          <label class="tab gap-2 cursor-pointer" for={tabId}>
+            <input
+              type="radio"
+              name={`car_components_tabs_${id}`}
+              aria-label={component.name}
+              id={tabId}
+              checked={index === 0}
+              role="tab"
+            />
+            {component.icon && <Icon name={`mdi:${component.icon}`} />}
+            {component.name}
+          </label>
+          <div
+            class="tab-content bg-transparent border-none p-0"
+            aria-labelledby={tabId}
+          >
+            <div class="card card-xl lg:card-side bg-base-300 shadow-sm w-full mx-auto">
+              <figure class="w-full lg:w-2/4 flex justify-center items-center">
+                <Image
+                  src={component.src}
+                  alt={component.name}
+                  class="object-cover rounded-xl w-full h-48 lg:h-64"
+                  inferSize={true}
+                  loading="lazy"
+                />
+              </figure>
+              <div class="card-body">
+                <h2 class="card-title">{component.name}</h2>
+                <p>{component.brief}</p>
+              </div>
             </div>
           </div>
-        </div>
-      </>
-    ))
+        </>
+      );
+    })
   }
 </div>
