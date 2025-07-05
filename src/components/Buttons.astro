@@ -1,0 +1,32 @@
+---
+import { Icon } from "astro-icon/components";
+
+const {
+  buttons,
+  buttonClass = "btn btn-primary md:btn-lg",
+  className = "",
+  vertical = false,
+} = Astro.props;
+
+const buttonList = Array.isArray(buttons) ? buttons : [buttons];
+---
+
+{
+  buttons && (
+    <div id={Astro.self.name}
+      class={`flex gap-2 flex-col ${vertical ? "md:flex-col" : "md:flex-row"} ${className}`}
+    >
+      {buttonList.map(({ text, href, icon }, index) => (
+        <a
+          href={href}
+          class={buttonClass}
+          id={`button-${index}`}
+          aria-label={text}
+        >
+          {icon && <Icon name={icon} class="h-5 w-5 mr-2" />}
+          {text}
+        </a>
+      ))}
+    </div>
+  )
+}

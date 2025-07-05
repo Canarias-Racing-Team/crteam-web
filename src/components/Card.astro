@@ -1,10 +1,11 @@
 ---
 import { Icon } from "astro-icon/components";
+import Buttons from "./Buttons.astro";
+
 const {
   title,
   subtitle,
   buttons,
-  buttonClass = "btn btn-primary",
   className = "",
   paragraphs = [],
   buttonsVertical = false,
@@ -34,28 +35,10 @@ const {
         ))
     }
     <slot />
-    {
-      buttons && Array.isArray(buttons) && (
-        <div
-          class={`justify-end card-actions mt-4${buttonsVertical ? " self-end w-fit" : ""}`}
-        >
-          {buttons.map(
-            ({ text, href, icon }, index: number) =>
-              text &&
-              href && (
-                <a
-                  href={href}
-                  class={buttonClass}
-                  id={`button-${index}`}
-                  aria-label={text}
-                >
-                  {icon && <Icon name={icon} class="h-5 w-5 mr-2" />}
-                  {text}
-                </a>
-              )
-          )}
-        </div>
-      )
-    }
+    <Buttons
+      buttons={buttons}
+      className={`card-actions self-end mt-4`}
+      vertical={buttonsVertical}
+    />
   </div>
 </div>
