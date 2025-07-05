@@ -6,24 +6,26 @@ const {
     { title: "Colores", value: "3", color: "secondary" },
     { title: "Coche", value: "1", color: "primary" },
   ],
-  className = "",
+  className,
 }: { stats?: StatType[]; className?: string } = Astro.props;
 ---
 
-<div
-  class={`stats stats-horizontal bg-base-300 shadow-sm p-4 ${className || ""}`}
->
-  {
-    stats.map((stat) => (
-      <div class="stat place-items-center px-0 w-1/3" id={stat.title}>
-        <div class="stat-title text-xl mx-2">{stat.title}</div>
-        <div
-          class={`stat-value ${stat.color ? `text-${stat.color}` : "text-base-content"}`}
-        >
-          {stat.value}
+<div class={`card bg-base-300 ${className || ""}`}>
+  <div class="card-body flex flex-row justify-evenly items-center h-full">
+    {
+      stats.map((stat) => (
+        <div class="flex-1 flex flex-col items-center justify-center text-center">
+          <div class="text-xl font-medium text-base-content">{stat.title}</div>
+          <div
+            class={`text-4xl font-bold ${stat.color ? `text-${stat.color}` : "text-base-content"}`}
+          >
+            {stat.value}
+          </div>
+          {stat.desc && (
+            <div class="text-sm text-base-content/70">{stat.desc}</div>
+          )}
         </div>
-        {stat.desc && <div class="stat-desc text-xl">{stat.desc}</div>}
-      </div>
-    ))
-  }
+      ))
+    }
+  </div>
 </div>

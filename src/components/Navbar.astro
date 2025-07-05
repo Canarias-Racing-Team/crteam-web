@@ -8,14 +8,11 @@ const newsCountSpan =
   newsCount.length > 99 ? "99+" : newsCount.length.toString();
 
 const currentPath = new URL(Astro.request.url).pathname;
-const nabItem = [
+const navItem = [
   { name: "El Equipo", href: "/#team" },
   { name: "El Coche", href: "/#car" },
   { name: "Noticias", href: "/news", span: newsCountSpan },
-  // { name: "La Competición", href: "#competition" },
   { name: "Patrocinadores", href: "/#partners" },
-  // { name: "Únete", href: "#join" },
-  // { name: "Sobre nosotros", href: "/about" },
   { name: "Contacto", href: "/#contact" },
 ];
 ---
@@ -69,23 +66,21 @@ const nabItem = [
   <div class="flex-none hidden lg:block">
     <div role="tablist" class="tabs tabs-border py-2" id="navbar-tabs">
       {
-        nabItem.map((item) => {
-          const isAnchor = item.href.startsWith("#");
+        navItem.map((item) => {
+          const isAnchor = item.href.includes("#");
           const isActive = !isAnchor && currentPath === item.href;
           return (
             <a
               role="tab"
-              class={`text-lg tab${isActive ? " tab-active" : ""}`}
+              class={`text-lg tab ${isActive ? "tab-active" : ""}`}
               href={item.href}
-              {...(isAnchor
-                ? { "data-anchor": item.href.replace("#", "") }
-                : {})}
+              {...(isAnchor ? { "data-anchor": item.href.split("#")[1] } : {})}
             >
               {item.name}
               {item.span && (
                 <span
-                  class={`indicator-item badge ml-2 badge-${
-                    isActive ? "primary" : "ghost"
+                  class={`indicator-item badge ml-2 ${
+                    isActive ? "badge-primary" : "badge-outline badge-ghost"
                   }`}
                 >
                   {item.span}
@@ -123,8 +118,8 @@ const nabItem = [
     <nav class="p-4">
       <ul class="space-y-2">
         {
-          nabItem.map((item) => {
-            const isAnchor = item.href.startsWith("#");
+          navItem.map((item) => {
+            const isAnchor = item.href.includes("#");
             const isActive = !isAnchor && currentPath === item.href;
             return (
               <li>
@@ -134,13 +129,13 @@ const nabItem = [
                   }`}
                   href={item.href}
                   {...(isAnchor
-                    ? { "data-anchor": item.href.replace("#", "") }
+                    ? { "data-anchor": item.href.split("#")[1] }
                     : {})}
                 >
                   <div class="flex items-center justify-between">
                     <span class="text-lg">{item.name}</span>
                     {item.span && (
-                      <span class="badge badge-lg badge-ghost">
+                      <span class="badge badge-lg badge-outline">
                         {item.span}
                       </span>
                     )}
@@ -156,33 +151,9 @@ const nabItem = [
 </div>
 
 <script is:inline>
-  document.addEventListener("DOMContentLoaded", function () {
-    const navbar = document.getElementById("navbar");
-    function handleScroll() {
-      if (window.scrollY > 10) {
-        navbar.classList.remove("bg-transparent");
-        navbar.classList.add(
-          "bg-base-100",
-          "bg-opacity-90",
-          "backdrop-blur",
-          "navbar-gradient"
-        );
-      } else {
-        navbar.classList.add("bg-transparent");
-        navbar.classList.remove(
-          "bg-base-100",
-          "bg-opacity-90",
-          "backdrop-blur",
-          "navbar-gradient"
-        );
-      }
-    }
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-  });
-
   // Activar tab de ancla según la sección visible
   document.addEventListener("DOMContentLoaded", function () {
+    const navbar = document.getElementById("navbar");
     const anchorTabs = document.querySelectorAll("[data-anchor]");
     if (anchorTabs.length === 0) return;
 
@@ -208,37 +179,46 @@ const nabItem = [
     const findActiveSection = () => {
       let activeId = null;
       const navbarHeight = navbar.offsetHeight;
-      const scrollPos = window.scrollY + navbarHeight + 100;
+      const scrollPos = window.scrollY + navbarHeight + 50;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
 
-      for (let i = 0; i < sections.length; i++) {
-        const section = sections[i];
-        const sectionTop = section.offsetTop;
-        const sectionBottom = sectionTop + section.offsetHeight;
+      // Si estamos cerca del final de la página, activar la última sección
+      if (window.scrollY + windowHeight >= documentHeight - 100) {
+        activeId = sections[sections.length - 1]?.id;
+        console.log(`Cerca del final de la página, activando: ${activeId}`); // Debug
+      } else {
+        // Buscar la sección que está más visible en el viewport
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const section = sections[i];
+          const sectionTop = section.offsetTop;
 
-        if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
-          activeId = section.id;
-          break;
+          if (scrollPos >= sectionTop) {
+            activeId = section.id;
+            break;
+          }
         }
       }
 
-      // Si no encontramos ninguna sección, usar la primera si estamos cerca del top
-      if (!activeId && window.scrollY < sections[0].offsetTop + 200) {
-        activeId = sections[0].id;
-      }
+      // NO activar automáticamente la primera sección cerca del top
+      // Solo activar cuando realmente estemos en una sección específica
 
       return activeId;
     };
 
     const updateActiveTab = () => {
       const activeId = findActiveSection();
-      if (activeId) activateTab(activeId);
+      if (activeId) {
+        console.log(`Activando tab para sección: ${activeId}`); // Debug
+        activateTab(activeId);
+      }
     };
 
     // Actualizar en scroll
     window.addEventListener("scroll", updateActiveTab);
 
-    // Activar tab inicial
-    updateActiveTab();
+    // NO activar tab inicial - empezar sin ninguna sección activa
+    // updateActiveTab();
 
     // Activar tab correcta al hacer clic en el tab (ancla)
     anchorTabs.forEach((tab) => {

@@ -2,7 +2,13 @@
 import { Image } from "astro:assets";
 import type { ImageEntry } from "@types";
 
-const { items, size = 24, className } = Astro.props;
+const {
+  items,
+  size = 24,
+  className,
+  singleLine = false,
+  itemsPerRow,
+} = Astro.props;
 
 const resolvedItems = await Promise.all(
   items.map(async (item: ImageEntry) => ({
@@ -10,21 +16,28 @@ const resolvedItems = await Promise.all(
     src: await item.src(),
   }))
 );
+
+// Calcular el ancho de cada item - siempre 5 por línea
+const getItemWidth = () => {
+  return "w-[18%]"; // 5 items = ~20% cada uno, menos un poco para gap
+};
+
+// Calcular el estilo del contenedor
+const getContainerClass = () => {
+  return "flex flex-wrap gap-2 w-full items-center";
+};
 ---
 
-<div
-  id={Astro.self.name}
-  class={`flex flex-wrap flex-row overflow-x-auto w-full items-center gap-4 ${className}`}
->
+<div id={Astro.self.name} class={`${getContainerClass()} ${className || ""}`}>
   {
     resolvedItems.map((item) => (
-      <div class={`w-${size} flex justify-center items-center`}>
+      <div class={`${getItemWidth()} flex items-center`}>
         <Image
           src={item.src}
           alt={item.alt}
           inferSize={true}
           loading="lazy"
-          class="filter grayscale invert"
+          class="filter grayscale invert w-full h-auto object-contain"
         />
       </div>
     ))

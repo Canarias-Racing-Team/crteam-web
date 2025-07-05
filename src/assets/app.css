@@ -2,9 +2,12 @@
 
 [data-theme="forest"] {
   --color-base-100: #000000;
+  --color-base-100-rgb: 0, 0, 0;
   --color-base-300: #1e1e1e;
-  --color-primary: #FFD100;
-  --color-secondary: #0057B8;
+  --color-base-300-rgb: 30, 30, 30;
+  --color-primary: #ffcb03;
+  --color-secondary: #0468a9;
+  --color-base-content: #ffffff;
 }
 
 .divider {

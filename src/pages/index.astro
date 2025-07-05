@@ -15,12 +15,21 @@ type Partner = {
   featured?: boolean;
   [key: string]: any;
 };
+
+// Partners
 let partners: Partner[] = [];
 try {
   partners = await loadImageEntries("logos-partners-2425");
 } catch (error) {
   console.error("Error loading partners data:", error);
 }
+const featuredPartners = partners.filter(
+  (partner) => partner.featured === true
+);
+partners = [
+  ...featuredPartners,
+  ...partners.filter((partner) => partner.featured !== true),
+];
 
 import imagesExample from "@assets/imagesExample.json";
 
@@ -33,90 +42,76 @@ import carComponents from "@assets/carComponents.json";
 
   <FlagDivider />
 
-  <Section id="partners-principal" className="container mx-auto px-4 mt-15">
-    <div class="flex w-full flex-col lg:flex-row">
-      <Gallery
-        items={partners.filter((partner) => partner.featured === true)}
-        size={60}
-        alt="Logos de socios destacados"
-        className="w-full lg:w-3/4 justify-evenly"
-      />
-      <div class="divider lg:divider-horizontal"></div>
-      <!-- <div class="w-full lg:w-1/4 flex flex-col justify-center items-center"> -->
-        <Stats className="w-full lg:w-1/4 flex justify-evenly items-center h-max self-center" />
-      <!-- </div> -->
+  <Section id="partners-principal" className="min-h-[200px]">
+    <Gallery
+      items={featuredPartners}
+      alt="Logos de socios destacados"
+      className="w-full lg:w-3/4 justify-between"
+    />
+    <div class="divider lg:divider-horizontal"></div>
+    <Stats className="w-full lg:w-1/4" />
+  </Section>
+
+  <Section id="team">
+    <Card
+      title="Canarias Racing Team"
+      subtitle="El primer equipo de Fórmula Student de Canarias"
+      className="w-full lg:w-2/3 bg-base-300 card-xl shadow-sm"
+      buttons={[
+        {
+          text: "Únete",
+          href: "#contact",
+        },
+      ]}
+      paragraphs={[
+        "Canarias Racing Team es el equipo automovilístico de la Universidad de La Laguna. Desafiando fronteras hemos conseguido ser los primeros en representar a las ocho islas canarias en la FS, la máxima competición estudiantil dentro del mundo del motor. Lo hemos logrado con un monoplaza eléctrico capaz de sortear cualquier distancia, incluida la que nos separa de la península ibérica.",
+        "La resiliencia y el coraje son rasgos propios de nuestra formación, sin miedo a los obstáculos de la geografía. Un equipo absolutamente interdisciplinar, cuyo corazón es la ingeniería, pero con la comunicación y las finanzas como arterias. Soñamos con que la innovación automovilística canaria consiga acelerar el futuro y el corremos hacia el éxito inspirados por la pasión y la determinación. Crecemos gracias a aquellos que nos hacen grandes: todos los que creen que lo pequeño puede llegar a ser gigante.",
+      ]}
+    />
+    <div class="divider lg:divider-horizontal"></div>
+    <div class="w-full lg:w-1/3 flex flex-col justify-center items-center">
+      <Carousel items={imagesExample} id="team-carousel" />
     </div>
   </Section>
 
-  <Section id="team" className="container mx-auto px-4 mt-15 lg:mt-0">
-    <div class="flex w-full flex-col lg:flex-row">
-      <Card
-        title="Canarias Racing Team"
-        subtitle="El primer equipo de Fórmula Student de Canarias"
-        className="w-full lg:w-2/3 bg-base-300 card-xl shadow-sm"
-        buttons={[
-          {
-            text: "Únete",
-            href: "#contact",
-          },
-        ]}
-        paragraphs={[
-          "Canarias Racing Team es el equipo automovilístico de la Universidad de La Laguna. Desafiando fronteras hemos conseguido ser los primeros en representar a las ocho islas canarias en la FS, la máxima competición estudiantil dentro del mundo del motor. Lo hemos logrado con un monoplaza eléctrico capaz de sortear cualquier distancia, incluida la que nos separa de la península ibérica.",
-          "La resiliencia y el coraje son rasgos propios de nuestra formación, sin miedo a los obstáculos de la geografía. Un equipo absolutamente interdisciplinar, cuyo corazón es la ingeniería, pero con la comunicación y las finanzas como arterias. Soñamos con que la innovación automovilística canaria consiga acelerar el futuro y el corremos hacia el éxito inspirados por la pasión y la determinación. Crecemos gracias a aquellos que nos hacen grandes: todos los que creen que lo pequeño puede llegar a ser gigante.",
-        ]}
-      />
-      <div class="divider lg:divider-horizontal"></div>
-      <div class="w-full lg:w-1/3 flex flex-col justify-center items-center">
-        <Carousel items={imagesExample} id="team-carousel" />
-      </div>
+  <Section id="car">
+    <Card
+      title="El Coche"
+      subtitle="Un coche único, para unas islas únicas."
+      className="w-full lg:w-1/3 bg-base-300 card-xl shadow-sm"
+      paragraphs={[
+        "Nuestro coche es el resultado de meses de trabajo duro y dedicación. Con un diseño innovador y tecnología de vanguardia, estamos listos para competir en la Fórmula Student.",
+      ]}
+    />
+    <div class="divider lg:divider-horizontal"></div>
+    <div class="w-full lg:w-2/3">
+      <CarTabs carComponents={carComponents} id="car-components" />
     </div>
   </Section>
 
-  <Section id="car" className="container mx-auto px-4 mt-15">
-    <div class="flex w-full flex-col lg:flex-row">
-      <Card
-        title="El Coche"
-        subtitle="Un coche único, para unas islas únicas."
-        className="w-full lg:w-1/3 bg-base-300 card-xl shadow-sm"
-        paragraphs={[
-          "Nuestro coche es el resultado de meses de trabajo duro y dedicación. Con un diseño innovador y tecnología de vanguardia, estamos listos para competir en la Fórmula Student.",
-        ]}
-      />
-      <div class="divider lg:divider-horizontal"></div>
-      <div class="w-full lg:w-2/3 flex flex-col items-center justify-center">
-        <CarTabs carComponents={carComponents} id="car-components" />
-      </div>
-    </div>
-  </Section>
-
-  <Section id="partners" className="container mx-auto px-4 mt-15">
-    <div class="flex w-full flex-col lg:flex-row">
-      <div class="w-full lg:w-2/3 flex flex-col justify-center items-center">
-        <Gallery items={partners} size={40} alt="Logos de todos los socios" />
-      </div>
-      <div class="divider lg:divider-horizontal"></div>
-      <Card
-        className="w-full lg:w-1/3 bg-base-300 card-xl shadow-sm"
-        title="¡Hazte parte del equipo!"
-        subtitle="Apóyanos y forma parte de Canarias Racing Team"
-        paragraphs={[
-          "Tu apoyo es fundamental para que podamos seguir adelante. Si quieres unirte a nosotros como patrocinador o simplemente apoyarnos, aquí tienes algunas formas de hacerlo.",
-          "Puedes contactarnos directamente a través de nuestro correo electrónico o seguirnos en nuestras redes sociales para estar al tanto de nuestras novedades.",
-        ]}
-        buttonsVertical="true"
-        buttons={[
-          {
-            text: "Visita nuestro Patreon",
-            icon: "mdi:patreon",
-            href: "https://www.patreon.com/",
-          },
-          {
-            text: "Contactar para Patrocinio",
-            icon: "mdi:email",
-            href: "mailto:info@canariasracingteam.com",
-          },
-        ]}
-      />
-    </div>
+  <Section id="partners">
+    <Gallery
+      items={partners}
+      alt="Logos de todos los socios"
+      className="w-full lg:w-3/4 justify-center"
+    />
+    <div class="divider lg:divider-horizontal"></div>
+    <Card
+      className="w-full lg:w-1/3 bg-base-300 card-xl shadow-sm"
+      title="¡Hazte parte del equipo!"
+      subtitle="Apóyanos y forma parte de Canarias Racing Team"
+      paragraphs={[
+        "Tu apoyo es fundamental para que podamos seguir adelante. Si quieres unirte a nosotros como patrocinador o simplemente apoyarnos, aquí tienes algunas formas de hacerlo.",
+        "Puedes contactarnos directamente a través de nuestro correo electrónico o seguirnos en nuestras redes sociales para estar al tanto de nuestras novedades.",
+      ]}
+      buttonsVertical="true"
+      buttons={[
+        {
+          text: "Contactar para Patrocinio",
+          icon: "mdi:email",
+          href: "mailto:info@canariasracingteam.com",
+        },
+      ]}
+    />
   </Section>
 </Layout>
