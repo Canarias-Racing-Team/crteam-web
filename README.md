@@ -1,5 +1,6 @@
 # Canarias Racing Team Web
 
+![@tomas2p](https://img.shields.io/badge/Developed_by-Tomas2p-c97a00?style=for-the-badge)
 [![Astro](https://img.shields.io/badge/Built_with-Astro-0f172a?style=for-the-badge&logo=astro&logoColor=white)](https://astro.build)
 [![TailwindCSS](https://img.shields.io/badge/Styled_with-TailwindCSS-06b6d4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![DaisyUI](https://img.shields.io/badge/UI-DaisyUI-5a0fc8?style=for-the-badge&logo=daisyui&logoColor=white)](https://daisyui.com)
@@ -9,7 +10,8 @@
 ---
 
 Sitio web oficial del primer equipo de Fórmula Student de Canarias.  
-Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss.com/), [DaisyUI](https://daisyui.com/).  
+Desarrollado con [Astro](https://astro.build), [TailwindCSS](https://tailwindcss.com/), [DaisyUI](https://daisyui.com/).
+
 **Ahora incluye:** Sección de blog/noticias conectada a Notion como CMS y diseño completamente responsive.
 
 ## 📰 Noticias y Blog
@@ -38,28 +40,41 @@ El sitio web cuenta con un diseño completamente responsive optimizado para:
 │   ├── favicon.svg
 │   └── web-v0.1.mp4
 ├── src/
-│   ├── lib/
-│   │   └── notion.ts
+│   ├── assets/
+│   │   ├── app.css
+│   │   ├── astro.svg
+│   │   ├── background.svg
+│   │   ├── carComponents.json
+│   │   ├── imagesExample.json
+│   │   ├── logos-crteam/
+│   │   └── logos-partners-2425/
 │   ├── components/
-│   │   ├── Avatar.astro
+│   │   ├── Buttons.astro
+│   │   ├── Card.astro
 │   │   ├── Carousel.astro
+│   │   ├── CarTabs.astro
 │   │   ├── FlagDivider.astro
+│   │   ├── Footer.astro
+│   │   ├── Gallery.astro
 │   │   ├── Hero.astro
 │   │   ├── Navbar.astro
-│   │   ├── Card.astro
 │   │   ├── Section.astro
-│   │   ├── Stats.astro
-│   │   └── SectionSample.astro
+│   │   └── Stats.astro
 │   ├── layouts/
 │   │   └── Layout.astro
-│   └── pages/
-│       ├── index.astro
-│       ├── news.astro
-│       ├── about.astro
-│       ├── projects.astro
-│       └── contact.astro
-├── package.json
-└── README.md
+│   ├── pages/
+│   │   ├── index.astro
+│   │   ├── news.astro
+│   │   └── news/
+│   │       └── [slug].astro
+│   ├── utils/
+│   │   ├── imageUtils.ts
+│   │   └── notion.ts
+│   ├── types.ts
+│   ├── astro.config.mjs
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── README.md
 ```
 
 ## 🧑‍💻 Scripts útiles
@@ -78,8 +93,9 @@ El sitio web cuenta con un diseño completamente responsive optimizado para:
 - **Astro**: Framework principal para el desarrollo del sitio.
 - **TailwindCSS**: Utilidad CSS para estilos rápidos y responsivos.
 - **DaisyUI**: Componentes UI sobre Tailwind para desarrollo ágil.
-- **TypeScript**: Tipado estático opcional.
+- **TypeScript**: Tipado estático para mayor robustez del código.
 - **Notion**: CMS para gestionar noticias y posts del blog.
+- **Astro Icons**: Librería de iconos para componentes visuales.
 
 ## 📦 Componentes destacados
 
@@ -87,10 +103,13 @@ El sitio web cuenta con un diseño completamente responsive optimizado para:
 - `Navbar.astro`: Barra de navegación fija con menú hamburguesa para móviles.
 - `FlagDivider.astro`: Separador con los colores de la bandera de Canarias.
 - `Carousel.astro`: Galería horizontal de imágenes/avatares adaptable.
-- `SectionSample.astro`: Componente de post de blog/noticia (imagen, título, descripción, contenido, enlace).
+- `CarTabs.astro`: Componente de pestañas con scroll horizontal para mostrar componentes del coche.
+- `Gallery.astro`: Galería de imágenes responsive.
 - `Card.astro`: Componente de tarjeta flexible y responsive.
 - `Section.astro`: Componente de sección adaptable.
 - `Stats.astro`: Estadísticas visuales optimizadas para todos los dispositivos.
+- `Buttons.astro`: Componente de botones reutilizable.
+- `Footer.astro`: Pie de página con información del equipo.
 
 ## ✅ Lista de tareas
 
@@ -105,8 +124,11 @@ El sitio web cuenta con un diseño completamente responsive optimizado para:
 3. **Estructura de la web**
    - [x] Crear página principal (`index.astro`)
    - [x] Crear página de noticias/blog (`news.astro`)
+   - [x] Crear página dinámica de noticias (`news/[slug].astro`)
    - [ ] Crear páginas adicionales (`about.astro`, `projects.astro`, `contact.astro`)
-   - [x] Crear componentes reutilizables (`Navbar`, `Footer`, `Button`, `FlagDivider`, `Carousel`, `SectionSample`)
+   - [x] Crear componentes reutilizables (`Navbar`, `Footer`, `Buttons`, `FlagDivider`, `Carousel`, `CarTabs`, `Gallery`, `Hero`, `Card`, `Section`, `Stats`)
+   - [x] Crear sistema de tipos TypeScript (`types.ts`)
+   - [x] Crear utilidades (`imageUtils.ts`, `notion.ts`)
 
 4. **Funcionalidad**
    - [x] Agregar formularios de contacto
@@ -115,6 +137,9 @@ El sitio web cuenta con un diseño completamente responsive optimizado para:
    - [x] Integración con Notion para noticias/blog
    - [x] Corrección de errores en navbar y componente stats
    - [x] Optimización del diseño móvil
+   - [x] Componente de pestañas con scroll horizontal (`CarTabs`)
+   - [x] Sistema de assets y recursos organizados
+   - [x] Tipado TypeScript completo
 
 5. **Configurar Notion CMS**
    - [x] Instalar NotionHQ
@@ -146,4 +171,4 @@ El sitio es estático y puede desplegarse en cualquier hosting compatible (Verce
 
 ---
 
-Desarrollado por Canarias Racing Team 🚗💨
+Desarrollado para Canarias Racing Team 🚗💨 por @tomas2p
