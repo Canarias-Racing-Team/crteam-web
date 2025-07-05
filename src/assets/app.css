@@ -10,10 +10,6 @@
   --color-base-content: #ffffff;
 }
 
-.divider {
-  visibility: hidden;
-}
-
 .hero-overlay {
   background-color: color-mix(in oklab, var(--color-base-100)50%, transparent);
 }
@@ -38,7 +34,7 @@
 }
 
 [id] {
-  scroll-margin-top: 5rem;
+  scroll-margin-top: 8rem;
   /* Ajusta según la altura real del navbar */
 }
 
