@@ -15,13 +15,14 @@ const buttonList = Array.isArray(buttons) ? buttons : [buttons];
 
 {
   buttons && (
-    <div id={Astro.self.name}
+    <div
+      id={Astro.self.name}
       class={`flex gap-2 flex-col ${margin} ${vertical ? "md:flex-col" : "md:flex-row"} ${className}`}
     >
       {buttonList.map(({ text, href, icon }, index) => (
         <a
           href={href}
-          class={buttonClass+size}
+          class={buttonClass + size}
           id={`button-${index}`}
           aria-label={text}
         >

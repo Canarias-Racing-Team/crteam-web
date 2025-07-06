@@ -1,22 +1,24 @@
 ---
 import { Image } from "astro:assets";
 import type { ImageEntry } from "@types";
-export const prerender = true;
 
 const {
-  items,
+  items = [],
   size = 24,
   className,
   singleLine = false,
   itemsPerRow,
 } = Astro.props;
 
-const resolvedItems = await Promise.all(
-  items.map(async (item: ImageEntry) => ({
-    alt: item.alt,
-    src: await item.src(),
-  }))
-);
+const resolvedItems =
+  items.length > 0
+    ? await Promise.all(
+        items.map(async (item: ImageEntry) => ({
+          alt: item.alt,
+          src: await item.src(),
+        }))
+      )
+    : [];
 
 // Calcular el ancho de cada item - siempre 5 por línea
 const getItemWidth = () => {

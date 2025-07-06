@@ -8,7 +8,7 @@ import CarTabs from "@components/CarTabs.astro";
 import Card from "@components/Card.astro";
 import Section from "@components/Section.astro";
 import Stats from "@components/Stats.astro";
-import { loadImageEntries } from "@utils/imageUtils";
+import { loadImageEntries, loadImageEntriesSimple } from "@utils/imageUtils";
 import { texts, createCardContent } from "@utils/texts";
 
 export const prerender = true;
@@ -21,18 +21,37 @@ type Partner = {
 
 // Partners
 let partners: Partner[] = [];
+let featuredPartners: Partner[] = [];
 try {
   partners = await loadImageEntries("logos-partners-2425");
+  featuredPartners = partners.filter((partner) => partner.featured === true);
+  partners = [
+    ...featuredPartners,
+    ...partners.filter((partner) => partner.featured !== true),
+  ];
+  console.log(
+    `✅ Loaded ${partners.length} partners, ${featuredPartners.length} featured`
+  );
 } catch (error) {
-  console.error("Error loading partners data:", error);
+  console.error("❌ Error loading partners data:", error);
+  if (error instanceof Error) {
+    console.error("Stack trace:", error.stack);
+  }
+  console.log("🔄 Intentando método alternativo...");
+  try {
+    partners = await loadImageEntriesSimple("logos-partners-2425");
+    featuredPartners = partners.filter((partner) => partner.featured === true);
+    partners = [
+      ...featuredPartners,
+      ...partners.filter((partner) => partner.featured !== true),
+    ];
+    console.log(
+      `✅ Loaded ${partners.length} partners with alternative method, ${featuredPartners.length} featured`
+    );
+  } catch (altError) {
+    console.error("❌ Error with alternative method:", altError);
+  }
 }
-const featuredPartners = partners.filter(
-  (partner) => partner.featured === true
-);
-partners = [
-  ...featuredPartners,
-  ...partners.filter((partner) => partner.featured !== true),
-];
 
 import imagesExample from "@assets/imagesExample.json";
 
@@ -46,11 +65,19 @@ import carComponents from "@assets/carComponents.json";
   <FlagDivider />
 
   <Section id="partners-principal" className="min-h-[200px]">
-    <Gallery
-      items={featuredPartners}
-      alt="Logos de socios destacados"
-      className="w-full lg:w-3/4 justify-between"
-    />
+    {
+      featuredPartners.length > 0 ? (
+        <Gallery
+          items={featuredPartners}
+          alt="Logos de socios destacados"
+          className="w-full lg:w-3/4 justify-between"
+        />
+      ) : (
+        <div class="w-full lg:w-3/4 flex items-center justify-center text-center">
+          <p class="text-gray-500">Cargando socios destacados...</p>
+        </div>
+      )
+    }
     <Stats className="w-full lg:w-1/4" />
   </Section>
 
@@ -84,11 +111,19 @@ import carComponents from "@assets/carComponents.json";
   </Section>
 
   <Section id="partners">
-    <Gallery
-      items={partners}
-      alt="Logos de todos los socios"
-      className="w-full lg:w-3/4 justify-center"
-    />
+    {
+      partners.length > 0 ? (
+        <Gallery
+          items={partners}
+          alt="Logos de todos los socios"
+          className="w-full lg:w-3/4 justify-center"
+        />
+      ) : (
+        <div class="w-full lg:w-3/4 flex items-center justify-center text-center">
+          <p class="text-gray-500">Cargando socios...</p>
+        </div>
+      )
+    }
     <Card
       className="w-full lg:w-1/3"
       content={createCardContent(texts.home.contact)}

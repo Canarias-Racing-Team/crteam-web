@@ -1,7 +1,7 @@
 import type { ImageMetadata } from "astro";
 import type { ImageEntry } from "@types";
 
-const DEBUG = false; // Cambia a true para ver los logs de depuración
+const DEBUG = true; // Cambia a true para ver los logs de depuración
 
 /**
  * Función de depuración para mostrar información sobre las imágenes destacadas
@@ -116,4 +116,60 @@ export async function loadImageEntries(folder: string): Promise<ImageEntry[]> {
       src: () => Promise.resolve((mod as any).default),
     };
   });
+}
+
+/**
+ * Función alternativa para cargar imágenes sin usar import.meta.glob
+ */
+export async function loadImageEntriesSimple(
+  folder: string
+): Promise<ImageEntry[]> {
+  // Lista manual de archivos conocidos para logos-partners-2425
+  const knownFiles = [
+    "cajasiete.png",
+    "ayuntamiento-la-laguna.png",
+    "ayuntamiento-los-llanos-de-aridane.png",
+    "ayuntamiento-santiago-del-teide.png",
+    "coiitf.png",
+    "colegio-ingenieros.png",
+    "fgull.png",
+    "matlab.png",
+    "metrotenerife.png",
+    "ng-brakes.png",
+    "solidworks.png",
+    "tesla-t-symbol.png",
+    "ull-esit.png",
+    "ull.png",
+  ];
+
+  const featuredFiles = [
+    "cajasiete.png",
+    "ayuntamiento-la-laguna.png",
+    "coiitf.png",
+    "ull.png",
+    "metrotenerife.png",
+  ];
+
+  const imageEntries: ImageEntry[] = [];
+
+  for (const fileName of knownFiles) {
+    try {
+      const imagePath = `/src/assets/${folder}/${fileName}`;
+      const imageModule = await import(/* @vite-ignore */ imagePath);
+
+      const alt = fileName.replace(/\.\w+$/, "").replace(/[-_]/g, " ");
+      const featured = featuredFiles.includes(fileName);
+
+      imageEntries.push({
+        file: fileName,
+        alt,
+        featured,
+        src: () => Promise.resolve(imageModule.default),
+      });
+    } catch (error) {
+      console.warn(`No se pudo cargar ${fileName}:`, error);
+    }
+  }
+
+  return imageEntries;
 }
