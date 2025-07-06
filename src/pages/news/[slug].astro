@@ -1,11 +1,11 @@
 ---
 import NewsCard from "@components/NewsCard.astro";
 import Layout from "@layouts/Layout.astro";
-import Buttons from "@components/Buttons.astro";
 import Section from "@components/Section.astro";
 import Card from "@components/Card.astro";
 import { getNotionPages } from "@utils/notion";
 import { texts } from "@utils/texts";
+import { createCardContent } from "@utils/texts";
 
 // Generación de rutas estáticas para cada noticia
 export async function getStaticPaths() {
@@ -23,23 +23,17 @@ const { noticia } = Astro.props;
 if (!noticia) {
   throw new Error("Noticia no encontrada");
 }
-
-const CreateCardContent = () => [
-  { type: "title", text: noticia.Nombre },
-  { type: "subtitle", text: texts.newsDetail.subtitle[0] },
-  { type: "paragraph", text: texts.newsDetail.paragraphs[0] },
-  { type: "subtitle", text: texts.newsDetail.subtitle[1] },
-  { type: "paragraph", text: texts.newsDetail.paragraphs[1] },
-];
 ---
 
 <Layout id={Astro.self.name}>
   <Section id="noticia-individual" className="py-15 gap-4">
-    <Card
-      className="w-full lg:w-1/3 bg-base-300 card-xl shadow-sm h-fit"
-      content={CreateCardContent()}
+    <aside
+      id="titles"
+      class="w-full lg:w-1/3 flex flex-col gap-4 lg:sticky lg:self-start lg:h-fit lg:top-25"
     >
-      <Buttons
+      <Card
+        className="w-full bg-base-300 card-xl shadow-sm"
+        content={createCardContent(texts.newsDetails.aboutTeam)}
         buttons={[
           {
             text: "Volver a noticias",
@@ -47,10 +41,8 @@ const CreateCardContent = () => [
             icon: "mdi:arrow-left",
           },
         ]}
-        size="md"
-        className="card-actions justify-end"
       />
-    </Card>
+    </aside>
     <div class="w-full lg:w-2/3">
       <NewsCard noticia={noticia} />
     </div>

@@ -10,7 +10,7 @@ import { texts, createCardContent } from "@utils/texts";
 const noticias: NotionPageType[] = await getNotionPages();
 
 // Puedes definir cuántos placeholders añadir aquí
-const placeholdersCount = 8;
+const placeholdersCount = 0;
 
 for (let i = 0; i < placeholdersCount; i++) {
   noticias.push({
@@ -55,7 +55,7 @@ for (let i = 0; i < placeholdersCount; i++) {
     </aside>
     <div
       id="content"
-      class="w-full lg:w-2/3 grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8 mt-4 lg:mt-0"
+      class="w-full lg:w-2/3 grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8 mt-4 lg:mt-0 h-fit"
     >
       {
         noticias.map((noticia) => (

@@ -50,12 +50,23 @@ export const texts = {
   },
 
   // Textos de la página individual de noticias
-  newsDetail: {
-    subtitle: ["Noticia completa", "Sobre Canarias Racing Team"],
-    paragraphs: [
-      "Aquí tienes todos los detalles de esta noticia del Canarias Racing Team.",
-      "Canarias Racing Team es el equipo automovilístico de la Universidad de La Laguna que representa a las Islas Canarias en la Formula Student con un monoplaza eléctrico. Desde 2017, compite a nivel internacional, combinando innovación, formación práctica y pasión por el motor.",
-    ],
+  newsDetails: {
+    newInfo: {
+      title: "Noticia",
+      subtitle: ["Noticia completa"],
+      paragraphs: [
+        "Aquí tienes todos los detalles de esta noticia del Canarias Racing Team.",
+      ],
+    },
+
+    aboutTeam: {
+      title: "Sobre el equipo",
+      subtitle: "Canarias Racing Team",
+      paragraphs: [
+        "Somos el equipo automovilístico de la Universidad de La Laguna y representamos a Canarias en la Formula Student con un monoplaza eléctrico. Desde 2017, competimos a nivel internacional, uniendo innovación, formación práctica y pasión por el motor.",
+        "Nuestro objetivo: formar a futuros profesionales en ingeniería y gestión de proyectos mientras llevamos el nombre de Canarias a lo más alto del automovilismo universitario.",
+      ],
+    },
   },
 
   // Textos de placeholders
