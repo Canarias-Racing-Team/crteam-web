@@ -100,13 +100,11 @@ import carComponents from "@assets/carComponents.json";
   <Section id="partners">
     {
       partners.length > 0 ? (
-        <div class="w-full lg:w-3/4 h-[414px]">
           <Gallery
             items={partners}
             alt="Logos de todos los socios"
-            className="justify-center"
+            className="w-full lg:w-3/4 h-full md:h-[414px]"
           />
-        </div>
       ) : (
         <div class="w-full lg:w-3/4 flex items-center justify-center text-center">
           <p class="text-gray-500">Cargando socios...</p>
