@@ -50,11 +50,13 @@ import carComponents from "@assets/carComponents.json";
   <Section id="partners-principal" className="min-h-[200px]">
     {
       featuredPartners.length > 0 ? (
-        <Gallery
-          items={featuredPartners}
-          alt="Logos de socios destacados"
-          className="w-full lg:w-3/4 justify-between"
-        />
+        <div class="w-full lg:w-3/4 h-full">
+          <Gallery
+            items={featuredPartners}
+            alt="Logos de socios destacados"
+            className="justify-between"
+          />
+        </div>
       ) : (
         <div class="w-full lg:w-3/4 flex items-center justify-center text-center">
           <p class="text-gray-500">Cargando socios destacados...</p>
@@ -98,11 +100,13 @@ import carComponents from "@assets/carComponents.json";
   <Section id="partners">
     {
       partners.length > 0 ? (
-        <Gallery
-          items={partners}
-          alt="Logos de todos los socios"
-          className="w-full lg:w-3/4 justify-center h-[414px]"
-        />
+        <div class="w-full lg:w-3/4 h-[414px]">
+          <Gallery
+            items={partners}
+            alt="Logos de todos los socios"
+            className="justify-center"
+          />
+        </div>
       ) : (
         <div class="w-full lg:w-3/4 flex items-center justify-center text-center">
           <p class="text-gray-500">Cargando socios...</p>

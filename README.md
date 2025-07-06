@@ -1,6 +1,12 @@
-# Canarias Racing Team Web
+# Canarias Racing Team W### ⚠️ Advertencia de seguridad
 
-[![@tomas2p](https://img.shields.io/badge/Developed_by-Tomas2p-c97a00?style=for-the-badge)](https://github.com/tomas2p)
+> **Nota**: Este proyecto puede mostrar advertencias de seguridad en `npm audit` relacionadas con `path-to-regexp` y dependencias de Vercel/Astro. Estas son vulnerabilidades conocidas en las dependencias del framework y no pueden ser solucionadas manualmente por el momento. Los equipos de Vercel y Astro están trabajando en las correcciones correspondientes.
+
+> **Actualización de paquetes**: Si necesitas actualizar dependencias y encuentras conflictos con Vercel, sigue estos pasos:
+>
+> 1. `npm uninstall @astrojs/vercel`
+> 2. `npm update` (actualizar otros paquetes)
+> 3. `npm install @astrojs/vercel` (reinstalar Vercel)tomas2p](https://img.shields.io/badge/Developed_by-Tomas2p-c97a00?style=for-the-badge)](https://github.com/tomas2p)
 ![Astro](https://img.shields.io/badge/Built_with-Astro-0f172a?style=for-the-badge&logo=astro&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Styled_with-TailwindCSS-06b6d4?style=for-the-badge&logo=tailwindcss&logoColor=white)
 ![DaisyUI](https://img.shields.io/badge/UI-DaisyUI-5a0fc8?style=for-the-badge&logo=daisyui&logoColor=white)
@@ -25,6 +31,11 @@ npm run preview    # Previsualizar build
 ### ⚠️ Advertencia de seguridad
 
 > **Nota**: Este proyecto puede mostrar advertencias de seguridad en `npm audit` relacionadas con `path-to-regexp` y dependencias de Vercel/Astro. Estas son vulnerabilidades conocidas en las dependencias del framework y no pueden ser solucionadas manualmente por el momento. Los equipos de Vercel y Astro están trabajando en las correcciones correspondientes.
+
+> **Actualización de paquetes**: Si necesitas actualizar dependencias y encuentras conflictos con Vercel, sigue estos pasos:
+> 1. `npm uninstall @astrojs/vercel`
+> 2. `npm update` (actualizar otros paquetes)
+> 3. `npm install @astrojs/vercel` (reinstalar Vercel)
 
 ### Tecnologías
 
@@ -53,7 +64,6 @@ npm run preview    # Previsualizar build
 
 - [ ] Páginas adicionales (About, Projects, Contact, Team)
 - [ ] Sistema de búsqueda en noticias
-- [ ] Modo oscuro/claro
 - [ ] Analytics y métricas
 - [ ] SEO avanzado con metadatos dinámicos
 
