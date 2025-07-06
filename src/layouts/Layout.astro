@@ -3,6 +3,7 @@ import "@assets/app.css";
 import Navbar from "@components/Navbar.astro";
 import Footer from "@components/Footer.astro";
 import FlagDivider from "@components/FlagDivider.astro";
+import Analytics from '@vercel/analytics/astro'
 ---
 
 <!doctype html>
@@ -39,6 +40,7 @@ import FlagDivider from "@components/FlagDivider.astro";
     <slot />
     <FlagDivider class="mt-5 md:mt-15" />
     <Footer />
+    <Analytics/>
   </body>
 </html>
 

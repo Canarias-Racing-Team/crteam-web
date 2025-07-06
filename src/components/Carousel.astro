@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import type { CarouselItemType } from "@types";
+export const prerender = true;
 
 const { items = [], id } = Astro.props;
 ---

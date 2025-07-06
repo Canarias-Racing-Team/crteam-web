@@ -5,7 +5,7 @@
 [![TailwindCSS](https://img.shields.io/badge/Styled_with-TailwindCSS-06b6d4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![DaisyUI](https://img.shields.io/badge/UI-DaisyUI-5a0fc8?style=for-the-badge&logo=daisyui&logoColor=white)](https://daisyui.com)
 [![Notion](https://img.shields.io/badge/CMS-Notion-000000?style=for-the-badge&logo=notion&logoColor=white)](https://notion.so)
-![Status](https://img.shields.io/badge/Status-In_Development-orange?style=for-the-badge)
+[![Vercel Deploy](https://deploy-badge.vercel.app/vercel/tomas2p?style=for-the-badge&name=Vercel)](https://vercel.com/tomas2ps-projects/crteam-web)
 
 Sitio web oficial del primer equipo de Fórmula Student de Canarias.  
 Desarrollado con Astro, TailwindCSS y DaisyUI. Incluye blog conectado a Notion como CMS.

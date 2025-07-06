@@ -11,6 +11,8 @@ import Stats from "@components/Stats.astro";
 import { loadImageEntries } from "@utils/imageUtils";
 import { texts, createCardContent } from "@utils/texts";
 
+export const prerender = true;
+
 // Image data
 type Partner = {
   featured?: boolean;
