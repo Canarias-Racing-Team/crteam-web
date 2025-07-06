@@ -9,7 +9,12 @@ const { items = [], id, className = "" } = Astro.props;
 {
   items.length > 0 && (
     <div class={className}>
-      <div class="carousel w-full" id={id} role="region" aria-label="Carousel">
+      <div
+        class="carousel w-full h-full"
+        id={id}
+        role="region"
+        aria-label="Carousel"
+      >
         {/* Carousel items */}
         {items.map((image: CarouselItemType, i: number) => {
           const slideId = `slide${i + 1}`;
@@ -18,16 +23,15 @@ const { items = [], id, className = "" } = Astro.props;
           return (
             <div
               id={slideId}
-              class="carousel-item relative w-full items-center justify-center"
+              class="carousel-item relative w-full h-full items-center justify-center"
               role="tabpanel"
               aria-labelledby={`carousel-slide-${i + 1}`}
             >
-              {/* h-100 */}
               <Image
                 alt={image.alt ?? `Imagen ${i + 1}`}
-                class="w-full rounded-box object-cover"
+                class="w-full h-full rounded-box object-cover object-center"
                 src={image.src}
-                inferSize={true}
+                inferSize
                 loading="lazy"
               />
               <div

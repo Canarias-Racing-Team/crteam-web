@@ -2,13 +2,7 @@
 import { Image } from "astro:assets";
 import type { ImageEntry } from "@types";
 
-const {
-  items = [],
-  size = 24,
-  className,
-  singleLine = false,
-  itemsPerRow,
-} = Astro.props;
+const { items = [], className } = Astro.props;
 
 const resolvedItems =
   items.length > 0
@@ -27,7 +21,7 @@ const getItemWidth = () => {
 
 // Calcular el estilo del contenedor
 const getContainerClass = () => {
-  return "flex flex-wrap gap-2 w-full items-center";
+  return "flex flex-wrap gap-2 w-full items-center h-full";
 };
 ---
 

@@ -6,7 +6,7 @@ import type { CarComponentType } from "@/types";
 const { carComponents = [], id, className } = Astro.props;
 ---
 
-<div id={id} class={`tabs tabs-border ${className || ""}`} role="tablist">
+<div id={id} class={`tabs tabs-border self-center ${className || ""}`} role="tablist">
   {
     carComponents.map((component: CarComponentType, index: number) => {
       const tabId = `tab-${component.name.toLowerCase().replace(/\s+/g, "-")}`;
@@ -30,7 +30,7 @@ const { carComponents = [], id, className } = Astro.props;
             <span>{component.name}</span>
           </label>
           <div class="tab-content bg-transparent border-none p-0">
-            <Card image={component} content={cardContent} />
+            <Card className="h-full" image={component} content={cardContent} />
           </div>
         </>
       );
