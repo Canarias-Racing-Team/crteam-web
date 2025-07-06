@@ -15,8 +15,8 @@ const { noticia, short, link, className = "" } = Astro.props;
 ---
 
 <div
-  class={`card lg:card-side bg-base-300 shadow-xl ${className}`}
   id={noticia.url}
+  class={`card ${className} card-md md:card-lg lg:card-side bg-base-300 shadow`}
 >
   {
     noticia.Imagen && (

@@ -3,12 +3,12 @@ import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import type { CarouselItemType } from "@types";
 
-const { items = [], id } = Astro.props;
+const { items = [], id, className = "" } = Astro.props;
 ---
 
 {
   items.length > 0 && (
-    <>
+    <div class={className}>
       <div class="carousel w-full" id={id} role="region" aria-label="Carousel">
         {/* Carousel items */}
         {items.map((image: CarouselItemType, i: number) => {
@@ -22,9 +22,10 @@ const { items = [], id } = Astro.props;
               role="tabpanel"
               aria-labelledby={`carousel-slide-${i + 1}`}
             >
+              {/* h-100 */}
               <Image
                 alt={image.alt ?? `Imagen ${i + 1}`}
-                class="w-full h-120 rounded-xl object-cover"
+                class="w-full rounded-box object-cover"
                 src={image.src}
                 inferSize={true}
                 loading="lazy"
@@ -66,7 +67,7 @@ const { items = [], id } = Astro.props;
           );
         })}
       </div>
-    </>
+    </div>
   )
 }
 <script is:inline>
