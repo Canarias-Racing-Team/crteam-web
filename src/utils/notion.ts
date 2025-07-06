@@ -54,12 +54,26 @@ export async function getNotionPages(): Promise<NotionPageType[]> {
             ? (props.Autor.people[0] as any).name || ""
             : "",
       };
-    });
+    })
+    .filter((page) => page.Publicado === true);
 
   // Debug simple - mostrar datos filtrados
   if (import.meta.env.DEV) {
     console.log(`📰 Notion: ${filteredResults.length} páginas procesadas`);
-    console.log("🔧 JSON filtrado:", JSON.stringify(filteredResults, null, 2));
+
+    // Mostrar solo el length del contenido para debug más limpio
+    const debugData = filteredResults.map((page) => ({
+      ...page,
+      Contenido: `${page.Contenido.length} caracteres`,
+      Imagen: page.Imagen ? "URL de imagen" : "Sin imagen",
+      url: page.url ? "URL presente" : "Sin URL",
+      Nombre: page.Nombre || "Sin nombre",
+      Autor: page.Autor || "Sin autor",
+      Fecha: new Date(page.Fecha).toLocaleDateString(),
+      Publicado: page.Publicado ? "Sí" : "No",
+    }));
+
+    console.log("🔧 JSON filtrado:", JSON.stringify(debugData, null, 2));
   }
 
   return filteredResults;
