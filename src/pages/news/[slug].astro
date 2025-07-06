@@ -7,21 +7,28 @@ import { getNotionPages } from "@utils/notion";
 import { texts } from "@utils/texts";
 import { createCardContent } from "@utils/texts";
 
+export const prerender = true;
+
 // Generación de rutas estáticas para cada noticia
 export async function getStaticPaths() {
-  const pages = await getNotionPages();
-  return pages
-    .filter((page) => !!page.url)
-    .map((page) => ({
-      params: { slug: page.url },
-      props: { noticia: page },
-    }));
+  try {
+    const pages = await getNotionPages();
+    return pages
+      .filter((page) => !!page.url)
+      .map((page) => ({
+        params: { slug: page.url },
+        props: { noticia: page },
+      }));
+  } catch (error) {
+    console.error("Error al obtener páginas de Notion:", error);
+    return [];
+  }
 }
 
 const { noticia } = Astro.props;
 
 if (!noticia) {
-  throw new Error("Noticia no encontrada");
+  return Astro.redirect("/news");
 }
 ---
 
@@ -32,7 +39,6 @@ if (!noticia) {
       class="w-full lg:w-1/3 flex flex-col gap-4 lg:sticky lg:self-start lg:h-fit lg:top-25"
     >
       <Card
-        className="w-full bg-base-300 card-xl shadow-sm"
         content={createCardContent(texts.newsDetails.aboutTeam)}
         buttons={[
           {

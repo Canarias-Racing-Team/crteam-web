@@ -15,7 +15,7 @@ const { noticia, short, link, className = "" } = Astro.props;
 ---
 
 <div
-  class={`card ${short ? "card-lg" : "card-xl"} lg:card-side bg-base-300 shadow-xl ${className}`}
+  class={`card lg:card-side bg-base-300 shadow-xl ${className}`}
   id={noticia.url}
 >
   {
@@ -33,13 +33,13 @@ const { noticia, short, link, className = "" } = Astro.props;
   }
 
   <div class={`card-body w-full lg:w-2/3 ${short ? "p-6" : ""}`}>
-    <h2 class={`card-title ${short ? "text-lg" : "text-xl"}`} aria-label={noticia.Nombre}>
+    <h2 class="card-title" aria-label={noticia.Nombre}>
       {noticia.Nombre}
     </h2>
 
     {
       noticia.Contenido && (
-        <p class={`text-base-content/80 ${short ? "text-sm" : ""}`}>
+        <p class="text-base-content/80">
           {short && noticia.Contenido.length > 200
             ? `${noticia.Contenido.slice(0, 200)}...`
             : noticia.Contenido}
@@ -48,13 +48,11 @@ const { noticia, short, link, className = "" } = Astro.props;
     }
 
     <slot />
-    <div
-      class={`card-actions justify-between mt-4 place-items-center ${short ? "mt-2" : ""}`}
-    >
+    <div class="card-actions justify-between mt-4 place-items-center">
       <div class="flex flex-col gap-1">
         {
           noticia.Autor && (
-            <div class={`badge badge-soft ${short ? "badge-sm" : "badge-lg"}`}>
+            <div class="badge badge-soft">
               <Icon name="mdi:account" class="size-[1em] mr-1" />
               {noticia.Autor}
             </div>
@@ -63,7 +61,7 @@ const { noticia, short, link, className = "" } = Astro.props;
 
         {
           noticia.Fecha && (
-            <div class={`badge badge-soft ${short ? "badge-sm" : "badge-lg"}`}>
+            <div class="badge badge-soft">
               <Icon name="mdi:calendar" class="size-[1em] mr-1" />
               {new Date(noticia.Fecha).toLocaleDateString("es-ES", {
                 year: "numeric",
@@ -81,8 +79,7 @@ const { noticia, short, link, className = "" } = Astro.props;
             buttons={[
               { text: link.text, href: link.href, icon: "mdi:arrow-right" },
             ]}
-            size={short ? "sm" : "md"}
-            margin="mt-0"
+            className="justify-end"
           />
         )
       }

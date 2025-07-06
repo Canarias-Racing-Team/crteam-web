@@ -1,16 +1,13 @@
 ---
 import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
+import Card from "./Card.astro";
 import type { CarComponentType } from "@/types";
 
 const { carComponents = [], id, className } = Astro.props;
 ---
 
-<div
-  id={id}
-  class={`tabs tabs-border tabs-xl ${className || ""}`}
-  role="tablist"
->
+<div id={id} class={`tabs tabs-border ${className || ""}`} role="tablist">
   {
     carComponents.map((component: CarComponentType, index: number) => {
       const tabId = `tab-${component.name.toLowerCase().replace(/\s+/g, "-")}`;
@@ -29,12 +26,12 @@ const { carComponents = [], id, className } = Astro.props;
             <span class="hidden sm:inline">{component.name}</span>
           </label>
           <div class="tab-content bg-transparent border-none p-0">
-            <div class="card card-xl lg:card-side bg-base-300 shadow-xl">
+            <Card className="lg:card-side shadow-xl">
               <figure class="w-full lg:w-2/4">
                 <Image
                   src={component.src}
                   alt={component.name}
-                  class="object-cover w-full h-48 lg:h-89"
+                  class="object-cover w-full h-48 lg:h-auto"
                   inferSize
                   loading="lazy"
                 />
@@ -43,7 +40,7 @@ const { carComponents = [], id, className } = Astro.props;
                 <h2 class="card-title">{component.name}</h2>
                 <p>{component.brief}</p>
               </div>
-            </div>
+            </Card>
           </div>
         </>
       );

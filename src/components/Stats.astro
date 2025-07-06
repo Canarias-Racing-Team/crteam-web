@@ -1,5 +1,7 @@
 ---
+import Card from "./Card.astro";
 import type { StatType } from "@types";
+
 const {
   stats = [
     { title: "Islas", value: "8" },
@@ -10,8 +12,8 @@ const {
 }: { stats?: StatType[]; className?: string } = Astro.props;
 ---
 
-<div class={`card bg-base-300 ${className || ""}`}>
-  <div class="card-body flex flex-row justify-evenly items-center h-full">
+<Card className={`${className || ""}`}>
+  <div class="flex flex-row justify-evenly items-center h-full">
     {
       stats.map((stat) => (
         <div class="flex-1 flex flex-col items-center justify-center text-center">
@@ -28,4 +30,4 @@ const {
       ))
     }
   </div>
-</div>
+</Card>

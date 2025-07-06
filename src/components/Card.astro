@@ -9,26 +9,26 @@ const {
 } = Astro.props;
 ---
 
-<div class={`card ${className} card-lg shadow-xl bg-base-300`}>
+<div class={`card ${className} bg-base-300 shadow`}>
   <div class="card-body">
     {
       content.length > 0 &&
         content.map((item: any, index: number) => {
           if (item.type === "title") {
             return (
-              <h2 class="card-title text-2xl" aria-label={item.text}>
+              <h2 class="card-title" aria-label={item.text}>
                 {item.text}
               </h2>
             );
           } else if (item.type === "subtitle") {
             return (
-              <p class="text-lg text-gray-500" aria-label={item.text}>
+              <p class="text-gray-500" aria-label={item.text}>
                 {item.text}
               </p>
             );
           } else if (item.type === "paragraph") {
             return (
-              <p id={`content-${index}`} class="mb-2 leading-relaxed">
+              <p id={`content-${index}`} class="leading-relaxed">
                 {item.text}
               </p>
             );
@@ -36,10 +36,14 @@ const {
         })
     }
     <slot />
-    <Buttons
-      buttons={buttons}
-      className={`card-actions self-end mt-4`}
-      vertical={buttonsVertical}
-    />
+    {
+      buttons && (
+        <Buttons
+          buttons={buttons}
+          className={`card-actions self-end`}
+          vertical={buttonsVertical}
+        />
+      )
+    }
   </div>
 </div>
