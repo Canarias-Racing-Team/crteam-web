@@ -31,15 +31,17 @@ export type CarComponentType = {
 export type SectionSampleLinkType = {
   href: string;
   text: string;
+  icon?: string;
 };
 
 export type NotionPageType = {
   Publicado: boolean;
   Contenido: string;
   Fecha: string;
-  Imagen: string;
+  Imagen?: string;
   url: string;
   Nombre: string;
+  Autor?: string;
 };
 
 export type ImageEntry = {

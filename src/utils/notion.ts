@@ -1,23 +1,15 @@
 import { Client } from "@notionhq/client";
+import type { NotionPageType } from "@types";
 
 const notion = new Client({ auth: import.meta.env.NOTION_API_KEY });
 const databaseId = import.meta.env.NOTION_DATABASE_ID;
 
-export type NotionPage = {
-  Publicado: boolean;
-  Contenido: string;
-  Fecha: string;
-  Imagen: string;
-  url: string;
-  Nombre: string;
-};
-
-export async function getNotionPages(): Promise<NotionPage[]> {
+export async function getNotionPages(): Promise<NotionPageType[]> {
   const response = await notion.databases.query({
     database_id: databaseId,
   });
 
-  return response.results
+  const filteredResults = response.results
     .filter(
       (
         page
@@ -33,12 +25,12 @@ export async function getNotionPages(): Promise<NotionPage[]> {
             : false,
         Contenido:
           props.Contenido && props.Contenido.type === "rich_text"
-            ? (props.Contenido.rich_text?.[0]?.plain_text ?? "")
+            ? props.Contenido.rich_text.map((text) => text.plain_text).join("")
             : "",
         Fecha:
-          props["Fecha de Publicación"]?.type === "date"
-            ? (props["Fecha de Publicación"].date?.start ?? "")
-            : "",
+          props["Fecha de Publicación"]?.type === "created_time"
+            ? props["Fecha de Publicación"].created_time
+            : page.created_time,
         Imagen:
           props.Imagen && props.Imagen.type === "files"
             ? props.Imagen.files?.[0]?.type === "file"
@@ -55,6 +47,34 @@ export async function getNotionPages(): Promise<NotionPage[]> {
           props.Nombre && props.Nombre.type === "title"
             ? (props.Nombre.title?.[0]?.plain_text ?? "")
             : "",
+        Autor:
+          props.Autor &&
+          props.Autor.type === "people" &&
+          props.Autor.people?.[0]
+            ? (props.Autor.people[0] as any).name || ""
+            : "",
       };
     });
+
+  // Debug simple - mostrar datos filtrados
+  if (import.meta.env.DEV) {
+    console.log(`📰 Notion: ${filteredResults.length} páginas procesadas`);
+    console.log("🔧 JSON filtrado:", JSON.stringify(filteredResults, null, 2));
+  }
+
+  return filteredResults;
+}
+
+// Función para obtener la estructura de la base de datos
+export async function getNotionDatabaseStructure() {
+  const response = await notion.databases.retrieve({
+    database_id: databaseId,
+  });
+
+  // Debug simple
+  if (import.meta.env.DEV) {
+    console.log("🔧 Notion BD:", Object.keys(response.properties).join(", "));
+  }
+
+  return response.properties;
 }

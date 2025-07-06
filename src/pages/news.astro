@@ -1,64 +1,81 @@
 ---
-import SectionSample from "@components/SectionSample.astro";
+import NewsCard from "@components/NewsCard.astro";
 import Layout from "@layouts/Layout.astro";
 import { getNotionPages } from "@utils/notion";
 import type { NotionPageType } from "@/types";
+import Section from "@components/Section.astro";
+import Card from "@components/Card.astro";
 
 const noticias: NotionPageType[] = await getNotionPages();
+
+// Puedes definir cuántos placeholders añadir aquí
+const placeholdersCount = 8;
+
+for (let i = 0; i < placeholdersCount; i++) {
+  noticias.push({
+    Nombre: "Próximamente",
+    Contenido: "Estamos trabajando en las próximas noticias. ¡Vuelve pronto!",
+    Imagen:
+      "https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp",
+    url: `proximamente-${i + 1}`,
+    Publicado: false,
+    Fecha: "",
+  });
+}
 ---
 
 <Layout id={Astro.self.name}>
-  <div class="flex min-h-screen mt-10">
-    <!-- Columna Izquierda -->
+  <Section id="news" className="py-15 gap-4">
     <aside
-      class="w-full md:w-1/3 xl:w-1/4 p-8 flex flex-col gap-10 sticky top-24 self-start h-fit"
+      id="titles"
+      class="w-full lg:w-1/3 flex flex-col gap-4 lg:sticky lg:self-start lg:h-fit lg:top-25"
     >
-      <div>
-        <h1 class="text-4xl font-bold mb-6">Noticias</h1>
-        <p class="mb-4">Últimas actualizaciones del Canarias Racing Team.</p>
-      </div>
-      <div>
-        <h2 class="text-3xl font-semibold mb-4">
-          Suscríbete a nuestro Newsletter
-        </h2>
-        <p class="mb-4">
-          Recibe las últimas noticias directamente en tu correo.
-        </p>
-        <form action="/subscribe" method="POST" class="gap-2 join">
+      <Card
+        title="Noticias"
+        subtitle="Lo último de CRTeam"
+        className="w-full bg-base-300 card-xl shadow-sm"
+        paragraphs={[
+          // "Mantente al día con las últimas noticias y eventos del Canarias Racing Team.",
+          // "Aquí encontrarás información sobre nuestras actividades, logros y próximos eventos.",
+          "Sigue de cerca todo lo que hacemos: competiciones, avances, logros y próximos eventos.",
+          "No te pierdas ninguna actualización del equipo.",
+        ]}
+      />
+      <Card
+        title="Newsletter"
+        subtitle="Las novedades, directo a tu correo"
+        className="w-full bg-base-300 card-xl shadow-sm"
+        paragraphs={[
+          "Suscríbete a nuestro newsletter y entérate antes que nadie de todo lo que pasa en Canarias Racing Team.",
+        ]}
+      >
+        <form action="/subscribe" method="POST" class="flex gap-2 mt-4 join">
           <input
             type="email"
             name="email"
             placeholder="Tu correo electrónico"
             required
-            class="input input-bordered join-item"
+            class="input input-bordered flex-1 join-item"
           />
           <button type="submit" class="btn btn-primary join-item"
             >Suscribirse</button
           >
         </form>
-      </div>
+      </Card>
     </aside>
-    <!-- Columna Derecha (posts con scroll) -->
-    <main class="flex-1 overflow-y-auto max-h-[calc(100vh-6rem)] p-8">
-      <ul class="flex flex-col gap-8">
-        {
-          noticias.map((noticia) => (
-            <li>
-              <SectionSample
-                title={noticia.Nombre}
-                description={
-                  noticia.Contenido || "No hay descripción disponible."
-                }
-                image={noticia.Imagen}
-                id={noticia.url}
-                link={{ href: `/news/${noticia.url}`, text: "Leer más" }}
-              >
-                {/* Aquí puedes renderizar más contenido si lo hay */}
-              </SectionSample>
-            </li>
-          ))
-        }
-      </ul>
-    </main>
-  </div>
+    <div
+      id="content"
+      class="w-full lg:w-2/3 grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8 mt-4 lg:mt-0"
+    >
+      {
+        noticias.map((noticia) => (
+          <NewsCard
+            noticia={noticia}
+            short
+            link={{ href: `/news/${noticia.url}`, text: "Leer más" }}
+          />
+        ))
+      }
+    </div>
+  </Section>
 </Layout>

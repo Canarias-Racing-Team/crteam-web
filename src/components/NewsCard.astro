@@ -1,0 +1,91 @@
+---
+import Image from "astro/components/Image.astro";
+import Buttons from "./Buttons.astro";
+import { Icon } from "astro-icon/components";
+import type { SectionSampleLinkType, NotionPageType } from "@types";
+
+interface Props {
+  noticia: NotionPageType;
+  link?: SectionSampleLinkType;
+  short?: boolean;
+  className?: string;
+}
+
+const { noticia, short, link, className = "" } = Astro.props;
+---
+
+<div
+  class={`card ${short ? "card-lg" : "card-xl"} lg:card-side bg-base-300 shadow-xl ${className}`}
+  id={noticia.url}
+>
+  {
+    noticia.Imagen && (
+      <figure class="w-full lg:w-1/3">
+        <Image
+          src={noticia.Imagen}
+          alt={noticia.Nombre}
+          class="object-cover"
+          inferSize
+          loading="eager"
+        />
+      </figure>
+    )
+  }
+
+  <div class={`card-body w-full lg:w-2/3 ${short ? "p-6" : ""}`}>
+    <h2 class={`card-title ${short ? "text-lg" : "text-xl"}`} aria-label={noticia.Nombre}>
+      {noticia.Nombre}
+    </h2>
+
+    {
+      noticia.Contenido && (
+        <p class={`text-base-content/80 ${short ? "text-sm" : ""}`}>
+          {short && noticia.Contenido.length > 200
+            ? `${noticia.Contenido.slice(0, 200)}...`
+            : noticia.Contenido}
+        </p>
+      )
+    }
+
+    <slot />
+    <div
+      class={`card-actions justify-between mt-4 place-items-center ${short ? "mt-2" : ""}`}
+    >
+      <div class="flex flex-col gap-1">
+        {
+          noticia.Autor && (
+            <div class={`badge badge-soft ${short ? "badge-sm" : "badge-lg"}`}>
+              <Icon name="mdi:account" class="size-[1em] mr-1" />
+              {noticia.Autor}
+            </div>
+          )
+        }
+
+        {
+          noticia.Fecha && (
+            <div class={`badge badge-soft ${short ? "badge-sm" : "badge-lg"}`}>
+              <Icon name="mdi:calendar" class="size-[1em] mr-1" />
+              {new Date(noticia.Fecha).toLocaleDateString("es-ES", {
+                year: "numeric",
+                month: short ? "short" : "long",
+                day: "numeric",
+              })}
+            </div>
+          )
+        }
+      </div>
+
+      {
+        link && (
+          <Buttons
+            buttons={[
+              { text: link.text, href: link.href, icon: "mdi:arrow-right" },
+            ]}
+            size={short ? "sm" : "md"}
+            margin="mt-0"
+          />
+        )
+      }
+    </div>
+  </div>
+</div>

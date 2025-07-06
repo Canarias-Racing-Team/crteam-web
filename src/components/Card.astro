@@ -1,5 +1,4 @@
 ---
-import { Icon } from "astro-icon/components";
 import Buttons from "./Buttons.astro";
 
 const {
@@ -16,7 +15,7 @@ const {
   <div class="card-body">
     {
       title && (
-        <h2 class="card-title" aria-label={title}>
+        <h2 class="card-title text-2xl" aria-label={title}>
           {title}
         </h2>
       )
@@ -31,7 +30,12 @@ const {
     {
       paragraphs &&
         paragraphs.map((text: string, index: number) => (
-          <p id={`paragraph-${index}`}>{text}</p>
+          <p
+            id={`paragraph-${index}`}
+            class="mb-2 leading-relaxed"
+          >
+            {text}
+          </p>
         ))
     }
     <slot />
