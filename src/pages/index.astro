@@ -8,7 +8,7 @@ import CarTabs from "@components/CarTabs.astro";
 import Card from "@components/Card.astro";
 import Section from "@components/Section.astro";
 import Stats from "@components/Stats.astro";
-import { loadImageEntries, loadImageEntriesSimple } from "@utils/imageUtils";
+import { loadImageEntries } from "@utils/imageUtils";
 import { texts, createCardContent } from "@utils/texts";
 
 export const prerender = true;
@@ -34,23 +34,6 @@ try {
   );
 } catch (error) {
   console.error("❌ Error loading partners data:", error);
-  if (error instanceof Error) {
-    console.error("Stack trace:", error.stack);
-  }
-  console.log("🔄 Intentando método alternativo...");
-  try {
-    partners = await loadImageEntriesSimple("logos-partners-2425");
-    featuredPartners = partners.filter((partner) => partner.featured === true);
-    partners = [
-      ...featuredPartners,
-      ...partners.filter((partner) => partner.featured !== true),
-    ];
-    console.log(
-      `✅ Loaded ${partners.length} partners with alternative method, ${featuredPartners.length} featured`
-    );
-  } catch (altError) {
-    console.error("❌ Error with alternative method:", altError);
-  }
 }
 
 import imagesExample from "@assets/imagesExample.json";

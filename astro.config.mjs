@@ -12,8 +12,18 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      cssMinify: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            tailwind: ["@tailwindcss/vite"],
+          },
+        },
+      },
+    },
   },
-  
+
   output: "server",
   adapter: vercel({
     webAnalytics: {

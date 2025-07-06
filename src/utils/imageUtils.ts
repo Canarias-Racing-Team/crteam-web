@@ -1,7 +1,7 @@
 import type { ImageMetadata } from "astro";
 import type { ImageEntry } from "@types";
 
-const DEBUG = true; // Cambia a true para ver los logs de depuración
+const DEBUG = false; // Cambia a true para ver los logs de depuración
 
 /**
  * Función de depuración para mostrar información sobre las imágenes destacadas
@@ -35,9 +35,20 @@ function debugFeatured({
 }
 
 /**
- * Carga imágenes desde `/src/assets/{folder}` y detecta si son destacadas usando `featured.txt`
+ * Carga imágenes desde `/src/assets/{folder}` y detecta si son destacadas según lista predefinida
  */
 export async function loadImageEntries(folder: string): Promise<ImageEntry[]> {
+  // Lista predefinida de archivos destacados para cada carpeta
+  const featuredFiles: { [key: string]: string[] } = {
+    "logos-partners-2425": [
+      "cajasiete.png",
+      "ayuntamiento-la-laguna.png",
+      "coiitf.png",
+      "ull.png",
+      "metrotenerife.png",
+    ],
+  };
+
   // Importa todas las imágenes de todas las subcarpetas de assets
   const imageModules = import.meta.glob<{ default: ImageMetadata }>(
     "/src/assets/*/*.{jpg,jpeg,png,webp}",
@@ -49,39 +60,7 @@ export async function loadImageEntries(folder: string): Promise<ImageEntry[]> {
     path.includes(`/src/assets/${folder}/`)
   );
 
-  // Construye la ruta relativa desde src/utils a src/assets
-  const featuredPath = `/src/assets/${folder}/featured.txt?raw`; // Cambiar a ruta absoluta
-  const featuredTxt = await import(/* @vite-ignore */ featuredPath).catch(
-    (error) => {
-      console.error(`Error al importar ${featuredPath}:`, error);
-      return { default: "" };
-    }
-  );
-
-  const featuredTxtModule: { default: string } = featuredTxt;
-  const rawContent = featuredTxtModule.default;
-
-  // Limpia el contenido eliminando caracteres invisibles o innecesarios
-  const cleanedContent = rawContent
-    .replace(/\r/g, "") // Elimina retornos de carro (Windows)
-    .trim();
-
-  if (DEBUG) {
-    console.log(
-      "Contenido original de featured.txt:",
-      JSON.stringify(rawContent)
-    );
-    console.log(
-      "Contenido limpio de featured.txt:",
-      JSON.stringify(cleanedContent)
-    );
-  }
-
-  const featuredList: string[] = cleanedContent
-    .split("\n")
-    .map((f: string) => f.trim())
-    .filter((line: string) => Boolean(line));
-
+  const featuredList = featuredFiles[folder] || [];
   const fileNames = filteredEntries.map(([path]) => path.split("/").pop());
 
   // Prepara info para debug
@@ -92,17 +71,12 @@ export async function loadImageEntries(folder: string): Promise<ImageEntry[]> {
   });
 
   if (DEBUG) {
-    debugFeatured({
-      featuredPath,
-      featuredTxtModule,
-      featuredList,
-      fileNames,
-      filesInfo,
-    });
-  }
-
-  if (!featuredTxtModule.default) {
-    console.warn(`El archivo ${featuredPath} está vacío o no existe.`);
+    console.log(`Procesando carpeta: ${folder}`);
+    console.log("featuredList:", featuredList);
+    console.log("Archivos en carpeta:", fileNames);
+    filesInfo.forEach(({ file, featured }) =>
+      console.log(`Archivo: ${file} - featured: ${featured}`)
+    );
   }
 
   return filteredEntries.map(([path, mod]) => {
