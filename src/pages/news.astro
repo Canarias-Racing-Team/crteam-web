@@ -5,6 +5,7 @@ import { getNotionPages } from "@utils/notion";
 import type { NotionPageType } from "@/types";
 import Section from "@components/Section.astro";
 import Card from "@components/Card.astro";
+import { texts, createCardContent } from "@utils/texts";
 
 const noticias: NotionPageType[] = await getNotionPages();
 
@@ -13,8 +14,8 @@ const placeholdersCount = 8;
 
 for (let i = 0; i < placeholdersCount; i++) {
   noticias.push({
-    Nombre: "Próximamente",
-    Contenido: "Estamos trabajando en las próximas noticias. ¡Vuelve pronto!",
+    Nombre: texts.placeholders.news.title,
+    Contenido: texts.placeholders.news.content,
     Imagen:
       "https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp",
     url: `proximamente-${i + 1}`,
@@ -31,23 +32,12 @@ for (let i = 0; i < placeholdersCount; i++) {
       class="w-full lg:w-1/3 flex flex-col gap-4 lg:sticky lg:self-start lg:h-fit lg:top-25"
     >
       <Card
-        title="Noticias"
-        subtitle="Lo último de CRTeam"
         className="w-full bg-base-300 card-xl shadow-sm"
-        paragraphs={[
-          // "Mantente al día con las últimas noticias y eventos del Canarias Racing Team.",
-          // "Aquí encontrarás información sobre nuestras actividades, logros y próximos eventos.",
-          "Sigue de cerca todo lo que hacemos: competiciones, avances, logros y próximos eventos.",
-          "No te pierdas ninguna actualización del equipo.",
-        ]}
+        content={createCardContent(texts.news.noticias)}
       />
       <Card
-        title="Newsletter"
-        subtitle="Las novedades, directo a tu correo"
         className="w-full bg-base-300 card-xl shadow-sm"
-        paragraphs={[
-          "Suscríbete a nuestro newsletter y entérate antes que nadie de todo lo que pasa en Canarias Racing Team.",
-        ]}
+        content={createCardContent(texts.news.newsletter)}
       >
         <form action="/subscribe" method="POST" class="flex gap-2 mt-4 join">
           <input

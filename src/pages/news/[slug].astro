@@ -1,11 +1,11 @@
 ---
-import NewsCard from "../../components/NewsCard.astro";
-import Layout from "../../layouts/Layout.astro";
-import Buttons from "../../components/Buttons.astro";
-import Section from "../../components/Section.astro";
-import Card from "../../components/Card.astro";
-import { getNotionPages } from "../../utils/notion";
-import type { NotionPageType } from "@/types";
+import NewsCard from "@components/NewsCard.astro";
+import Layout from "@layouts/Layout.astro";
+import Buttons from "@components/Buttons.astro";
+import Section from "@components/Section.astro";
+import Card from "@components/Card.astro";
+import { getNotionPages } from "@utils/notion";
+import { texts } from "@utils/texts";
 
 // Generación de rutas estáticas para cada noticia
 export async function getStaticPaths() {
@@ -23,18 +23,21 @@ const { noticia } = Astro.props;
 if (!noticia) {
   throw new Error("Noticia no encontrada");
 }
+
+const CreateCardContent = () => [
+  { type: "title", text: noticia.Nombre },
+  { type: "subtitle", text: texts.newsDetail.subtitle[0] },
+  { type: "paragraph", text: texts.newsDetail.paragraphs[0] },
+  { type: "subtitle", text: texts.newsDetail.subtitle[1] },
+  { type: "paragraph", text: texts.newsDetail.paragraphs[1] },
+];
 ---
 
 <Layout id={Astro.self.name}>
   <Section id="noticia-individual" className="py-15 gap-4">
     <Card
-      title={noticia.Nombre}
-      subtitle="Noticia completa"
       className="w-full lg:w-1/3 bg-base-300 card-xl shadow-sm h-fit"
-      paragraphs={[
-        "Aquí tienes todos los detalles de esta noticia del Canarias Racing Team.",
-        "Canarias Racing Team es el equipo automovilístico de la Universidad de La Laguna que representa a las Islas Canarias en la Formula Student con un monoplaza eléctrico. Desde 2017, compite a nivel internacional, combinando innovación, formación práctica y pasión por el motor."
-      ]}
+      content={CreateCardContent()}
     >
       <Buttons
         buttons={[

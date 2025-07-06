@@ -9,6 +9,7 @@ import Card from "@components/Card.astro";
 import Section from "@components/Section.astro";
 import Stats from "@components/Stats.astro";
 import { loadImageEntries } from "@utils/imageUtils";
+import { texts, createCardContent } from "@utils/texts";
 
 // Image data
 type Partner = {
@@ -54,8 +55,6 @@ import carComponents from "@assets/carComponents.json";
 
   <Section id="team">
     <Card
-      title="Canarias Racing Team"
-      subtitle="El primer equipo de Fórmula Student de Canarias"
       className="w-full lg:w-2/3 bg-base-300 card-xl shadow-sm"
       buttons={[
         {
@@ -64,14 +63,7 @@ import carComponents from "@assets/carComponents.json";
           icon: "mdi:account-plus",
         },
       ]}
-      paragraphs={[
-        // "Canarias Racing Team es el equipo automovilístico de la Universidad de La Laguna. Desafiando fronteras hemos conseguido ser los primeros en representar a las ocho islas canarias en la FS, la máxima competición estudiantil dentro del mundo del motor. Lo hemos logrado con un monoplaza eléctrico capaz de sortear cualquier distancia, incluida la que nos separa de la península ibérica.",
-        // "La resiliencia y el coraje son rasgos propios de nuestra formación, sin miedo a los obstáculos de la geografía. Un equipo absolutamente interdisciplinar, cuyo corazón es la ingeniería, pero con la comunicación y las finanzas como arterias. Soñamos con que la innovación automovilística canaria consiga acelerar el futuro y el corremos hacia el éxito inspirados por la pasión y la determinación. Crecemos gracias a aquellos que nos hacen grandes: todos los que creen que lo pequeño puede llegar a ser gigante.",
-        "Somos el equipo de automovilismo de la Universidad de La Laguna y los primeros en llevar el nombre de las ocho islas canarias a la Fórmula Student, la competición universitaria más top del mundo del motor.",
-        "Lo hicimos con un monoplaza eléctrico que no entiende de límites, ni siquiera los 2.000 km que nos separan de la península.",
-        "Más que un equipo, somos un grupo de estudiantes con ganas de romper barreras. Ingeniería, comunicación, finanzas… aquí cada talento suma.",
-        "Nuestra meta es clara: que la innovación hecha en Canarias acelere el futuro. Y lo hacemos con pasión, trabajo en equipo y creyendo que, desde lo pequeño, se pueden construir cosas enormes.",
-      ]}
+      content={createCardContent(texts.home.team)}
     />
     <!-- <div class="divider lg:divider-horizontal"></div> -->
     <div class="w-full lg:w-1/3 flex flex-col justify-center items-center">
@@ -81,17 +73,8 @@ import carComponents from "@assets/carComponents.json";
 
   <Section id="car">
     <Card
-      title="El Coche"
-      subtitle="Un coche único, para unas islas únicas."
       className="w-full lg:w-1/3 bg-base-300 card-xl shadow-sm"
-      paragraphs={[
-        // "Nuestro coche es el resultado de meses de trabajo duro y dedicación. Con un diseño innovador y tecnología de vanguardia, estamos listos para competir en la Fórmula Student.",
-        // "Nuestro monoplaza es el resultado de meses de curro, ideas locas y mucha pasión. Diseñado desde cero por estudiantes, mezcla innovación, tecnología y muchas horas en el taller.",
-        // "Compitimos en la Fórmula Student, la cantera de la F1, donde las universidades se enfrentan diseñando y construyendo su propio coche de carreras. No se trata solo de correr: hay que optimizar el diseño, fabricar cada pieza, gestionar recursos y presentar un proyecto viable a nivel técnico y económico.",
-        // "Cada tornillo, cada cable y cada curva del chasis tienen algo nuestro. Es más que un coche: es el reflejo de lo que somos capaces de hacer desde Canarias.",
-        "Nuestro monoplaza eléctrico, hecho por estudiantes desde cero, combina ingeniería, innovación y trabajo en equipo para brillar en la Fórmula Student.",
-        "Cada pieza refleja esfuerzo y talento canario. Aquí no solo gana el más rápido, sino el que mejor diseña y gestiona su proyecto.",
-      ]}
+      content={createCardContent(texts.home.car)}
     />
     <CarTabs
       carComponents={carComponents}
@@ -109,14 +92,7 @@ import carComponents from "@assets/carComponents.json";
     <!-- <div class="divider lg:divider-horizontal"></div> -->
     <Card
       className="w-full lg:w-1/3 bg-base-300 card-xl shadow-sm"
-      title="¡Hazte parte del equipo!"
-      subtitle="Súmate a Canarias Racing Team"
-      paragraphs={[
-        // "Tu apoyo es fundamental para que podamos seguir adelante. Si quieres unirte a nosotros como patrocinador o simplemente apoyarnos, aquí tienes algunas formas de hacerlo.",
-        // "Puedes contactarnos directamente a través de nuestro correo electrónico o seguirnos en nuestras redes sociales para estar al tanto de nuestras novedades.",
-        "Tu apoyo es clave para que este sueño siga rodando. Ya sea como patrocinador o colaborador, hay muchas formas de unirte a esta aventura.",
-        "Escríbenos por correo o síguenos en redes para estar al tanto de todo lo que viene. ¡Juntos llevamos el talento canario a lo más alto!",
-      ]}
+      content={createCardContent(texts.home.contact)}
       buttons={[
         {
           text: "Patrocinio",

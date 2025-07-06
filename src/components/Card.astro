@@ -2,11 +2,9 @@
 import Buttons from "./Buttons.astro";
 
 const {
-  title,
-  subtitle,
   buttons,
   className = "",
-  paragraphs = [],
+  content = [],
   buttonsVertical = false,
 } = Astro.props;
 ---
@@ -14,29 +12,28 @@ const {
 <div class={`card ${className} card-xl`}>
   <div class="card-body">
     {
-      title && (
-        <h2 class="card-title text-2xl" aria-label={title}>
-          {title}
-        </h2>
-      )
-    }
-    {
-      subtitle && (
-        <p class="text-lg text-gray-500" aria-label={subtitle}>
-          {subtitle}
-        </p>
-      )
-    }
-    {
-      paragraphs &&
-        paragraphs.map((text: string, index: number) => (
-          <p
-            id={`paragraph-${index}`}
-            class="mb-2 leading-relaxed"
-          >
-            {text}
-          </p>
-        ))
+      content.length > 0 &&
+        content.map((item: any, index: number) => {
+          if (item.type === "title") {
+            return (
+              <h2 class="card-title text-2xl" aria-label={item.text}>
+                {item.text}
+              </h2>
+            );
+          } else if (item.type === "subtitle") {
+            return (
+              <p class="text-lg text-gray-500" aria-label={item.text}>
+                {item.text}
+              </p>
+            );
+          } else if (item.type === "paragraph") {
+            return (
+              <p id={`content-${index}`} class="mb-2 leading-relaxed">
+                {item.text}
+              </p>
+            );
+          }
+        })
     }
     <slot />
     <Buttons
