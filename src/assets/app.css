@@ -1,5 +1,49 @@
 @import "tailwindcss";
 
+/* Configuración de fuentes base */
+* {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Fuentes para títulos y elementos destacados */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.hero h1 {
+  font-family: 'Poppins', 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+/* Título principal del hero - fuente más impactante */
+.hero-title {
+  font-family: 'Poppins', 'Inter', sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Configuración específica para móviles */
+@media (max-width: 768px) {
+  * {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .hero h1 {
+    font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+  }
+}
+
 [data-theme="forest"] {
   --color-base-100: #000000;
   --color-base-100-rgb: 0, 0, 0;
@@ -11,7 +55,7 @@
 }
 
 .hero-overlay {
-  background-color: color-mix(in oklab, var(--color-base-100)50%, transparent);
+  background-color: color-mix(in oklab, var(--color-base-100) 50%, transparent);
 }
 
 .stat {
@@ -19,18 +63,14 @@
   width: fit-content;
 }
 
-.stats-horizontal {
-  & .stat:not(:last-child) {
-    border-inline-end: none;
-    border-block-end: none
-  }
+.stats-horizontal .stat:not(:last-child) {
+  border-inline-end: none;
+  border-block-end: none;
 }
 
-.stats-vertical {
-  & .stat:not(:last-child) {
-    border-inline-end: none;
-    border-block-end: none
-  }
+.stats-vertical .stat:not(:last-child) {
+  border-inline-end: none;
+  border-block-end: none;
 }
 
 p {

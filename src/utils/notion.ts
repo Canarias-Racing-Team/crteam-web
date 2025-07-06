@@ -3,6 +3,7 @@ import type { NotionPageType } from "@types";
 
 const notion = new Client({ auth: import.meta.env.NOTION_API_KEY });
 const databaseId = import.meta.env.NOTION_DATABASE_ID;
+const DEBUG = false; // Cambia a true para ver los logs de depuración
 
 export async function getNotionPages(): Promise<NotionPageType[]> {
   const response = await notion.databases.query({
@@ -58,7 +59,7 @@ export async function getNotionPages(): Promise<NotionPageType[]> {
     .filter((page) => page.Publicado === true);
 
   // Debug simple - mostrar datos filtrados
-  if (import.meta.env.DEV) {
+  if (DEBUG) {
     console.log(`📰 Notion: ${filteredResults.length} páginas procesadas`);
 
     // Mostrar solo el length del contenido para debug más limpio
@@ -86,7 +87,7 @@ export async function getNotionDatabaseStructure() {
   });
 
   // Debug simple
-  if (import.meta.env.DEV) {
+  if (DEBUG) {
     console.log("🔧 Notion BD:", Object.keys(response.properties).join(", "));
   }
 

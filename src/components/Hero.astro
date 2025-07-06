@@ -26,24 +26,59 @@ const buttons = [
 >
   <div class="hero-overlay bg-opacity-70"></div>
   <div
-    class="hero-content text-neutral-content text-center flex flex-col items-center justify-evenly"
+    class="hero-content text-neutral-content text-center flex flex-col gap-2 md:gap-4 items-center justify-evenly"
   >
     <h1
-      class="mb-5 md:mb-6 text-4xl md:text-6xl lg:text-8xl font-extrabold drop-shadow-lg w-full flex justify-center items-center"
+      class="hero-title text-4xl md:text-6xl lg:text-8xl font-black drop-shadow-lg w-full flex justify-center items-center"
     >
-      <div class="flex items-center justify-center gap-2 w-full">
-        <div class="text-right">
-          <span class="text-white">OCHO</span><br />
-          <span class="text-secondary">TRES</span>
+      <div
+        class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 w-full"
+      >
+        <!-- Layout móvil: lectura coherente -->
+        <div class="flex md:hidden flex-col items-center text-center gap-2">
+          <div class="flex gap-3">
+            <span class="text-white leading-none font-black tracking-wider"
+              >OCHO</span
+            >
+            <span
+              class="text-outline-white leading-none font-black tracking-wider"
+              >ISLAS</span
+            >
+          </div>
+          <div class="flex gap-3">
+            <span class="text-secondary leading-none font-black tracking-wider"
+              >TRES</span
+            >
+            <span
+              class="text-outline-primary leading-none font-black tracking-wider"
+              >COLORES</span
+            >
+          </div>
         </div>
-        <div class="text-left w-1/2">
-          <span class="text-outline-white">ISLAS</span>
-          <span class="text-outline-primary">COLORES</span>
+
+        <!-- Layout desktop: diseño original -->
+        <div class="hidden md:flex flex-col items-end text-right">
+          <span class="text-white leading-none font-black tracking-wider"
+            >OCHO</span
+          >
+          <span class="text-secondary leading-none font-black tracking-wider"
+            >TRES</span
+          >
+        </div>
+        <div class="hidden md:flex flex-col items-start text-left">
+          <span
+            class="text-outline-white leading-none font-black tracking-wider block"
+            >ISLAS</span
+          >
+          <span
+            class="text-outline-primary leading-none font-black tracking-wider block"
+            >COLORES</span
+          >
         </div>
       </div>
     </h1>
     <div id="subtitle" class="flex flex-col items-center">
-      <p class="text-lg md:text-2xl">
+      <p class="text-md md:text-2xl">
         1º Equipo de Fórmula Student de Canarias
       </p>
       <Buttons
