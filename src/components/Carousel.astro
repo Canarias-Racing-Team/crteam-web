@@ -107,21 +107,24 @@ if (!items) items = [];
       }
     });
   }
-  window.addEventListener("hashchange", () => setActiveCarouselBtn());
-  window.addEventListener("DOMContentLoaded", () =>
-    setTimeout(() => setActiveCarouselBtn(), 10)
-  );
-  // Al hacer clic en flechas o números, cambia la imagen sin mover el scroll ni el hash
+  // Sincroniza el slide activo con el hash o el primero
+  function syncActiveSlide() {
+    setActiveCarouselBtn();
+  }
+  window.addEventListener("hashchange", syncActiveSlide);
+  window.addEventListener("DOMContentLoaded", syncActiveSlide);
+
+  // Al hacer clic en flechas o números, solo cambia el hash (lo que dispara la lógica de actualización)
   document.addEventListener("click", function (e) {
     const target = e.target.closest('a[href^="#slide"]');
     if (target) {
       e.preventDefault();
       const hash = target.getAttribute("href");
-      if (hash) {
-        const idx = parseInt(hash.replace("#slide", ""), 10);
-        setActiveCarouselBtn(idx);
-        // Cambia el hash en la URL sin hacer scroll
-        history.replaceState(null, "", hash);
+      if (hash && window.location.hash !== hash) {
+        window.location.hash = hash;
+      } else {
+        // Si ya está en el hash, forzar actualización visual
+        syncActiveSlide();
       }
     }
   });
