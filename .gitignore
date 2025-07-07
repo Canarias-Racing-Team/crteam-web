@@ -23,3 +23,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# ignore all files in the root directory
+./*
+.vscode/
+.pageinsight/
