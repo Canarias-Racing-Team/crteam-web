@@ -3,20 +3,24 @@ import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import type { CarouselItemType } from "@types";
 
-const { items = [], id, className = "" } = Astro.props;
+let { items, id, className = "" } = Astro.props;
+// Protección extra: nunca null/undefined y siempre array
+if (!Array.isArray(items))
+  items =
+    items && typeof items === "object" && typeof items.length === "number"
+      ? Array.from(items)
+      : [];
+if (!items) items = [];
 ---
 
 {
-  items.length > 0 && (
+  Array.isArray(items) && items.length > 0 ? (
     <div class={className}>
-      <div
-        class="carousel w-full h-full"
-        id={id}
-        role="region"
-        aria-label="Carousel"
-      >
+      <div class="carousel w-full h-full" id={id}>
         {/* Carousel items */}
         {items.map((image: CarouselItemType, i: number) => {
+          if (!image || typeof image !== "object" || !("src" in image))
+            return null;
           const slideId = `slide${i + 1}`;
           const prevId = `#slide${((i - 1 + items.length) % items.length) + 1}`;
           const nextId = `#slide${((i + 1) % items.length) + 1}`;
@@ -24,8 +28,6 @@ const { items = [], id, className = "" } = Astro.props;
             <div
               id={slideId}
               class="carousel-item relative w-full h-full items-center justify-center"
-              role="tabpanel"
-              aria-labelledby={`carousel-slide-${i + 1}`}
             >
               <Image
                 alt={image.alt ?? `Imagen ${i + 1}`}
@@ -34,19 +36,11 @@ const { items = [], id, className = "" } = Astro.props;
                 inferSize
                 loading="lazy"
               />
-              <div
-                class="absolute top-1/2 right-5 left-5 flex -translate-y-1/2 transform justify-between"
-                role="group"
-                aria-label="Carousel navigation"
-              >
-                <a
-                  href={prevId}
-                  class="btn btn-circle"
-                  aria-label="Previous slide"
-                >
+              <div class="absolute top-1/2 right-5 left-5 flex -translate-y-1/2 transform justify-between">
+                <a href={prevId} class="btn btn-circle">
                   <Icon name="mdi:chevron-left" class="h-5 w-5" />
                 </a>
-                <a href={nextId} class="btn btn-circle" aria-label="Next slide">
+                <a href={nextId} class="btn btn-circle">
                   <Icon name="mdi:chevron-right" class="h-5 w-5" />
                 </a>
               </div>
@@ -56,15 +50,15 @@ const { items = [], id, className = "" } = Astro.props;
       </div>
       <div class="carousel-buttons flex justify-center join mt-4">
         {/* Carousel buttons */}
-        {items.map((_: CarouselItemType, i: number) => {
+        {items.map((item: CarouselItemType, i: number) => {
+          if (!item || typeof item !== "object" || !("src" in item))
+            return null;
           const idx = i + 1;
           return (
             <a
               href={`#slide${idx}`}
               id={`carousel-btn-${idx}`}
               class="btn btn-circle btn-sm join-item btn-primary"
-              aria-label={`Go to slide ${idx}`}
-              aria-current={idx === 1 ? "page" : undefined}
             >
               {idx}
             </a>
@@ -72,7 +66,7 @@ const { items = [], id, className = "" } = Astro.props;
         })}
       </div>
     </div>
-  )
+  ) : null
 }
 <script is:inline>
   // Mantiene el color primario en el botón activo

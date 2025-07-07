@@ -1,5 +1,6 @@
 ---
 import Buttons from "./Buttons.astro";
+import helmetBg from "@assets/fotos/red_pilot-black_bg.jpg";
 
 const buttons = [
   {
@@ -15,77 +16,53 @@ const buttons = [
 ];
 ---
 
-<div
-  id={Astro.self.name}
-  class="hero min-h-screen relative"
-  style="
-    background-image:
-      radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 80%),
-      url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp);
-  "
+<section
+  class="hero min-h-screen relative flex flex-col items-center justify-center text-center text-neutral-content"
+  style={`
+    background: radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 80%), url('${helmetBg.src}');
+    background-size: cover;
+    background-position: center;
+    background-color: #23272b;
+  `}
 >
-  <div class="hero-overlay bg-opacity-70"></div>
-  <div
-    class="hero-content text-neutral-content text-center flex flex-col gap-2 md:gap-4 items-center justify-evenly"
-  >
+  <div class="hero-overlay bg-opacity-70 absolute inset-0"></div>
+  <div class="w-full flex justify-center">
     <h1
-      class="hero-title text-4xl md:text-6xl lg:text-8xl font-black drop-shadow-lg w-full flex justify-center items-center"
+      class="text-4xl md:text-6xl lg:text-8xl font-black drop-shadow-lg max-w-[814.2px] min-w-[315px] z-10"
     >
-      <div
-        class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 w-full"
-      >
-        <!-- Layout móvil: lectura coherente -->
-        <div class="flex md:hidden flex-col items-center text-center gap-2">
-          <div class="flex gap-3">
-            <span class="text-white leading-none font-black tracking-wider"
-              >OCHO</span
-            >
-            <span
-              class="text-outline-white leading-none font-black tracking-wider"
-              >ISLAS</span
-            >
-          </div>
-          <div class="flex gap-3">
-            <span class="text-secondary leading-none font-black tracking-wider"
-              >TRES</span
-            >
-            <span
-              class="text-outline-primary leading-none font-black tracking-wider"
-              >COLORES</span
-            >
-          </div>
-        </div>
-
-        <!-- Layout desktop: diseño original -->
-        <div class="hidden md:flex flex-col items-end text-right">
-          <span class="text-white leading-none font-black tracking-wider"
-            >OCHO</span
-          >
-          <span class="text-secondary leading-none font-black tracking-wider"
-            >TRES</span
-          >
-        </div>
-        <div class="hidden md:flex flex-col items-start text-left">
-          <span
-            class="text-outline-white leading-none font-black tracking-wider block"
-            >ISLAS</span
-          >
-          <span
-            class="text-outline-primary leading-none font-black tracking-wider block"
-            >COLORES</span
-          >
-        </div>
-      </div>
+      <span class="grid w-full place-items-center hero-title-grid">
+        <span
+          class="text-white leading-none font-black tracking-wider col-start-1 row-start-1 text-right w-full"
+          >OCHO</span
+        >
+        <span
+          class="text-outline-white leading-none font-black tracking-wider col-start-2 row-start-1 text-left w-full"
+          >ISLAS</span
+        >
+        <span
+          class="text-secondary leading-none font-black tracking-wider col-start-1 row-start-2 text-right w-full"
+          >TRES</span
+        >
+        <span
+          class="text-outline-primary leading-none font-black tracking-wider col-start-2 row-start-2 text-left w-full"
+          >COLORES</span
+        >
+      </span>
     </h1>
-    <div id="subtitle" class="flex flex-col items-center">
-      <p class="text-md md:text-2xl">
-        1º Equipo de Fórmula Student de Canarias
-      </p>
-      <Buttons
-        buttons={buttons}
-        buttonClass="join-item btn btn-primary btn-md md:btn-lg"
-        className="join join-vertical md:join-horizontal mt-5 md:mt-6"
-      />
-    </div>
   </div>
-</div>
+  <div id="subtitle" class="flex flex-col items-center z-10 mt-4">
+    <p class="text-md md:text-2xl">1º Equipo de Fórmula Student de Canarias</p>
+    <Buttons
+      buttons={buttons}
+      buttonClass="join-item btn btn-primary btn-md md:btn-lg"
+      className="join join-vertical md:join-horizontal mt-5 md:mt-6"
+    />
+  </div>
+</section>
+
+<style>
+  .hero-title-grid {
+    grid-template-columns: repeat(2, max-content);
+    gap: 0.05em 0.2em;
+  }
+</style>

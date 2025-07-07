@@ -1,14 +1,13 @@
 ---
 import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
-import logoCRT from "@assets/logos-crteam/CRT BLANCO.png"; // Importa la imagen
+import logoCRT from "@assets/logos-crteam/CRT BLANCO.png";
 import { getNotionPages } from "@utils/notion";
-const newsCount = await getNotionPages();
-const newsCountSpan =
-  newsCount.length > 99 ? "99+" : newsCount.length.toString();
 
+const newsCount = (await getNotionPages()).length;
+const newsCountSpan = newsCount > 99 ? "99+" : newsCount.toString();
 const currentPath = new URL(Astro.request.url).pathname;
-const navItem = [
+const navItems = [
   { name: "El Equipo", href: "/#team" },
   { name: "El Coche", href: "/#car" },
   { name: "Noticias", href: "/news", span: newsCountSpan },
@@ -30,49 +29,38 @@ const navItem = [
 >
   <!-- Transparente por defecto y si hay scroll opaco -->
   <script type="text/javascript" is:inline>
-    document.addEventListener("DOMContentLoaded", function () {
+    // Navbar background blur/opaque on scroll
+    document.addEventListener("DOMContentLoaded", () => {
       const navbar = document.getElementById("navbar");
-
-      // Precompute styles to avoid layout shifts
-      const scrolledStyles = {
+      const scrolled = {
         backgroundColor: "hsl(var(--b1) / 0.9)",
         backdropFilter: "blur(8px)",
         boxShadow:
           "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
       };
-
-      const transparentStyles = {
+      const transparent = {
         backgroundColor: "transparent",
         backdropFilter: "none",
         boxShadow: "none",
       };
-
-      function handleScroll() {
-        const scrollY = window.scrollY;
-        const styles = scrollY > 10 ? scrolledStyles : transparentStyles;
-
-        // Apply styles directly to avoid class manipulation layout shifts
-        Object.assign(navbar.style, styles);
+      function setNavbarStyle() {
+        Object.assign(
+          navbar.style,
+          window.scrollY > 10 ? scrolled : transparent
+        );
       }
-
-      // Use requestAnimationFrame for smooth scrolling
-      let ticking = false;
-      window.addEventListener("scroll", () => {
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            handleScroll();
-            ticking = false;
-          });
-          ticking = true;
-        }
-      });
-
-      handleScroll();
+      window.addEventListener("scroll", setNavbarStyle, { passive: true });
+      setNavbarStyle();
     });
   </script>
 
   <div class="flex-1">
-    <a class="btn btn-link" href="/" style="height: 3rem; min-height: 3rem;">
+    <a
+      class="btn btn-link"
+      href="/"
+      style="height: 3rem; min-height: 3rem;"
+      aria-label="Inicio"
+    >
       <Image
         src={logoCRT}
         alt="Canarias Racing Team Logo"
@@ -87,31 +75,32 @@ const navItem = [
   <div class="flex-none hidden lg:block">
     <div
       role="tablist"
+      aria-label="Navegación principal"
       class="tabs tabs-border py-2"
       id="navbar-tabs"
       style="height: 3rem; min-height: 3rem;"
     >
       {
-        navItem.map((item) => {
-          const isAnchor = item.href.includes("#");
-          const isActive = !isAnchor && currentPath === item.href;
+        navItems.map(({ name, href, span }) => {
+          const isAnchor = href.includes("#");
+          const isActive = !isAnchor && currentPath === href;
           return (
             <a
+              id={`tab-${name.toLowerCase()}`}
               role="tab"
-              class={`text-lg tab text-base-content hover:text-primary ${isActive ? "tab-active" : ""}`}
-              href={item.href}
+              aria-current={isActive ? "page" : undefined}
+              class={`text-lg tab ${isActive ? "tab-active" : ""} ${isActive ? "tab-news-active" : "tab-news-inactive"}`}
+              href={href}
               style="height: 2.5rem; min-height: 2.5rem; display: flex; align-items: center;"
-              {...(isAnchor ? { "data-anchor": item.href.split("#")[1] } : {})}
+              {...(isAnchor ? { "data-anchor": href.split("#")[1] } : {})}
             >
-              {item.name}
-              {item.span && (
+              {name}
+              {span && (
                 <span
-                  class={`indicator-item badge ml-2 ${
-                    isActive ? "badge-primary" : "badge-outline badge-primary"
-                  }`}
-                  style="min-width: 1.5rem; height: 1.25rem;"
+                  class={`indicator-item badge ml-2 badge-news ${isActive ? "badge-news-active" : "badge-news-inactive"}`}
+                  aria-label="Número de noticias"
                 >
-                  {item.span}
+                  {span}
                 </span>
               )}
             </a>
@@ -119,6 +108,7 @@ const navItem = [
         })
       }
     </div>
+    <!-- El CSS de los tabs y badges se ha movido a app.css -->
   </div>
 
   <!-- Menu Mobile -->
@@ -127,6 +117,7 @@ const navItem = [
       class="btn btn-square btn-ghost btn-xl"
       id="mobile-menu-toggle"
       style="height: 3rem; width: 3rem; min-height: 3rem;"
+      aria-label="Abrir menú"
     >
       <Icon
         name="mdi:menu"
@@ -160,7 +151,8 @@ const navItem = [
     >
       <h2
         class="text-xl font-semibold text-base-content"
-        style="font-display: swap; line-height: 1.2;"
+        style="line-height: 1.2;"
+        aria-label="Menú"
       >
         Menú
       </h2>
@@ -168,6 +160,7 @@ const navItem = [
         class="btn btn-square btn-ghost btn-xl"
         id="mobile-menu-close"
         style="height: 3rem; width: 3rem; min-height: 3rem;"
+        aria-label="Cerrar menú"
       >
         <Icon
           name="mdi:close"
@@ -179,40 +172,31 @@ const navItem = [
     <nav class="p-4" style="min-height: calc(100vh - 4rem); contain: layout;">
       <ul class="space-y-2" style="min-height: 20rem;">
         {
-          navItem.map((item) => {
-            const isAnchor = item.href.includes("#");
-            const isActive = !isAnchor && currentPath === item.href;
+          navItems.map(({ name, href, span }) => {
+            const isAnchor = href.includes("#");
+            const isActive = !isAnchor && currentPath === href;
             return (
               <li style="min-height: 3rem;">
                 <a
-                  class={`block px-4 py-3 rounded-lg transition-colors hover:bg-base-300 ${
-                    isActive ? "bg-primary text-primary-content" : ""
-                  }`}
-                  href={item.href}
+                  class={`block px-4 py-3 rounded-lg transition-colors hover:bg-base-300${isActive ? " bg-primary text-primary-content" : ""}`}
+                  aria-current={isActive ? "page" : undefined}
+                  href={href}
                   style="min-height: 3rem; display: flex; align-items: center;"
-                  {...(isAnchor
-                    ? { "data-anchor": item.href.split("#")[1] }
-                    : {})}
+                  aria-label={name}
+                  {...(isAnchor ? { "data-anchor": href.split("#")[1] } : {})}
                 >
-                  <div
-                    class="flex items-center justify-between"
-                    style="width: 100%;"
-                  >
+                  <span class="text-lg" style="line-height: 1.2; flex:1;">
+                    {name}
+                  </span>
+                  {span && (
                     <span
-                      class="text-lg"
-                      style="font-display: swap; line-height: 1.2;"
+                      class="badge badge-lg badge-outline ml-2"
+                      style="min-width: 2rem; height: 1.5rem;"
+                      aria-label="Número de noticias"
                     >
-                      {item.name}
+                      {span}
                     </span>
-                    {item.span && (
-                      <span
-                        class="badge badge-lg badge-outline"
-                        style="min-width: 2rem; height: 1.5rem;"
-                      >
-                        {item.span}
-                      </span>
-                    )}
-                  </div>
+                  )}
                 </a>
               </li>
             );
@@ -221,164 +205,99 @@ const navItem = [
       </ul>
     </nav>
   </div>
-</div>
 
-<script is:inline>
-  // Activar tab de ancla según la sección visible
-  document.addEventListener("DOMContentLoaded", function () {
-    const navbar = document.getElementById("navbar");
-    const anchorTabs = document.querySelectorAll("[data-anchor]");
-    if (anchorTabs.length === 0) return;
-
-    const anchors = Array.from(anchorTabs).map((tab) =>
-      tab.getAttribute("data-anchor")
-    );
-    const sections = anchors
-      .map((id) => document.getElementById(id))
-      .filter(Boolean);
-
-    if (sections.length === 0) return;
-
-    const findActiveSection = () => {
-      const scrollPos = window.scrollY + 500; // Offset reducido para activar antes
-
-      // Si llegamos al final, activar contact
-      if (
-        window.scrollY + window.innerHeight >=
-        document.documentElement.scrollHeight - 50
-      ) {
-        return "contact";
-      }
-
-      // Buscar sección activa
-      for (let i = sections.length - 1; i >= 0; i--) {
-        if (scrollPos >= sections[i].offsetTop) {
-          const sectionId = sections[i].id;
-
-          // Si es partners, añadir un buffer pequeño para que tarde un poco más en cambiar
-          if (sectionId === "partners") {
-            const nextSection = sections[i + 1];
-
-            // Solo añadir buffer si hay una sección siguiente y no hemos avanzado mucho
-            if (nextSection && scrollPos < nextSection.offsetTop + 150) {
-              return sectionId;
+  <script is:inline>
+    // Tabs de ancla activos según sección visible y menú móvil
+    document.addEventListener("DOMContentLoaded", () => {
+      // --- Anchor tab highlight ---
+      const anchorTabs = document.querySelectorAll("[data-anchor]");
+      if (anchorTabs.length) {
+        const anchors = Array.from(anchorTabs).map((tab) =>
+          tab.getAttribute("data-anchor")
+        );
+        const sections = anchors
+          .map((id) => document.getElementById(id))
+          .filter(Boolean);
+        function findActiveSection() {
+          const scrollPos = window.scrollY + 500;
+          if (
+            window.scrollY + window.innerHeight >=
+            document.documentElement.scrollHeight - 50
+          )
+            return "contact";
+          for (let i = sections.length - 1; i >= 0; i--) {
+            if (scrollPos >= sections[i].offsetTop) {
+              if (sections[i].id === "partners") {
+                const next = sections[i + 1];
+                if (next && scrollPos < next.offsetTop + 150)
+                  return sections[i].id;
+              }
+              return sections[i].id;
             }
           }
-
-          return sectionId;
+          return null;
         }
-      }
-
-      return null;
-    };
-
-    const updateActiveTab = () => {
-      const activeId = findActiveSection();
-
-      anchorTabs.forEach((tab) => {
-        const tabId = tab.getAttribute("data-anchor");
-        if (tabId === activeId) {
-          tab.classList.add("tab-active");
-          // Forzar el color primary para el tab activo
-          tab.style.color = "var(--color-primary)";
-          tab.style.opacity = "1";
-        } else {
-          tab.classList.remove("tab-active");
-          // Restaurar el color base para tabs inactivos
-          tab.style.color = "var(--color-base-content)";
-          tab.style.opacity = "0.9";
+        function updateActiveTab() {
+          const activeId = findActiveSection();
+          anchorTabs.forEach((tab) => {
+            const tabId = tab.getAttribute("data-anchor");
+            tab.classList.toggle("tab-active", tabId === activeId);
+            tab.style.color =
+              tabId === activeId
+                ? "var(--color-primary)"
+                : "var(--color-base-content)";
+            tab.style.opacity = tabId === activeId ? "1" : "0.9";
+          });
         }
-      });
-    };
-
-    // Escuchar scroll con throttling suave
-    let scrollTimeout;
-    let isScrolling = false;
-
-    window.addEventListener("scroll", () => {
-      if (!isScrolling) {
-        isScrolling = true;
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-          updateActiveTab();
-          isScrolling = false;
-        }, 100); // Reducir delay
+        window.addEventListener("scroll", updateActiveTab, { passive: true });
+        window.addEventListener("resize", updateActiveTab);
+        anchorTabs.forEach((tab) => {
+          tab.addEventListener("click", function () {
+            const id = tab.getAttribute("data-anchor");
+            if (id) setTimeout(updateActiveTab, 200);
+          });
+        });
+        updateActiveTab();
       }
-    });
-
-    // Activar inicial
-    updateActiveTab();
-
-    // Click en tabs
-    anchorTabs.forEach((tab) => {
-      tab.addEventListener("click", function () {
-        const id = tab.getAttribute("data-anchor");
-        if (id) {
+      // --- Mobile menu ---
+      const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
+      const mobileMenu = document.getElementById("mobile-menu");
+      const mobileMenuDrawer = document.getElementById("mobile-menu-drawer");
+      const mobileMenuClose = document.getElementById("mobile-menu-close");
+      const mobileMenuOverlay = document.getElementById("mobile-menu-overlay");
+      if (
+        mobileMenu &&
+        mobileMenuToggle &&
+        mobileMenuDrawer &&
+        mobileMenuClose &&
+        mobileMenuOverlay
+      ) {
+        function openMobileMenu() {
+          mobileMenu.style.visibility = "visible";
+          mobileMenu.style.opacity = "1";
+          mobileMenuOverlay.style.opacity = "0.5";
+          mobileMenuDrawer.offsetHeight;
+          mobileMenuDrawer.style.transform = "translateX(0)";
+        }
+        function closeMobileMenu() {
+          mobileMenuDrawer.style.transform = "translateX(100%)";
+          mobileMenuOverlay.style.opacity = "0";
           setTimeout(() => {
-            anchorTabs.forEach((t) => {
-              const tId = t.getAttribute("data-anchor");
-              if (tId === id) {
-                t.classList.add("tab-active");
-                // Forzar el color primary para el tab activo
-                t.style.color = "var(--color-primary)";
-                t.style.opacity = "1";
-              } else {
-                t.classList.remove("tab-active");
-                // Restaurar el color base para tabs inactivos
-                t.style.color = "var(--color-base-content)";
-                t.style.opacity = "0.9";
-              }
-            });
-          }, 200);
+            mobileMenu.style.opacity = "0";
+            setTimeout(() => {
+              mobileMenu.style.visibility = "hidden";
+            }, 300);
+          }, 100);
         }
-      });
+        mobileMenuToggle.addEventListener("click", openMobileMenu);
+        mobileMenuClose.addEventListener("click", closeMobileMenu);
+        mobileMenuOverlay.addEventListener("click", closeMobileMenu);
+        mobileMenu.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () =>
+            setTimeout(closeMobileMenu, 100)
+          );
+        });
+      }
     });
-
-    // Resize
-    window.addEventListener("resize", updateActiveTab);
-  });
-
-  // Mobile menu functionality
-  document.addEventListener("DOMContentLoaded", function () {
-    const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
-    const mobileMenu = document.getElementById("mobile-menu");
-    const mobileMenuDrawer = document.getElementById("mobile-menu-drawer");
-    const mobileMenuClose = document.getElementById("mobile-menu-close");
-    const mobileMenuOverlay = document.getElementById("mobile-menu-overlay");
-
-    const openMobileMenu = () => {
-      // Show menu without layout shift
-      mobileMenu.style.visibility = "visible";
-      mobileMenu.style.opacity = "1";
-      mobileMenuOverlay.style.opacity = "0.5";
-
-      // Force reflow to ensure the element is rendered
-      mobileMenuDrawer.offsetHeight;
-      mobileMenuDrawer.style.transform = "translateX(0)";
-    };
-
-    const closeMobileMenu = () => {
-      mobileMenuDrawer.style.transform = "translateX(100%)";
-      mobileMenuOverlay.style.opacity = "0";
-
-      setTimeout(() => {
-        mobileMenu.style.opacity = "0";
-        setTimeout(() => {
-          mobileMenu.style.visibility = "hidden";
-        }, 300);
-      }, 100);
-    };
-
-    mobileMenuToggle.addEventListener("click", openMobileMenu);
-    mobileMenuClose.addEventListener("click", closeMobileMenu);
-    mobileMenuOverlay.addEventListener("click", closeMobileMenu);
-
-    // Close mobile menu on navigation
-    const mobileNavLinks = mobileMenu.querySelectorAll("a");
-    mobileNavLinks.forEach((link) => {
-      link.addEventListener("click", () => {
-        setTimeout(closeMobileMenu, 100);
-      });
-    });
-  });
-</script>
+  </script>
+</div>

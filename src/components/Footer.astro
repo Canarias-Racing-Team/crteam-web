@@ -72,7 +72,7 @@ const navigationSections = [
             const isSocial = "icon" in item;
             return (
               <a
-                class={`link link-hover justify-start text-sm mb-${isSocial ? "2" : "1"} ${isSocial ? "flex items-center hover:text-white" : "block"}`}
+                class={`link link-hover justify-start text-sm mb-2 ${isSocial ? "flex items-center hover:text-white" : "block"}`}
                 href={item.href}
                 aria-label={item.label}
                 target={isSocial ? "_blank" : undefined}
@@ -88,7 +88,7 @@ const navigationSections = [
     }
   </div>
 
-  <form id="contact" class="text-center lg:text-left">
+  <form id="contact" class="text-center px-4 md:px-0 lg:text-left">
     <p class="text-sm font-bold uppercase mb-4 text-gray-400">Contáctanos</p>
     <fieldset class="w-full max-w-xs">
       <div class="flex flex-row gap-2 join">
