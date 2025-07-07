@@ -4,18 +4,31 @@ import { Image } from "astro:assets";
 import logoCRT from "@assets/logos-crteam/CRTEAM BLANCO.png"; // Importa la imagen
 const year = new Date().getFullYear();
 
-const links = [
-  { href: "/about", label: "Sobre nosotros" },
-  { href: "/contact", label: "Contacto" },
-  { href: "/jobs", label: "Trabaja con nosotros" },
-  { href: "/press", label: "Prensa" },
-];
-
-const socials = [
-  { href: "https://twitter.com/", icon: "mdi:twitter", label: "Twitter" },
-  { href: "https://youtube.com/", icon: "mdi:youtube", label: "YouTube" },
-  { href: "https://facebook.com/", icon: "mdi:facebook", label: "Facebook" },
-];
+const navigationSections = [
+  {
+    title: "Enlaces",
+    ariaLabel: "Enlaces principales",
+    items: [
+      { href: "/about", label: "Sobre nosotros" },
+      { href: "/contact", label: "Contacto" },
+      { href: "/jobs", label: "Trabaja con nosotros" },
+      { href: "/press", label: "Prensa" },
+    ],
+  },
+  {
+    title: "Síguenos",
+    ariaLabel: "Redes sociales",
+    items: [
+      { href: "https://twitter.com/", icon: "mdi:twitter", label: "Twitter" },
+      { href: "https://youtube.com/", icon: "mdi:youtube", label: "YouTube" },
+      {
+        href: "https://facebook.com/",
+        icon: "mdi:facebook",
+        label: "Facebook",
+      },
+    ],
+  },
+] as const;
 ---
 
 <footer
@@ -40,48 +53,43 @@ const socials = [
     <p class="text-sm opacity-75">Todos los derechos reservados</p>
     <a
       href="https://tomas2p.vercel.app"
-      class="text-sm link link-hover text-gray-400 hover:text-white mt-2"
-      target="_blank">Hecho por @Tomas2p</a
+      class="link link-hover justify-start block text-sm mb-1 opacity-75 hover:opacity-100"
+      target="_blank"
+      rel="noopener noreferrer"
     >
+      Hecho por @Tomas2p
+    </a>
   </aside>
 
   <div class="flex flex-row gap-16 lg:gap-20">
-    <nav aria-label="Enlaces principales" class="text-left">
-      <h6 class="text-sm font-bold uppercase mb-4 text-gray-400">Enlaces</h6>
-      {
-        links.map((link) => (
-          <a
-            class="link link-hover justify-start block text-sm mb-1"
-            href={link.href}
-            aria-label={link.label}
-          >
-            {link.label}
-          </a>
-        ))
-      }
-    </nav>
-
-    <nav aria-label="Redes sociales" class="text-left">
-      <h6 class="text-sm font-bold uppercase mb-4 text-gray-400">Síguenos</h6>
-      {
-        socials.map((social) => (
-          <a
-            class="link link-hover flex items-center justify-start text-sm mb-2 hover:text-white"
-            href={social.href}
-            aria-label={social.label}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Icon name={social.icon} class="h-4 w-4 mr-2" />
-            <span>{social.label}</span>
-          </a>
-        ))
-      }
-    </nav>
+    {
+      navigationSections.map((section) => (
+        <nav aria-label={section.ariaLabel} class="text-left">
+          <p class="text-sm font-bold uppercase mb-4 text-gray-400">
+            {section.title}
+          </p>
+          {section.items.map((item) => {
+            const isSocial = "icon" in item;
+            return (
+              <a
+                class={`link link-hover justify-start text-sm mb-${isSocial ? "2" : "1"} ${isSocial ? "flex items-center hover:text-white" : "block"}`}
+                href={item.href}
+                aria-label={item.label}
+                target={isSocial ? "_blank" : undefined}
+                rel={isSocial ? "noopener noreferrer" : undefined}
+              >
+                {isSocial && <Icon name={item.icon} class="h-4 w-4 mr-2" />}
+                <span>{item.label}</span>
+              </a>
+            );
+          })}
+        </nav>
+      ))
+    }
   </div>
 
   <form id="contact" class="text-center lg:text-left">
-    <h6 class="text-sm font-bold uppercase mb-4 text-gray-400">Contáctanos</h6>
+    <p class="text-sm font-bold uppercase mb-4 text-gray-400">Contáctanos</p>
     <fieldset class="w-full max-w-xs">
       <div class="flex flex-row gap-2 join">
         <input
@@ -91,7 +99,7 @@ const socials = [
           class="input join-item bg-neutral-700 border-neutral-600 text-center text-white placeholder-gray-400 w-full"
         />
         <button
-          class="btn join-item bg-yellow-500 hover:bg-yellow-600 text-black border-none font-semibold"
+          class="btn join-item bg-primary text-black border-none font-semibold"
           >Contactar</button
         >
       </div>
