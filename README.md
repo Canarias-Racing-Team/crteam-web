@@ -26,7 +26,7 @@ npm run preview    # Previsualizar build
 
 > **Nota**: Este proyecto puede mostrar advertencias de seguridad en `npm audit` relacionadas con `path-to-regexp` y dependencias de Vercel/Astro. Estas son vulnerabilidades conocidas en las dependencias del framework y no pueden ser solucionadas manualmente por el momento. Los equipos de Vercel y Astro están trabajando en las correcciones correspondientes.
 
-> **Actualización de paquetes**: Si necesitas actualizar dependencias y encuentras conflictos con Vercel, sigue estos pasos:
+> **Actualización de paquetes**: Si necesitas actualizar dependencias y encuentras conflictos con Vercel, sigue estos pasos: 
 > 1. `npm uninstall @astrojs/vercel`
 > 2. `npm update` (actualizar otros paquetes)
 > 3. `npm install @astrojs/vercel` (reinstalar Vercel)
