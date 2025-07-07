@@ -6,7 +6,10 @@ import type { CarComponentType } from "@/types";
 const { carComponents = [], id, className } = Astro.props;
 ---
 
-<div id={id} class={`tabs tabs-border self-center ${className || ""}`} role="tablist">
+<div
+  id={id}
+  class={`tabs tabs-border self-center ${className || ""}`}
+>
   {
     carComponents.map((component: CarComponentType, index: number) => {
       const tabId = `tab-${component.name.toLowerCase().replace(/\s+/g, "-")}`;
@@ -18,13 +21,12 @@ const { carComponents = [], id, className } = Astro.props;
 
       return (
         <>
-          <label class="tab gap-2 sm:py-0 cursor-pointer" for={tabId}>
+          <label id={`tab-${tabId}`} class="tab gap-2 sm:py-0 cursor-pointer" for={tabId}>
             <input
               type="radio"
               name={`car_components_tabs_${id}`}
               id={tabId}
               checked={index === 0}
-              role="tab"
             />
             {component.icon && <Icon name={`mdi:${component.icon}`} />}
             <span>{component.name}</span>
