@@ -19,50 +19,78 @@ const navItem = [
 
 <div
   id="navbar"
-  class="navbar bg-transparent transition-colors duration-300 fixed top-0 left-0 w-full z-50 mx-auto px-4 md:px-8 lg:px-16 xl:px-24 2xl:px-32"
+  class="navbar fixed top-0 left-0 w-full z-50 mx-auto px-4 md:px-8 lg:px-16 xl:px-24 2xl:px-32"
+  style="
+    background-color: transparent;
+    transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+    will-change: background-color, backdrop-filter;
+    height: 4rem;
+    min-height: 4rem;
+  "
 >
   <!-- Transparente por defecto y si hay scroll opaco -->
   <script type="text/javascript" is:inline>
     document.addEventListener("DOMContentLoaded", function () {
       const navbar = document.getElementById("navbar");
+
+      // Precompute styles to avoid layout shifts
+      const scrolledStyles = {
+        backgroundColor: "hsl(var(--b1) / 0.9)",
+        backdropFilter: "blur(8px)",
+        boxShadow:
+          "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+      };
+
+      const transparentStyles = {
+        backgroundColor: "transparent",
+        backdropFilter: "none",
+        boxShadow: "none",
+      };
+
       function handleScroll() {
-        if (window.scrollY > 10) {
-          navbar.classList.remove("bg-transparent");
-          navbar.classList.add(
-            "bg-base-100",
-            "bg-opacity-90",
-            "backdrop-blur",
-            "navbar-gradient"
-          );
-        } else {
-          navbar.classList.add("bg-transparent");
-          navbar.classList.remove(
-            "bg-base-100",
-            "bg-opacity-90",
-            "backdrop-blur",
-            "navbar-gradient"
-          );
-        }
+        const scrollY = window.scrollY;
+        const styles = scrollY > 10 ? scrolledStyles : transparentStyles;
+
+        // Apply styles directly to avoid class manipulation layout shifts
+        Object.assign(navbar.style, styles);
       }
-      window.addEventListener("scroll", handleScroll);
+
+      // Use requestAnimationFrame for smooth scrolling
+      let ticking = false;
+      window.addEventListener("scroll", () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            handleScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+
       handleScroll();
     });
   </script>
 
   <div class="flex-1">
-    <a class="btn btn-link" href="/">
+    <a class="btn btn-link" href="/" style="height: 3rem; min-height: 3rem;">
       <Image
         src={logoCRT}
         alt="Canarias Racing Team Logo"
         loading="eager"
         class="h-3/4 md:h-full w-auto"
+        style="height: 2rem; width: auto;"
       />
     </a>
   </div>
 
   <!-- Menu Desktop -->
   <div class="flex-none hidden lg:block">
-    <div role="tablist" class="tabs tabs-border py-2" id="navbar-tabs">
+    <div
+      role="tablist"
+      class="tabs tabs-border py-2"
+      id="navbar-tabs"
+      style="height: 3rem; min-height: 3rem;"
+    >
       {
         navItem.map((item) => {
           const isAnchor = item.href.includes("#");
@@ -70,16 +98,18 @@ const navItem = [
           return (
             <a
               role="tab"
-              class={`text-lg tab ${isActive ? "tab-active" : ""}`}
+              class={`text-lg tab text-base-content hover:text-primary ${isActive ? "tab-active" : ""}`}
               href={item.href}
+              style="height: 2.5rem; min-height: 2.5rem; display: flex; align-items: center;"
               {...(isAnchor ? { "data-anchor": item.href.split("#")[1] } : {})}
             >
               {item.name}
               {item.span && (
                 <span
                   class={`indicator-item badge ml-2 ${
-                    isActive ? "badge-primary" : "badge-outline badge-ghost"
+                    isActive ? "badge-primary" : "badge-outline badge-primary"
                   }`}
+                  style="min-width: 1.5rem; height: 1.25rem;"
                 >
                   {item.span}
                 </span>
@@ -93,47 +123,92 @@ const navItem = [
 
   <!-- Menu Mobile -->
   <div class="flex-none lg:hidden pe-4">
-    <button class="btn btn-square btn-ghost btn-xl" id="mobile-menu-toggle">
-      <Icon name="mdi:menu" class="w-10 h-10" />
+    <button
+      class="btn btn-square btn-ghost btn-xl"
+      id="mobile-menu-toggle"
+      style="height: 3rem; width: 3rem; min-height: 3rem;"
+    >
+      <Icon
+        name="mdi:menu"
+        class="w-10 h-10"
+        style="width: 2rem; height: 2rem;"
+      />
     </button>
   </div>
 </div>
 
 <!-- Mobile Menu Drawer -->
-<div id="mobile-menu" class="fixed inset-0 z-[60] lg:hidden hidden">
-  <div class="fixed inset-0 bg-black bg-opacity-50" id="mobile-menu-overlay">
+<div
+  id="mobile-menu"
+  class="fixed inset-0 z-[60] lg:hidden"
+  style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0.3s ease;"
+>
+  <div
+    class="fixed inset-0 bg-black"
+    id="mobile-menu-overlay"
+    style="opacity: 0; transition: opacity 0.3s ease;"
+  >
   </div>
   <div
-    class="fixed top-0 right-0 h-full w-80 bg-base-100 shadow-xl transform translate-x-full transition-transform duration-300 z-[70]"
+    class="fixed top-0 right-0 h-full w-80 bg-base-100 shadow-xl z-[70]"
     id="mobile-menu-drawer"
+    style="transform: translateX(100%); transition: transform 0.3s ease; will-change: transform; contain: layout;"
   >
-    <div class="flex justify-between items-center p-4 border-b border-base-300">
-      <h2 class="text-xl font-semibold text-base-content">Menú</h2>
-      <button class="btn btn-square btn-ghost btn-xl" id="mobile-menu-close">
-        <Icon name="mdi:close" class="w-10 h-10" />
+    <div
+      class="flex justify-between items-center p-4 border-b border-base-300"
+      style="min-height: 4rem;"
+    >
+      <h2
+        class="text-xl font-semibold text-base-content"
+        style="font-display: swap; line-height: 1.2;"
+      >
+        Menú
+      </h2>
+      <button
+        class="btn btn-square btn-ghost btn-xl"
+        id="mobile-menu-close"
+        style="height: 3rem; width: 3rem; min-height: 3rem;"
+      >
+        <Icon
+          name="mdi:close"
+          class="w-10 h-10"
+          style="width: 2rem; height: 2rem;"
+        />
       </button>
     </div>
-    <nav class="p-4">
-      <ul class="space-y-2">
+    <nav class="p-4" style="min-height: calc(100vh - 4rem); contain: layout;">
+      <ul class="space-y-2" style="min-height: 20rem;">
         {
           navItem.map((item) => {
             const isAnchor = item.href.includes("#");
             const isActive = !isAnchor && currentPath === item.href;
             return (
-              <li>
+              <li style="min-height: 3rem;">
                 <a
                   class={`block px-4 py-3 rounded-lg transition-colors hover:bg-base-300 ${
                     isActive ? "bg-primary text-primary-content" : ""
                   }`}
                   href={item.href}
+                  style="min-height: 3rem; display: flex; align-items: center;"
                   {...(isAnchor
                     ? { "data-anchor": item.href.split("#")[1] }
                     : {})}
                 >
-                  <div class="flex items-center justify-between">
-                    <span class="text-lg">{item.name}</span>
+                  <div
+                    class="flex items-center justify-between"
+                    style="width: 100%;"
+                  >
+                    <span
+                      class="text-lg"
+                      style="font-display: swap; line-height: 1.2;"
+                    >
+                      {item.name}
+                    </span>
                     {item.span && (
-                      <span class="badge badge-lg badge-outline">
+                      <span
+                        class="badge badge-lg badge-outline"
+                        style="min-width: 2rem; height: 1.5rem;"
+                      >
                         {item.span}
                       </span>
                     )}
@@ -204,8 +279,14 @@ const navItem = [
         const tabId = tab.getAttribute("data-anchor");
         if (tabId === activeId) {
           tab.classList.add("tab-active");
+          // Forzar el color primary para el tab activo
+          tab.style.color = "var(--color-primary)";
+          tab.style.opacity = "1";
         } else {
           tab.classList.remove("tab-active");
+          // Restaurar el color base para tabs inactivos
+          tab.style.color = "var(--color-base-content)";
+          tab.style.opacity = "0.9";
         }
       });
     };
@@ -235,10 +316,17 @@ const navItem = [
         if (id) {
           setTimeout(() => {
             anchorTabs.forEach((t) => {
-              if (t.getAttribute("data-anchor") === id) {
+              const tId = t.getAttribute("data-anchor");
+              if (tId === id) {
                 t.classList.add("tab-active");
+                // Forzar el color primary para el tab activo
+                t.style.color = "var(--color-primary)";
+                t.style.opacity = "1";
               } else {
                 t.classList.remove("tab-active");
+                // Restaurar el color base para tabs inactivos
+                t.style.color = "var(--color-base-content)";
+                t.style.opacity = "0.9";
               }
             });
           }, 200);
@@ -259,17 +347,26 @@ const navItem = [
     const mobileMenuOverlay = document.getElementById("mobile-menu-overlay");
 
     const openMobileMenu = () => {
-      mobileMenu.classList.remove("hidden");
-      setTimeout(() => {
-        mobileMenuDrawer.classList.remove("translate-x-full");
-      }, 10);
+      // Show menu without layout shift
+      mobileMenu.style.visibility = "visible";
+      mobileMenu.style.opacity = "1";
+      mobileMenuOverlay.style.opacity = "0.5";
+
+      // Force reflow to ensure the element is rendered
+      mobileMenuDrawer.offsetHeight;
+      mobileMenuDrawer.style.transform = "translateX(0)";
     };
 
     const closeMobileMenu = () => {
-      mobileMenuDrawer.classList.add("translate-x-full");
+      mobileMenuDrawer.style.transform = "translateX(100%)";
+      mobileMenuOverlay.style.opacity = "0";
+
       setTimeout(() => {
-        mobileMenu.classList.add("hidden");
-      }, 300);
+        mobileMenu.style.opacity = "0";
+        setTimeout(() => {
+          mobileMenu.style.visibility = "hidden";
+        }, 300);
+      }, 100);
     };
 
     mobileMenuToggle.addEventListener("click", openMobileMenu);

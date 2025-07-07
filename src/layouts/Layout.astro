@@ -3,62 +3,64 @@ import "@assets/app.css";
 import Navbar from "@components/Navbar.astro";
 import Footer from "@components/Footer.astro";
 import FlagDivider from "@components/FlagDivider.astro";
+import SeoWrapper from "@components/SeoWrapper.astro";
 import Analytics from "@vercel/analytics/astro";
+
+const {
+  title = "CRTeam",
+  description = "Canarias Racing Team - 1º Equipo de fórmula student de Canarias",
+  path = "",
+  image = "/favicon.svg",
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="es" data-theme="forest">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-
-    <!-- Preload de fuentes -->
+    <SeoWrapper
+      title={title}
+      description={description}
+      path={path}
+      image={image}
+    />
+    <!-- Preload de fuentes para mejor rendimiento -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+      media="print"
+      onload="this.media='all'"
     />
-    <link href="/src/assets/app.css" rel="stylesheet">
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+      />
+    </noscript>
 
-    <title>CRTeam</title>
-    <meta
-      name="description"
-      content="Canarias Racing Team - 1º Equipo de fórmula student de Canarias"
-    />
-    <meta
-      name="keywords"
-      content="CRTeam, Canarias Racing Team, 1º Equipo, fórmula student, Canarias"
-    />
+    <!-- Estilos principales -->
+    <link href="/src/assets/app.css" rel="stylesheet" />
+
+    <!-- DaisyUI -->
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@5"
       rel="stylesheet"
       type="text/css"
     />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css"
       rel="stylesheet"
       type="text/css"
     />
-    <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <body>
     <Navbar />
-    <slot />
+    <main id="main-content">
+      <slot />
+    </main>
     <FlagDivider class="mt-5 md:mt-15" />
     <Footer />
     <Analytics />
   </body>
 </html>
-
-<!-- <style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
-</style> -->

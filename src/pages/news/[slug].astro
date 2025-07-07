@@ -30,9 +30,42 @@ const { noticia } = Astro.props;
 if (!noticia) {
   return Astro.redirect("/news");
 }
+
+// Datos para SEO de artículo
+const articleTitle = noticia.Nombre || "Noticia";
+const articleDescription =
+  noticia.Contenido?.substring(0, 160) + "..." ||
+  "Noticia del Canarias Racing Team";
+const articleImage = noticia.Imagen || "/assets/logos-crteam/CRTEAM BLANCO.png";
+const articlePath = `/news/${noticia.url}`;
+const publishedDate = noticia.Fecha
+  ? new Date(noticia.Fecha).toISOString()
+  : new Date().toISOString();
+
+// Tags relacionados con Formula Student y automovilismo
+const articleTags = [
+  "Formula Student",
+  "Canarias Racing Team",
+  "CRTeam",
+  "Universidad La Laguna",
+  "Monoplaza Eléctrico",
+  "Competición Universitaria",
+];
 ---
 
-<Layout id={Astro.self.name}>
+<Layout
+  id={Astro.self.name}
+  title={`${articleTitle} - CRTeam Noticias`}
+  description={articleDescription}
+  path={articlePath}
+  image={articleImage}
+  type="article"
+  publishedTime={publishedDate}
+  modifiedTime={publishedDate}
+  author="Canarias Racing Team"
+  section="Noticias"
+  tags={articleTags}
+>
   <Section id="noticia-individual" className="py-15 gap-4">
     <aside
       id="titles"

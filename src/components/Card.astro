@@ -33,20 +33,15 @@ const {
       content.length > 0 &&
         content.map((item: any, index: number) => {
           if (item.type === "title") {
-            return (
-              <h2 class="card-title" aria-label={item.text}>
-                {item.text}
-              </h2>
-            );
+            return <h2 class="card-title">{item.text}</h2>;
           } else if (item.type === "subtitle") {
-            return (
-              <p class="text-gray-500" aria-label={item.text}>
-                {item.text}
-              </p>
-            );
+            return <p class="text-base-content/70 font-medium">{item.text}</p>;
           } else if (item.type === "paragraph") {
             return (
-              <p id={`content-${index}`} class="leading-relaxed">
+              <p
+                id={`content-${index}`}
+                class="leading-relaxed text-base-content/90"
+              >
                 {item.text}
               </p>
             );

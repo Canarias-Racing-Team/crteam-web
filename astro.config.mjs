@@ -4,11 +4,12 @@ import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
 import icon from "astro-icon";
+import pageInsight from "astro-page-insight";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://crteam.es",
-  integrations: [icon(), sitemap()],
+  integrations: [icon(), sitemap(), pageInsight()],
 
   vite: {
     plugins: [tailwindcss()],

@@ -1,0 +1,88 @@
+---
+import { SEO } from "astro-seo";
+
+const {
+  title,
+  description,
+  path = "",
+  image = "/favicon.svg",
+  type = "website",
+  publishedTime = null,
+  modifiedTime = null,
+  author = "Canarias Racing Team",
+  section = null,
+  tags = [],
+} = Astro.props;
+
+const siteUrl = Astro.site?.origin || "https://crteam.es";
+const canonicalUrl = `${siteUrl}${path}`;
+const fullImageUrl = image.startsWith("http") ? image : `${siteUrl}${image}`;
+---
+
+<SEO
+  title={title}
+  description={description}
+  charset="utf-8"
+  canonical={canonicalUrl}
+  openGraph={{
+    basic: {
+      title,
+      url: canonicalUrl,
+      type,
+      image: fullImageUrl,
+    },
+    optional: {
+      description,
+      siteName: "Canarias Racing Team",
+      locale: "es_ES",
+    },
+    image: {
+      url: fullImageUrl,
+      alt: title,
+    },
+    article:
+      type === "article"
+        ? {
+            ...(publishedTime && { publishedTime }),
+            ...(modifiedTime && { modifiedTime }),
+            ...(author && { authors: [author] }),
+            ...(section && { section }),
+            ...(tags.length > 0 && { tags }),
+          }
+        : undefined,
+  }}
+  twitter={{
+    card: "summary_large_image",
+    site: "@crteamull",
+    creator: "@crteamull",
+    title,
+    description,
+    image: fullImageUrl,
+    imageAlt: title,
+  }}
+  extend={{
+    link: [
+      { rel: "icon", href: "/favicon.svg" },
+      { rel: "sitemap", href: "/sitemap-index.xml" },
+      { rel: "manifest", href: "/site.webmanifest" },
+    ],
+    meta: [
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "generator", content: Astro.generator },
+      { name: "robots", content: "index, follow" },
+      { name: "author", content: author },
+      { name: "theme-color", content: "#0f172a" },
+      { name: "application-name", content: "CRTeam" },
+      { name: "apple-mobile-web-app-title", content: "CRTeam" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      {
+        name: "apple-mobile-web-app-status-bar-style",
+        content: "black-translucent",
+      },
+      { name: "format-detection", content: "telephone=no" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "msapplication-TileColor", content: "#0f172a" },
+      { name: "msapplication-config", content: "/browserconfig.xml" },
+    ],
+  }}
+/>

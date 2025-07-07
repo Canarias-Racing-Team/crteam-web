@@ -42,7 +42,13 @@ import imagesExample from "@assets/imagesExample.json";
 import carComponents from "@assets/carComponents.json";
 ---
 
-<Layout id={Astro.self.name}>
+<Layout
+  id={Astro.self.name}
+  title="Canarias Racing Team - Formula Student Canarias"
+  description="Primer equipo de Formula Student de Canarias. Estudiantes de la ULL compitiendo internacionalmente con un monoplaza eléctrico. Innovación, formación y pasión por el motor desde las Islas Canarias."
+  path=""
+  image="/assets/logos-crteam/CRTEAM BLANCO.png"
+>
   <Hero />
 
   <FlagDivider />
@@ -100,11 +106,11 @@ import carComponents from "@assets/carComponents.json";
   <Section id="partners">
     {
       partners.length > 0 ? (
-          <Gallery
-            items={partners}
-            alt="Logos de todos los socios"
-            className="w-full lg:w-3/4 h-full md:h-[414px]"
-          />
+        <Gallery
+          items={partners}
+          alt="Logos de todos los socios"
+          className="w-full lg:w-3/4 h-full md:h-[414px]"
+        />
       ) : (
         <div class="w-full lg:w-3/4 flex items-center justify-center text-center">
           <p class="text-gray-500">Cargando socios...</p>
