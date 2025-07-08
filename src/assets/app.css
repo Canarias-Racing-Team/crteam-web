@@ -66,16 +66,6 @@
     width: fit-content;
   }
 
-  .stats-horizontal .stat:not(:last-child) {
-    border-inline-end: none;
-    border-block-end: none;
-  }
-
-  .stats-vertical .stat:not(:last-child) {
-    border-inline-end: none;
-    border-block-end: none;
-  }
-
   p {
     text-align: justify;
     hyphens: auto;
