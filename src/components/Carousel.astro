@@ -31,9 +31,11 @@ if (!items) items = [];
             >
               <Image
                 alt={image.alt ?? `Imagen ${i + 1}`}
-                class="w-full h-full rounded-box object-cover object-center"
                 src={image.src}
-                inferSize
+                width={456}
+                height={456}
+                sizes="(max-width: 768px) 256px, 456px"
+                class="w-full h-full rounded-box object-cover object-center"
                 loading="lazy"
               />
               <div class="absolute top-1/2 right-5 left-5 flex -translate-y-1/2 transform justify-between">

@@ -24,8 +24,13 @@ const { noticia, short, link, className = "" } = Astro.props;
         <Image
           src={noticia.Imagen}
           alt={noticia.Nombre}
-          class="object-cover"
           inferSize
+          sizes={
+            short
+              ? "(max-width: 768px) 128px, 192px"
+              : "(max-width: 768px) 192px, 256px"
+          }
+          class="object-cover"
           loading="eager"
         />
       </figure>
@@ -45,11 +50,7 @@ const { noticia, short, link, className = "" } = Astro.props;
         )
           .split("\n")
           .filter((line) => line.trim() !== "")
-          .map((line) => (
-            <p class="text-base-content/80">
-              {line}
-            </p>
-          ))
+          .map((line) => <p class="text-base-content/80">{line}</p>)
     }
 
     <slot />
