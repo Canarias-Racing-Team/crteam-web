@@ -3,13 +3,67 @@ import type { NotionPageType } from "@types";
 
 const notion = new Client({ auth: import.meta.env.NOTION_API_KEY });
 const databaseId = import.meta.env.NOTION_DATABASE_ID;
-const DEBUG = false; // Cambia a true para ver los logs de depuración
+const DEBUG = true; // Cambia a false en producción
+
+if (DEBUG) {
+  getNotionDatabaseStructure(); // El log ya está dentro de la función
+}
+
+// Utilidad para convertir un string a slug (fuera de la función para evitar redefinir)
+function slugify(text: string): string {
+  return String(text)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
+// Utilidades para extraer propiedades de Notion de forma segura
+function getTitle(props: any, key: string): string {
+  return props[key]?.type === "title"
+    ? (props[key].title?.[0]?.plain_text ?? "")
+    : "";
+}
+function getCheckbox(props: any, key: string): boolean {
+  return props[key]?.type === "checkbox"
+    ? (props[key].checkbox ?? false)
+    : false;
+}
+function getRichText(props: any, key: string): string {
+  return props[key]?.type === "rich_text"
+    ? props[key].rich_text.map((t: any) => t.plain_text).join("")
+    : "";
+}
+function getCreatedTime(props: any, key: string, fallback: string): string {
+  return props[key]?.type === "created_time"
+    ? props[key].created_time
+    : fallback;
+}
+function getImageUrl(props: any, key: string): string {
+  if (
+    props[key]?.type === "files" &&
+    Array.isArray(props[key].files) &&
+    props[key].files[0]
+  ) {
+    const file = props[key].files[0];
+    if (file.type === "file") return file.file.url;
+    if (file.type === "external") return file.external.url;
+  }
+  return "";
+}
+function getAuthor(props: any, key: string): string {
+  return props[key]?.type === "people" &&
+    Array.isArray(props[key].people) &&
+    props[key].people[0]
+    ? (props[key].people[0] as any).name || ""
+    : "";
+}
 
 export async function getNotionPages(): Promise<NotionPageType[]> {
-  const response = await notion.databases.query({
-    database_id: databaseId,
-  });
-
+  const response = await notion.databases.query({ database_id: databaseId });
   const filteredResults = response.results
     .filter(
       (
@@ -19,64 +73,33 @@ export async function getNotionPages(): Promise<NotionPageType[]> {
     )
     .map((page) => {
       const props = page.properties;
+      const nombre = getTitle(props, "Nombre");
       return {
-        Publicado:
-          props.Publicado?.type === "checkbox"
-            ? (props.Publicado.checkbox ?? false)
-            : false,
-        Contenido:
-          props.Contenido && props.Contenido.type === "rich_text"
-            ? props.Contenido.rich_text.map((text) => text.plain_text).join("")
-            : "",
-        Fecha:
-          props["Fecha de Publicación"]?.type === "created_time"
-            ? props["Fecha de Publicación"].created_time
-            : page.created_time,
-        Imagen:
-          props.Imagen && props.Imagen.type === "files"
-            ? props.Imagen.files?.[0]?.type === "file"
-              ? props.Imagen.files[0].file.url
-              : props.Imagen.files?.[0]?.type === "external"
-                ? props.Imagen.files[0].external.url
-                : ""
-            : "",
-        url:
-          props.url && props.url.type === "rich_text"
-            ? (props.url.rich_text?.[0]?.plain_text ?? "")
-            : "",
-        Nombre:
-          props.Nombre && props.Nombre.type === "title"
-            ? (props.Nombre.title?.[0]?.plain_text ?? "")
-            : "",
-        Autor:
-          props.Autor &&
-          props.Autor.type === "people" &&
-          props.Autor.people?.[0]
-            ? (props.Autor.people[0] as any).name || ""
-            : "",
+        Publicado: getCheckbox(props, "Publicado"),
+        Contenido: getRichText(props, "Contenido"),
+        Fecha: getCreatedTime(props, "Fecha de Publicación", page.created_time),
+        Imagen: getImageUrl(props, "Imagen"),
+        url: slugify(nombre),
+        Nombre: nombre,
+        Autor: getAuthor(props, "Autor"),
       };
     })
     .filter((page) => page.Publicado === true);
 
-  // Debug simple - mostrar datos filtrados
   if (DEBUG) {
     console.log(`📰 Notion: ${filteredResults.length} páginas procesadas`);
-
-    // Mostrar solo el length del contenido para debug más limpio
     const debugData = filteredResults.map((page) => ({
       ...page,
       Contenido: `${page.Contenido.length} caracteres`,
       Imagen: page.Imagen ? "URL de imagen" : "Sin imagen",
-      url: page.url ? "URL presente" : "Sin URL",
+      url: page.url || "Sin URL",
       Nombre: page.Nombre || "Sin nombre",
       Autor: page.Autor || "Sin autor",
       Fecha: new Date(page.Fecha).toLocaleDateString(),
       Publicado: page.Publicado ? "Sí" : "No",
     }));
-
     console.log("🔧 JSON filtrado:", JSON.stringify(debugData, null, 2));
   }
-
   return filteredResults;
 }
 
@@ -88,7 +111,14 @@ export async function getNotionDatabaseStructure() {
 
   // Debug simple
   if (DEBUG) {
-    console.log("🔧 Notion BD:", Object.keys(response.properties).join(", "));
+    console.log(
+      "🔧 Notion BD (keys):",
+      Object.keys(response.properties).join(", ")
+    );
+    console.log(
+      "🔧 Notion BD (raw):",
+      JSON.stringify(response.properties, null, 2)
+    );
   }
 
   return response.properties;
