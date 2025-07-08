@@ -9,14 +9,39 @@
   --color-primary: #ffcb03;
   --color-secondary: #0468a9;
   --color-base-content: #ffffff;
+}
 
+/* Configuración de fuentes base */
+* {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
 
-  /* Configuración de fuentes base */
+/* Fuentes para títulos y elementos destacados */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.hero h1 {
+  font-family: 'Poppins', 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+/* Título principal del hero - fuente más impactante */
+.hero-title {
+  font-family: 'Poppins', 'Inter', sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Configuración específica para móviles */
+@media (max-width: 768px) {
   * {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   }
 
-  /* Fuentes para títulos y elementos destacados */
   h1,
   h2,
   h3,
@@ -24,129 +49,103 @@
   h5,
   h6,
   .hero h1 {
-    font-family: 'Poppins', 'Inter', sans-serif;
-    font-weight: 600;
+    font-family: 'Poppins', 'Inter', system-ui, sans-serif;
   }
 
-  /* Título principal del hero - fuente más impactante */
-  .hero-title {
-    font-family: 'Poppins', 'Inter', sans-serif;
-    font-weight: 900;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+  .hero {
+    background-position: right center !important;
   }
+}
 
-  /* Configuración específica para móviles */
-  @media (max-width: 768px) {
-    * {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-    }
+.hero-overlay {
+  background-color: color-mix(in oklab, var(--color-base-100) 0%, transparent);
+}
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    .hero h1 {
-      font-family: 'Poppins', 'Inter', system-ui, sans-serif;
-    }
+.stat {
+  overflow: hidden;
+  width: fit-content;
+}
 
-    .hero {
-      background-position: right center !important;
-    }
-  }
+p {
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+}
 
-  .hero-overlay {
-    background-color: color-mix(in oklab, var(--color-base-100) 0%, transparent);
-  }
-
-  .stat {
-    overflow: hidden;
-    width: fit-content;
-  }
-
+/* Evita justificado en móviles para mejor legibilidad */
+@media (max-width: 600px) {
   p {
-    text-align: justify;
-    hyphens: auto;
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
+    text-align: left;
   }
+}
 
-  /* Evita justificado en móviles para mejor legibilidad */
-  @media (max-width: 600px) {
-    p {
-      text-align: left;
-    }
-  }
+[id] {
+  scroll-margin-top: 8rem;
+  /* Ajusta según la altura real del navbar */
+}
 
-  [id] {
-    scroll-margin-top: 8rem;
-    /* Ajusta según la altura real del navbar */
-  }
+/* Para "ISLAS" */
+.text-outline-white {
+  color: transparent;
+  /* Hace el relleno del texto transparente */
+  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-color: white;
+}
 
-  /* Para "ISLAS" */
-  .text-outline-white {
-    color: transparent;
-    /* Hace el relleno del texto transparente */
-    -webkit-text-stroke-width: 1.5px;
-    -webkit-text-stroke-color: white;
-  }
+/* Limpieza: No se encontraron selectores mal escritos como :visted o propiedades como view-transition-name en este archivo. Si existen en otros archivos, corrígelos allí. */
 
-  /* Limpieza: No se encontraron selectores mal escritos como :visted o propiedades como view-transition-name en este archivo. Si existen en otros archivos, corrígelos allí. */
+/* Para "COLORES" */
+.text-outline-primary {
+  color: transparent;
+  /* Hace el relleno del texto transparente */
+  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-color: var(--color-primary);
+  /* Usa tu variable CSS para el amarillo */
+}
 
-  /* Para "COLORES" */
-  .text-outline-primary {
-    color: transparent;
-    /* Hace el relleno del texto transparente */
-    -webkit-text-stroke-width: 1.5px;
-    -webkit-text-stroke-color: var(--color-primary);
-    /* Usa tu variable CSS para el amarillo */
-  }
-
-  /* Mejora de contraste y animación solo composited */
-  /* Contraste accesible y animación solo composited */
-  #navbar-tabs .tab {
-    color: #fff;
-    background: transparent;
-    transition: color 0.2s, background-color 0.2s, transform 0.2s;
-    position: relative;
-    outline: none;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
-    /* mejora contraste sobre fondos claros/imagen */
-  }
+/* Mejora de contraste y animación solo composited */
+/* Contraste accesible y animación solo composited */
+#navbar-tabs .tab {
+  color: #fff;
+  background: transparent;
+  transition: color 0.2s, background-color 0.2s, transform 0.2s;
+  position: relative;
+  outline: none;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  /* mejora contraste sobre fondos claros/imagen */
+}
 
 
-  #navbar-tabs .tab:hover,
-  #navbar-tabs .tab.tab-active {
-    color: #ffcb03 !important;
-    background: transparent;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
-  }
+#navbar-tabs .tab:hover,
+#navbar-tabs .tab.tab-active {
+  color: #ffcb03 !important;
+  background: transparent;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
 
-  /* Subrayado animado accesible y composited */
-  #navbar-tabs .tab::before {
-    content: "";
-    position: absolute;
-    left: 10%;
-    right: 10%;
-    bottom: 0;
-    height: 3px;
-    background: var(--color-primary);
-    border-radius: 2px;
-    opacity: 0;
-    transform: scaleX(0.5);
-    will-change: opacity, transform;
-    transition: opacity 0.2s linear, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: none;
-    z-index: 1;
-  }
+/* Subrayado animado accesible y composited */
+#navbar-tabs .tab::before {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 0;
+  height: 3px;
+  background: var(--color-primary);
+  border-radius: 2px;
+  opacity: 0;
+  transform: scaleX(0.5);
+  will-change: opacity, transform;
+  transition: opacity 0.2s linear, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 1;
+}
 
-  #navbar-tabs .tab:hover::before,
-  #navbar-tabs .tab.tab-active::before {
-    opacity: 1;
-    transform: scaleX(1);
-  }
+#navbar-tabs .tab:hover::before,
+#navbar-tabs .tab.tab-active::before {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 /* Badge de noticias */
