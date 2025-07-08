@@ -23,10 +23,11 @@ const {
       path={path}
       image={image}
     />
-    
-    <!-- Preload de fuentes para mejor rendimiento -->
+
+    <!-- Preconnect a recursos críticos externos para mejorar LCP -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 
     <!-- Precarga de fuentes para LCP -->
     <link
@@ -46,16 +47,20 @@ const {
       />
     </noscript>
 
-    <!-- DaisyUI -->
+    <!-- DaisyUI: carga diferida para mejorar LCP -->
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@5"
       rel="stylesheet"
       type="text/css"
+      media="print"
+      onload="this.media='all'"
     />
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css"
       rel="stylesheet"
       type="text/css"
+      media="print"
+      onload="this.media='all'"
     />
   </head>
   <body>
