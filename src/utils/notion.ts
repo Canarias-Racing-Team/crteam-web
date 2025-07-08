@@ -3,7 +3,7 @@ import type { NotionPageType } from "@types";
 
 const notion = new Client({ auth: import.meta.env.NOTION_API_KEY });
 const databaseId = import.meta.env.NOTION_DATABASE_ID;
-const DEBUG = true; // Cambia a false en producción
+const DEBUG = false; // Cambia a false en producción
 
 if (DEBUG) {
   getNotionDatabaseStructure(); // El log ya está dentro de la función
@@ -33,9 +33,10 @@ function getCheckbox(props: any, key: string): boolean {
     : false;
 }
 function getRichText(props: any, key: string): string {
-  return props[key]?.type === "rich_text"
-    ? props[key].rich_text.map((t: any) => t.plain_text).join("")
-    : "";
+  if (props[key]?.type === "rich_text" && Array.isArray(props[key].rich_text)) {
+    return props[key].rich_text.map((t: any) => t.plain_text).join("");
+  }
+  return "";
 }
 function getCreatedTime(props: any, key: string, fallback: string): string {
   return props[key]?.type === "created_time"

@@ -16,11 +16,11 @@ const { noticia, short, link, className = "" } = Astro.props;
 
 <div
   id={noticia.url}
-  class={`card ${className} card-md md:card-lg lg:card-side bg-base-300 shadow`}
+  class={`card ${className} card-md md:card-lg bg-base-300 shadow`}
 >
   {
     noticia.Imagen && (
-      <figure class="w-full lg:w-1/3">
+      <figure class={`w-full ${short ? "h-48" : "h-64"} overflow-hidden`}>
         <Image
           src={noticia.Imagen}
           alt={noticia.Nombre}
@@ -32,19 +32,24 @@ const { noticia, short, link, className = "" } = Astro.props;
     )
   }
 
-  <div class={`card-body w-full lg:w-2/3 ${short ? "p-6" : ""}`}>
+  <div class={`card-body w-full ${short ? "p-6" : ""}`}>
     <h2 class="card-title" aria-label={noticia.Nombre}>
       {noticia.Nombre}
     </h2>
 
     {
-      noticia.Contenido && (
-        <p class="text-base-content/80">
-          {short && noticia.Contenido.length > 200
-            ? `${noticia.Contenido.slice(0, 200)}...`
-            : noticia.Contenido}
-        </p>
-      )
+      noticia.Contenido &&
+        (short && noticia.Contenido.length > 200
+          ? `${noticia.Contenido.slice(0, 200)}...`
+          : noticia.Contenido
+        )
+          .split("\n")
+          .filter((line) => line.trim() !== "")
+          .map((line) => (
+            <p class="text-base-content/80">
+              {line}
+            </p>
+          ))
     }
 
     <slot />

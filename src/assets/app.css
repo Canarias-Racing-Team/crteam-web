@@ -40,8 +40,6 @@
   @media (max-width: 768px) {
     * {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      /* -webkit-font-smoothing: antialiased; */
-      /* -moz-osx-font-smoothing: grayscale; */
     }
 
     h1,
@@ -80,6 +78,16 @@
 
   p {
     text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+  }
+
+  /* Evita justificado en móviles para mejor legibilidad */
+  @media (max-width: 600px) {
+    p {
+      text-align: left;
+    }
   }
 
   [id] {
@@ -94,6 +102,8 @@
     -webkit-text-stroke-width: 1.5px;
     -webkit-text-stroke-color: white;
   }
+
+  /* Limpieza: No se encontraron selectores mal escritos como :visted o propiedades como view-transition-name en este archivo. Si existen en otros archivos, corrígelos allí. */
 
   /* Para "COLORES" */
   .text-outline-primary {

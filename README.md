@@ -53,13 +53,13 @@ npm run preview    # Previsualizar build
 - [x] **Galería de partners**: Sistema automático de logos destacados
 - [x] **Despliegue continuo**: Pipeline automático en Vercel
 - [x] **Optimización**: Imágenes, CSS y rendimiento mejorados
+- [x] **Analytics y métricas**: Vercel Analytics activo
+- [x] **SEO avanzado con metadatos dinámicos**: astro-seo y metadatos por página
 
 ### 🚧 Próximas mejoras
 
-- [ ] Páginas adicionales (About, Projects, Contact, Team)
-- [ ] Sistema de búsqueda en noticias
-- [ ] Analytics y métricas
-- [ ] SEO avanzado con metadatos dinámicos
+- [ ] **Páginas adicionales**: About, Projects, Contact, Team, Gallery
+- [ ] **Sistema de búsqueda en noticias**
 
 ## 🌐 URLs
 

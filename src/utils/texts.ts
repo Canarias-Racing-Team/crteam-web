@@ -7,7 +7,6 @@ export const texts = {
       subtitle: "Lo último de CRTeam",
       paragraphs: [
         "Sigue de cerca todo lo que hacemos: competiciones, avances, logros y próximos eventos.",
-        "No te pierdas ninguna actualización del equipo.",
       ],
     },
     newsletter: {
