@@ -14,7 +14,7 @@ const buttonList = Array.isArray(buttons) ? buttons : [buttons];
 {
   buttons && (
     <div
-      class={`flex gap-2 flex-col mt-4 ${vertical ? "md:flex-col" : "md:flex-row"} ${className}`}
+      class={`flex gap-2 flex-col ${vertical ? "md:flex-col" : "md:flex-row"} ${className}`}
     >
       {buttonList.map(({ text, href, icon }, index) => (
         <a

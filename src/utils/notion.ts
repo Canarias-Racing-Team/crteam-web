@@ -39,9 +39,11 @@ function getRichText(props: any, key: string): string {
   return "";
 }
 function getCreatedTime(props: any, key: string, fallback: string): string {
-  return props[key]?.type === "created_time"
-    ? props[key].created_time
-    : fallback;
+  // Devuelve la fecha de tipo 'date' si existe, si no, el fallback
+  if (props[key]?.type === "date" && props[key].date?.start) {
+    return props[key].date.start;
+  }
+  return fallback;
 }
 function getImageUrl(props: any, key: string): string {
   if (
@@ -85,7 +87,8 @@ export async function getNotionPages(): Promise<NotionPageType[]> {
         Autor: getAuthor(props, "Autor"),
       };
     })
-    .filter((page) => page.Publicado === true);
+    .filter((page) => page.Publicado === true)
+    .sort((a, b) => new Date(b.Fecha).getTime() - new Date(a.Fecha).getTime());
 
   if (DEBUG) {
     console.log(`📰 Notion: ${filteredResults.length} páginas procesadas`);
