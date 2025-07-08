@@ -1,6 +1,7 @@
 # build output
 dist/
 .vercel/
+package-lock.json
 
 # generated types
 .astro/
@@ -24,7 +25,8 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# ignore all files in the root directory
-./*
+# VSCode settings
 .vscode/
+
+# PageInsight folder
 .pageinsight/
