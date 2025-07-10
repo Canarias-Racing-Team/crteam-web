@@ -7,42 +7,32 @@ const DEBUG = false;
  * Carga im?genes desde `/src/assets/fotos/{folder}`.
  * Si se pasa una lista de archivos, solo carga esos; si no, carga todas las de la carpeta.
  */
+
 export async function loadImageEntries(
   folder: string,
   fileNames?: string[]
 ): Promise<ImageEntry[]> {
-  let imageModules: Record<string, { default: ImageMetadata }> = {};
+  // Siempre carga todas las imágenes de la carpeta usando import.meta.glob
+  let imageModules = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/fotos/**/*.{jpg,jpeg,png,webp,JPG}",
+    { eager: true }
+  );
+  const folderPath = `/src/assets/fotos/${folder}`;
+  // Filtra imágenes de la carpeta y subcarpetas
+  imageModules = Object.fromEntries(
+    Object.entries(imageModules).filter(
+      ([path]) => path.startsWith(folderPath + "/") || path === folderPath
+    )
+  );
 
-  if (!fileNames) {
-    // Carga todas las im?genes de la carpeta usando un glob est?tico y filtrando por carpeta
-    imageModules = import.meta.glob<{ default: ImageMetadata }>(
-      "/src/assets/fotos/**/*.{jpg,jpeg,png,webp,JPG}",
-      { eager: true }
-    );
-    // Filtra im?genes de la carpeta y subcarpetas
-    const folderPath = `/src/assets/fotos/${folder}`;
-    imageModules = Object.fromEntries(
-      Object.entries(imageModules).filter(
-        ([path]) => path.startsWith(folderPath + "/") || path === folderPath
-      )
-    );
-  } else {
-    // Solo carga las im?genes especificadas
-    await Promise.all(
-      fileNames.map(async (fileName) => {
-        const imagePath = `/src/assets/fotos/${folder}/${fileName}`;
-        try {
-          const imageModule = await import(/* @vite-ignore */ imagePath);
-          imageModules[imagePath] = { default: imageModule.default };
-        } catch (error) {
-          console.warn(`No se pudo cargar ${fileName}:`, error);
-        }
-      })
-    );
+  let entries = Object.entries(imageModules);
+  // Si se pasan fileNames, filtra solo esas
+  if (fileNames) {
+    const fileSet = new Set(fileNames);
+    entries = entries.filter(([path]) => fileSet.has(path.split("/").pop()!));
   }
 
-  const entries = Object.entries(imageModules);
-  // Debug: muestra informaci?n de las im?genes cargadas
+  // Debug: muestra información de las imágenes cargadas
   if (DEBUG) {
     console.log(
       JSON.stringify(
