@@ -3,42 +3,36 @@
     "name": "Chasis",
     "icon": "car-outline",
     "brief": "Chasis tubular de acero al carbono optimizado para rigidez torsional (3663 Nm/°), seguridad en impactos y distribución eficiente del espacio.",
-    "src": "car-components-2425/chasis.png"
+    "src": "car-components-2425/Chasis.jpg"
   },
   {
     "name": "Suspensión",
     "icon": "build-outline",
     "brief": "Sistema de suspensión tipo push-rod con geometrías anti-dive y anti-squat, mejorando estabilidad, agarre y respuesta en curvas.",
-    "src": "car-components-2425/suspension.png"
+    "src": "car-components-2425/Suspensión.JPG"
   },
   {
     "name": "Tren Motriz",
     "icon": "engine-outline",
     "brief": "Motor EMRAX 228 LC de 70 kW con refrigeración líquida y diferencial Drexler LSD para tracción y control óptimos.",
-    "src": "https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
+    "src": "car-components-2425/Tren-motriz.JPG"
   },
   {
     "name": "Acumulador",
     "icon": "car-battery",
     "brief": "Batería de 333 V y 900 A con celdas Tesla, diseño optimizado y estructura de aluminio y Kevlar para seguridad y rendimiento.",
-    "src": "https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
+    "src": "car-components-2425/Acumulador.JPG"
   },
   {
     "name": "Seguridad Eléctrica",
     "icon": "alert-circle-outline",
     "brief": "Incluye IMD, AMS, BSPD, precharge, APPS y TSAL, gestionados con microcontroladores y sistemas de monitoreo para prevenir fallos.",
-    "src": "https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
+    "src": "car-components-2425/Placas.JPG"
   },
   {
     "name": "Dirección y Frenado",
     "icon": "car-brake-hold",
     "brief": "Sistema de dirección de piñón helicoidal y cremallera, frenos balanceados 75/25% con distribución por sensor y barra de equilibrio.",
-    "src": "https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
-  },
-  {
-    "name": "Cableado",
-    "icon": "cable-data",
-    "brief": "Rediseñado con conectores automotrices IP68 y calibres optimizados para mejorar rendimiento, durabilidad y cumplimiento normativo.",
-    "src": "https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp"
+    "src": "car-components-2425/Frenado.JPG"
   }
 ]

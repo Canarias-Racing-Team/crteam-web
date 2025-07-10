@@ -6,18 +6,8 @@ const year = new Date().getFullYear();
 
 const navigationSections = [
   {
-    title: "Enlaces",
-    ariaLabel: "Enlaces principales",
-    items: [
-      { href: "/about", label: "Sobre nosotros" },
-      { href: "/contact", label: "Contacto" },
-      { href: "/jobs", label: "Trabaja con nosotros" },
-      { href: "/press", label: "Prensa" },
-    ],
-  },
-  {
-    title: "Síguenos",
-    ariaLabel: "Redes sociales",
+    title: "Info y Redes",
+    ariaLabel: "Información y Redes Sociales",
     items: [
       { href: "https://twitter.com/", icon: "mdi:twitter", label: "Twitter" },
       { href: "https://youtube.com/", icon: "mdi:youtube", label: "YouTube" },
@@ -26,6 +16,7 @@ const navigationSections = [
         icon: "mdi:facebook",
         label: "Facebook",
       },
+      { href: "/Dossier de empresas Canarias Racing Team.pdf",icon: "mdi:document", label: "Prensa" },
     ],
   },
 ] as const;
@@ -89,15 +80,23 @@ const navigationSections = [
     }
   </div>
 
-  <form id="contact" class="text-center px-4 md:px-0 lg:text-left">
+  <form
+    id="contact"
+    class="text-center px-4 md:px-0 lg:text-left"
+    action="mailto:crteam@ull.edu.es"
+    method="POST"
+    enctype="text/plain"
+  >
     <p class="text-sm font-bold uppercase mb-4 text-gray-400">Contáctanos</p>
     <fieldset class="w-full max-w-xs">
       <div class="flex flex-row gap-2 join">
         <input
           id="email"
+          name="email"
           type="email"
           placeholder="username@site.com"
           class="input join-item bg-neutral-700 border-neutral-600 text-center text-white placeholder-gray-400 w-full"
+          required
         />
         <button
           class="btn join-item bg-primary text-black border-none font-semibold"
