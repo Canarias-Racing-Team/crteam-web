@@ -8,29 +8,39 @@ const {
   content = [],
   buttonsVertical = false,
   image,
+  style = "height: auto;",
 } = Astro.props;
 ---
 
 <div
   id={Astro.self.name}
-  class={`card ${className} card-md md:card-lg lg:card-side bg-base-300 shadow`}
+  class={`card ${className} card-md md:card-lg bg-base-300 shadow`}
+  style={`${style}`}
 >
   {
     image && (
-      <figure class="w-full lg:w-1/3">
-        <Image
-          src={image.src}
-          alt={image.name || image.alt || "Imagen"}
-          width={256}
-          height={256}
-          sizes="(max-width: 768px) 128px, 256px"
-          class="object-cover"
-          loading="lazy"
-        />
+      <figure class="w-full h-full relative">
+        {typeof image.src === "string" ? (
+          <img
+            src={image.src}
+            alt={image.name || image.alt || "Imagen"}
+            class="object-cover"
+            loading="lazy"
+          />
+        ) : (
+          <Image
+            src={image.src}
+            alt={image.name || image.alt || "Imagen"}
+            inferSize
+            sizes="(max-width: 768px) 128px, 256px"
+            class="object-cover"
+            loading="lazy"
+          />
+        )}
       </figure>
     )
   }
-  <div class={`card-body w-full ${image && "lg:w-2/3"}`}>
+  <div class={`card-body w-full h-full p-4 md:p-6`}>
     {
       content.length > 0 &&
         content.map((item: any, index: number) => {

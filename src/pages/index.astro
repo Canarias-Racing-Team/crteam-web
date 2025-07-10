@@ -4,15 +4,17 @@ import Gallery from "@components/Gallery.astro";
 import FlagDivider from "@components/FlagDivider.astro";
 import Hero from "@components/Hero.astro";
 import Layout from "@layouts/Layout.astro";
-import CarTabs from "@components/CarTabs.astro";
 import Card from "@components/Card.astro";
 import Section from "@components/Section.astro";
 import Stats from "@components/Stats.astro";
 import { loadImageEntries } from "@utils/imageUtils";
 import { texts, createCardContent } from "@utils/texts";
+import carComponents from "@assets/carComponents.json";
+import CarCardsMenu from "@/components/CarCardsMenu.astro";
+
+import imagesExample from "@assets/imagesExample.json";
 
 export const prerender = true;
-
 // Image data
 type Partner = {
   featured?: boolean;
@@ -35,11 +37,6 @@ try {
 } catch (error) {
   console.error("❌ Error loading partners data:", error);
 }
-
-import imagesExample from "@assets/imagesExample.json";
-
-// Car components data
-import carComponents from "@assets/carComponents.json";
 ---
 
 <Layout
@@ -63,12 +60,12 @@ import carComponents from "@assets/carComponents.json";
           />
         </div>
       ) : (
-        <div class="w-full lg:w-3/4 flex items-center justify-center text-center">
+        <div class="w-full lg:w-3/4 flex self-center justify-center text-center">
           <p class="text-gray-500">Cargando socios destacados...</p>
         </div>
       )
     }
-    <Stats className="w-full lg:w-1/4" />
+    <Stats className="w-full lg:w-1/4 h-[138px]" />
   </Section>
 
   <Section id="team">
@@ -92,14 +89,19 @@ import carComponents from "@assets/carComponents.json";
 
   <Section id="car">
     <Card
-      className="w-full lg:w-1/3"
+      className="w-full lg:w-1/2"
       content={createCardContent(texts.home.car)}
     />
-    <CarTabs
+    <CarCardsMenu
+      carComponents={carComponents}
+      id="car-components-menu"
+      className="w-full lg:w-1/2"
+    />
+    <!-- <CarTabs
       carComponents={carComponents}
       id="car-components"
-      className="w-full lg:w-2/3 h-[324px]"
-    />
+      className="w-full lg:w-2/3 md:h-[298px]"
+    /> -->
   </Section>
 
   <Section id="partners">
@@ -111,7 +113,7 @@ import carComponents from "@assets/carComponents.json";
           className="w-full lg:w-3/4 h-full md:h-[414px]"
         />
       ) : (
-        <div class="w-full lg:w-3/4 flex items-center justify-center text-center">
+        <div class="w-full lg:w-3/4 flex self-center justify-center text-center">
           <p class="text-gray-500">Cargando socios...</p>
         </div>
       )

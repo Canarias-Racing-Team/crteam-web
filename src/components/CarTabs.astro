@@ -4,12 +4,12 @@ import Card from "./Card.astro";
 import type { CarComponentType } from "@/types";
 
 const { carComponents = [], id, className } = Astro.props;
+console.log(
+  `CarTabs ${id} initialized with ${carComponents.length} components`
+);
 ---
 
-<div
-  id={id}
-  class={`tabs tabs-border self-center ${className || ""}`}
->
+<div id={id} class={`tabs tabs-border self-center ${className || ""}`}>
   {
     carComponents.map((component: CarComponentType, index: number) => {
       const tabId = `tab-${component.name.toLowerCase().replace(/\s+/g, "-")}`;
@@ -21,7 +21,11 @@ const { carComponents = [], id, className } = Astro.props;
 
       return (
         <>
-          <label id={`tab-${tabId}`} class="tab gap-2 sm:py-0 cursor-pointer" for={tabId}>
+          {/* <label
+            id={`tab-${tabId}`}
+            class="tab gap-2 sm:py-0 cursor-pointer"
+            for={tabId}
+          >
             <input
               type="radio"
               name={`car_components_tabs_${id}`}
@@ -31,9 +35,13 @@ const { carComponents = [], id, className } = Astro.props;
             {component.icon && <Icon name={`mdi:${component.icon}`} />}
             <span>{component.name}</span>
           </label>
-          <div class="tab-content bg-transparent border-none p-0">
-            <Card className="h-full" image={component} content={cardContent} />
-          </div>
+          <div class="tab-content h-stretch start-0 sticky">
+            <Card
+              image={component.src && component}
+              content={cardContent}
+              style="height:inherit;"
+            />
+          </div> */}
         </>
       );
     })

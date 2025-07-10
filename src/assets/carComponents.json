@@ -1,20 +1,44 @@
 [
   {
-    "name": "Comp 1",
-    "icon": "engine-outline",
-    "brief": "Descripción breve del componente 1.",
-    "src": "https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp"
+    "name": "Chasis",
+    "icon": "car-outline",
+    "brief": "Chasis tubular de acero al carbono optimizado para rigidez torsional (3663 Nm/°), seguridad en impactos y distribución eficiente del espacio.",
+    "src": "car-components-2425/chasis.png"
   },
   {
-    "name": "Comp 2",
-    "icon": "car-battery",
-    "brief": "Descripción breve del componente 2.",
+    "name": "Suspensión",
+    "icon": "build-outline",
+    "brief": "Sistema de suspensión tipo push-rod con geometrías anti-dive y anti-squat, mejorando estabilidad, agarre y respuesta en curvas.",
+    "src": "car-components-2425/suspension.png"
+  },
+  {
+    "name": "Tren Motriz",
+    "icon": "engine-outline",
+    "brief": "Motor EMRAX 228 LC de 70 kW con refrigeración líquida y diferencial Drexler LSD para tracción y control óptimos.",
     "src": "https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
   },
   {
-    "name": "Comp 3",
-    "icon": "connection",
-    "brief": "Descripción breve del componente 3.",
+    "name": "Acumulador",
+    "icon": "car-battery",
+    "brief": "Batería de 333 V y 900 A con celdas Tesla, diseño optimizado y estructura de aluminio y Kevlar para seguridad y rendimiento.",
+    "src": "https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
+  },
+  {
+    "name": "Seguridad Eléctrica",
+    "icon": "alert-circle-outline",
+    "brief": "Incluye IMD, AMS, BSPD, precharge, APPS y TSAL, gestionados con microcontroladores y sistemas de monitoreo para prevenir fallos.",
+    "src": "https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
+  },
+  {
+    "name": "Dirección y Frenado",
+    "icon": "car-brake-hold",
+    "brief": "Sistema de dirección de piñón helicoidal y cremallera, frenos balanceados 75/25% con distribución por sensor y barra de equilibrio.",
+    "src": "https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
+  },
+  {
+    "name": "Cableado",
+    "icon": "cable-data",
+    "brief": "Rediseñado con conectores automotrices IP68 y calibres optimizados para mejorar rendimiento, durabilidad y cumplimiento normativo.",
     "src": "https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp"
   }
 ]

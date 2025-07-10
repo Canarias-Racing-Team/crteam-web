@@ -1,0 +1,134 @@
+---
+import Card from "./Card.astro";
+import type { CarComponentType } from "@/types";
+import { Icon } from "astro-icon/components";
+
+// Generar un id único si no se pasa ninguno
+let { carComponents = [], id = "", className = "" } = Astro.props;
+if (!id) {
+  id = `carcards-${Math.random().toString(36).slice(2, 10)}`;
+}
+---
+
+<!-- Script para manejar el cambio de cards, asegurando ejecución en cliente y acceso correcto a id -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Buscar el contenedor principal y obtener el id real
+    var mainDiv = document.querySelector("[data-id]");
+    if (!mainDiv) return;
+    var id = mainDiv instanceof HTMLElement ? mainDiv.dataset.id : null;
+    if (!id) return;
+    var menu = document.getElementById(id + "-menu");
+    if (menu) {
+      const buttons = menu.querySelectorAll("button[data-idx]");
+      const cards = document.querySelectorAll(`[id^='${id}-card-']`);
+      // Función para activar card y botón
+      function activate(idx: number) {
+        cards.forEach((el, i) => {
+          el.classList.toggle("car-card-active", i === idx);
+        });
+        buttons.forEach((b, i) => {
+          b.classList.toggle("car-menu-btn-active", i === idx);
+        });
+      }
+      // Listeners
+      buttons.forEach((btn, idx) => {
+        btn.addEventListener("click", () => activate(idx));
+      });
+      // Activar el primero por defecto
+      activate(0);
+    }
+  });
+</script>
+
+<div
+  id={id}
+  data-id={id}
+  class={`join join-vertical md:join-horizontal gap-2 w-full ${className}`}
+>
+  <div class="join-item h-full">
+    <ul
+      id={`${id}-menu`}
+      class="menu bg-base-300 rounded-box w-full h-full flex flex-row md:flex-col justify-around items-center md:items-stretch"
+    >
+      {
+        carComponents.map((component: CarComponentType, idx: number) => (
+          <li class="flex-1 flex justify-center md:justify-start">
+            <button
+              type="button"
+              class="tooltip tooltip-bottom md:tooltip-left cursor-pointer p-2 w-10 h-10 flex items-center justify-center rounded-lg"
+              data-tip={component.name}
+              tabindex="0"
+              data-idx={idx}
+            >
+              {component.icon ? (
+                <Icon name={`mdi:${component.icon}`} class="h-5 w-5" />
+              ) : (
+                <Icon name="mdi:car" class="h-5 w-5" />
+              )}
+            </button>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  <div class="cards-container">
+    {
+      carComponents.map((component: CarComponentType, idx: number) => (
+        <div
+          id={`${id}-card-${idx}`}
+          class={`car-card${idx === 0 ? " car-card-active" : ""}`}
+        >
+          <Card
+            image={component.src && component}
+            content={[
+              { type: "title", text: component.name },
+              { type: "paragraph", text: component.brief },
+            ]}
+            className="card-side"
+            style="height:inherit;"
+          />
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .cards-container {
+    position: relative;
+    width: 100%;
+    height: 298px;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .car-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  .car-card.car-card-active {
+    display: flex;
+  }
+  .menu:active {
+    --menu-active-bg: none;
+  }
+  .car-menu-btn-active {
+    color: var(--color-primary);
+  }
+  .tooltip {
+    --tt-bg: var(--color-primary);
+  }
+  .tooltip:before {
+    background: var(--color-primary);
+    color: var(--color-primary-content);
+  }
+</style>
