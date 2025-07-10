@@ -60,6 +60,7 @@ if (!id) {
               data-tip={component.name}
               tabindex="0"
               data-idx={idx}
+              aria-label={component.name}
             >
               {component.icon ? (
                 <Icon name={`mdi:${component.icon}`} class="h-5 w-5" />
@@ -85,7 +86,7 @@ if (!id) {
               { type: "title", text: component.name },
               { type: "paragraph", text: component.brief },
             ]}
-            className="card-side"
+            className="lg:card-side"
             style="height:inherit;"
           />
         </div>

@@ -45,8 +45,8 @@ export type NotionPageType = {
 };
 
 export type ImageEntry = {
-  file: string
-  alt: string
-  featured: boolean
-  src: () => Promise<ImageMetadata>
-}
+  file: string;
+  alt: string;
+  featured: boolean;
+  src: ImageMetadata;
+};

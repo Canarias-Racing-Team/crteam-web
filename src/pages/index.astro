@@ -9,33 +9,75 @@ import Section from "@components/Section.astro";
 import Stats from "@components/Stats.astro";
 import { loadImageEntries } from "@utils/imageUtils";
 import { texts, createCardContent } from "@utils/texts";
-import carComponents from "@assets/carComponents.json";
+import carComponentsData from "@assets/carComponents.json";
 import CarCardsMenu from "@/components/CarCardsMenu.astro";
-
-import imagesExample from "@assets/imagesExample.json";
+import type { ImageEntry } from "@types";
 
 export const prerender = true;
-// Image data
-type Partner = {
-  featured?: boolean;
-  [key: string]: any;
-};
 
-// Partners
-let partners: Partner[] = [];
-let featuredPartners: Partner[] = [];
+// Importar imágenes de socios y equipo
+// Se cargan de forma asíncrona para evitar bloqueos en la renderización
+let partners: ImageEntry[] = [];
+let mainPartners: ImageEntry[] = [];
+let teamPictures: ImageEntry[] = [];
+let carComponents: any[] = [];
+
 try {
+  // Carga las imagenes del equipo
+  teamPictures = await loadImageEntries("fotos-equipo");
+
+  // Carga las imágenes de socios
   partners = await loadImageEntries("logos-partners-2425");
-  featuredPartners = partners.filter((partner) => partner.featured === true);
+  mainPartners = await loadImageEntries("logos-partners-2425/main");
+  // Quita de partners las que estén en mainPartners (por file) y concatena mainPartners al principio
   partners = [
-    ...featuredPartners,
-    ...partners.filter((partner) => partner.featured !== true),
+    ...mainPartners,
+    ...partners.filter(
+      (p) => !new Set(mainPartners.map((p) => p.file)).has(p.file)
+    ),
   ];
+
+  // Carga las imágenes de componentes del coche
+  const carComponentFiles = carComponentsData
+    .map((c) =>
+      typeof c.src === "string" && !c.src.startsWith("http")
+        ? c.src.split("/").pop()
+        : null
+    )
+    .filter(Boolean) as string[];
+  const carComponentImages =
+    carComponentFiles.length > 0
+      ? await loadImageEntries("car-components-2425", carComponentFiles)
+      : [];
+  carComponents = carComponentsData.map((component) => {
+    if (
+      component.src &&
+      typeof component.src === "string" &&
+      !component.src.startsWith("http")
+    ) {
+      const img = carComponentImages.find(
+        (img) => img.file === component.src.split("/").pop()
+      );
+      return {
+        ...component,
+        src: img ? img.src : component.src,
+        alt: img ? img.alt : component.name,
+      };
+    }
+    return component;
+  });
+
   console.log(
-    `✅ Loaded ${partners.length} partners, ${featuredPartners.length} featured`
+    `Image loading status:`,
+    [
+      `${partners.length > 0 ? "✅" : "❌"} ${partners.length} partners`,
+      `${mainPartners.length > 0 ? "✅" : "❌"} ${mainPartners.length} mainPartners`,
+      `${teamPictures.length > 0 ? "✅" : "❌"} ${teamPictures.length} teamPictures`,
+      `${carComponentImages.length > 0 ? "✅" : "❌"} ${carComponentImages.length} carComponents`,
+    ].join(", ")
   );
 } catch (error) {
-  console.error("❌ Error loading partners data:", error);
+  console.error("❌ Error loading pictures data:", error);
 }
 ---
 
@@ -51,10 +93,10 @@ try {
 
   <Section id="partners-principal" className="min-h-[200px]">
     {
-      featuredPartners.length > 0 ? (
+      mainPartners.length > 0 ? (
         <div class="w-full lg:w-3/4 h-full self-center">
           <Gallery
-            items={featuredPartners}
+            items={mainPartners}
             alt="Logos de socios destacados"
             className="justify-between"
           />
@@ -81,7 +123,7 @@ try {
       content={createCardContent(texts.home.team)}
     />
     <Carousel
-      items={imagesExample}
+      items={teamPictures}
       id="team-carousel"
       className="w-full lg:w-1/3 h-[456px] flex flex-col justify-center items-center"
     />
@@ -97,11 +139,6 @@ try {
       id="car-components-menu"
       className="w-full lg:w-1/2"
     />
-    <!-- <CarTabs
-      carComponents={carComponents}
-      id="car-components"
-      className="w-full lg:w-2/3 md:h-[298px]"
-    /> -->
   </Section>
 
   <Section id="partners">

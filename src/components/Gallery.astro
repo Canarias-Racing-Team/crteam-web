@@ -9,7 +9,7 @@ const resolvedItems =
     ? await Promise.all(
         items.map(async (item: ImageEntry) => ({
           alt: item.alt,
-          src: await item.src(),
+          src: item.src,
         }))
       )
     : [];
