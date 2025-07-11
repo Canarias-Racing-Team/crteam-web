@@ -4,8 +4,8 @@ import { Redis } from "@upstash/redis";
 
 const CACHE_DURATION = import.meta.env.API_NEWS_IMAGES_CACHE_TTL;
 const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+  url: process.env.KV_REST_URL!,
+  token: process.env.KV_REST_TOKEN!,
 });
 const CACHE_KEY = "news_images_cache";
 
