@@ -1,10 +1,13 @@
 import type { APIRoute } from "astro";
 import { getNewsImagesFromNotion } from "@utils/notion";
-import fs from "fs/promises";
-import path from "path";
+import { Redis } from "@upstash/redis";
 
 const CACHE_DURATION = import.meta.env.API_NEWS_IMAGES_CACHE_TTL;
-const CACHE_FILE = path.resolve(process.cwd(), "public/news-images/cache.json");
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL!,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+});
+const CACHE_KEY = "news_images_cache";
 
 export const GET: APIRoute = async ({ request }) => {
   const apiKey = request.headers.get("x-api-key");
@@ -24,14 +27,17 @@ export const GET: APIRoute = async ({ request }) => {
     let cachedImages: string[] = [];
     let lastCacheTime = 0;
 
-    // Leer el archivo de caché si existe
-    try {
-      const cacheRaw = await fs.readFile(CACHE_FILE, "utf-8");
-      const cacheData = JSON.parse(cacheRaw);
-      cachedImages = cacheData.images || [];
-      lastCacheTime = cacheData.lastCacheTime || 0;
-    } catch (err) {
-      // Si no existe el archivo, se ignora
+    // Leer el caché desde Redis
+    const cacheData = (await redis.get(CACHE_KEY)) as {
+      images?: string[];
+      lastCacheTime?: number;
+    } | null;
+    if (cacheData) {
+      cachedImages = Array.isArray(cacheData.images) ? cacheData.images : [];
+      lastCacheTime =
+        typeof cacheData.lastCacheTime === "number"
+          ? cacheData.lastCacheTime
+          : 0;
     }
 
     if (
@@ -41,12 +47,8 @@ export const GET: APIRoute = async ({ request }) => {
     ) {
       cachedImages = await getNewsImagesFromNotion();
       lastCacheTime = now;
-      // Guardar en el archivo de caché
-      await fs.writeFile(
-        CACHE_FILE,
-        JSON.stringify({ images: cachedImages, lastCacheTime }),
-        "utf-8"
-      );
+      // Guardar en Redis
+      await redis.set(CACHE_KEY, { images: cachedImages, lastCacheTime });
     }
     return new Response(JSON.stringify({ images: cachedImages }), {
       status: 200,
