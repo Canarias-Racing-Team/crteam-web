@@ -3,10 +3,7 @@ import { getNewsImagesFromNotion } from "@utils/notion";
 import { Redis } from "@upstash/redis";
 
 const CACHE_DURATION = import.meta.env.API_NEWS_IMAGES_CACHE_TTL;
-const redis = new Redis({
-  url: process.env.KV_REST_URL!,
-  token: process.env.KV_REST_TOKEN!,
-});
+const redis = Redis.fromEnv();
 const CACHE_KEY = "news_images_cache";
 
 export const GET: APIRoute = async ({ request }) => {
