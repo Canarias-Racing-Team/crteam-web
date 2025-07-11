@@ -127,3 +127,13 @@ export async function getNotionDatabaseStructure() {
 
   return response.properties;
 }
+
+// Devuelve un array de URLs de imágenes de las news desde Notion
+export async function getNewsImagesFromNotion(): Promise<string[]> {
+  // Obtiene las páginas publicadas y extrae las URLs de imagen
+  const pages = await getNotionPages();
+  // Filtra y devuelve solo las URLs válidas
+  return pages
+    .map((page) => page.Imagen)
+    .filter((url): url is string => typeof url === "string" && url.length > 0);
+}

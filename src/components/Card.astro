@@ -20,23 +20,14 @@ const {
   {
     image && (
       <figure class="w-full h-full relative">
-        {typeof image.src === "string" ? (
-          <img
-            src={image.src}
-            alt={image.name || image.alt || "Imagen"}
-            class="object-cover"
-            loading="lazy"
-          />
-        ) : (
-          <Image
-            src={image.src}
-            alt={image.name || image.alt || "Imagen"}
-            inferSize
-            sizes="(max-width: 768px) 128px, 256px"
-            class="object-cover"
-            loading="lazy"
-          />
-        )}
+        <Image
+          src={image.src}
+          alt={image.name || image.alt || "Imagen"}
+          inferSize
+          sizes="(max-width: 768px) 128px, 256px"
+          class="object-cover"
+          loading="lazy"
+        />
       </figure>
     )
   }

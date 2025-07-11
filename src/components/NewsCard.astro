@@ -20,7 +20,7 @@ const { noticia, short, link, className = "" } = Astro.props;
 >
   {
     noticia.Imagen && (
-      <figure class={`w-full ${short ? "h-48" : "h-64"} overflow-hidden`}>
+      <figure class={`w-full ${short ? "h-48" : "h-96"} overflow-hidden`}>
         <Image
           src={noticia.Imagen}
           alt={noticia.Nombre}
@@ -31,6 +31,7 @@ const { noticia, short, link, className = "" } = Astro.props;
               : "(max-width: 768px) 192px, 256px"
           }
           class="object-cover"
+          style="height:inherit;"
           loading="eager"
         />
       </figure>
@@ -81,12 +82,14 @@ const { noticia, short, link, className = "" } = Astro.props;
 
       {
         link && (
-          <Buttons
-            buttons={[
-              { text: link.text, href: link.href, icon: "mdi:arrow-right" },
-            ]}
-            className="justify-end"
-          />
+          <div class="w-full flex justify-end md:justify-end">
+            <Buttons
+              buttons={[
+                { text: link.text, href: link.href, icon: "mdi:arrow-right" },
+              ]}
+              className=""
+            />
+          </div>
         )
       }
     </div>

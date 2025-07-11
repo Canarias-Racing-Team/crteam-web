@@ -6,7 +6,7 @@ const year = new Date().getFullYear();
 
 const navigationSections = [
   {
-    title: "Info y Redes",
+    title: "Descubre Más",
     ariaLabel: "Información y Redes Sociales",
     items: [
       {
@@ -14,7 +14,7 @@ const navigationSections = [
         icon: "mdi:instagram",
         label: "Instagram",
       },
-      { href: "/Dossier de empresas Canarias Racing Team.pdf",icon: "mdi:document", label: "Prensa" },
+      { href: "/Dossier de empresas Canarias Racing Team.pdf",icon: "mdi:text-box-outline", label: "Dossier de Prensa" },
     ],
   },
 ] as const;
@@ -81,7 +81,7 @@ const navigationSections = [
   <form
     id="contact"
     class="text-center px-4 md:px-0 lg:text-left"
-    action="mailto:crteam@ull.edu.es"
+    action={`mailto:crteam@ull.edu.es`}
     method="POST"
     enctype="text/plain"
   >

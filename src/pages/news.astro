@@ -1,13 +1,19 @@
 ---
 import NewsCard from "@components/NewsCard.astro";
 import Layout from "@layouts/Layout.astro";
-import { getNotionPages } from "@utils/notion";
+import { getNotionPages, getNewsImagesFromNotion } from "@utils/notion";
 import type { NotionPageType } from "@/types";
 import Section from "@components/Section.astro";
 import Card from "@components/Card.astro";
 import { texts, createCardContent } from "@utils/texts";
 
 const noticias: NotionPageType[] = await getNotionPages();
+const newsImages: string[] = await getNewsImagesFromNotion();
+noticias.forEach((noticia, idx) => {
+  if (newsImages[idx]) {
+    noticia.Imagen = newsImages[idx];
+  }
+});
 
 // Puedes definir cuántos placeholders añadir aquí
 const placeholdersCount = 0;
@@ -45,7 +51,13 @@ for (let i = 0; i < placeholdersCount; i++) {
         className="w-full bg-base-300"
         content={createCardContent(texts.news.newsletter)}
       >
-        <form action="/subscribe" method="POST" class="flex gap-2 mt-4 join">
+        <form
+          action="/subscribe"
+          class="flex gap-2 mt-4 join"
+          action={`mailto:crteam@ull.edu.es`}
+          method="POST"
+          enctype="text/plain"
+        >
           <input
             type="email"
             name="email"
