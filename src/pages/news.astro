@@ -1,14 +1,25 @@
 ---
 import NewsCard from "@components/NewsCard.astro";
 import Layout from "@layouts/Layout.astro";
-import { getNotionPages, getNewsImagesFromNotion } from "@utils/notion";
+import { getNotionPages } from "@utils/notion";
 import type { NotionPageType } from "@/types";
 import Section from "@components/Section.astro";
 import Card from "@components/Card.astro";
 import { texts, createCardContent } from "@utils/texts";
 
+// Obtener imágenes desde la API cacheada (SSR: usar URL absoluta)
+const baseUrl = import.meta.env.SITE_URL;
+const fetchNewsImages = async () => {
+  const res = await fetch(`${baseUrl}/api/news-images`, {
+    headers: { "x-api-key": import.meta.env.API_NEWS_IMAGES_KEY },
+  });
+  if (!res.ok) return [];
+  const data = await res.json();
+  return data.images || [];
+};
+
 const noticias: NotionPageType[] = await getNotionPages();
-const newsImages: string[] = await getNewsImagesFromNotion();
+const newsImages: string[] = await fetchNewsImages();
 noticias.forEach((noticia, idx) => {
   if (newsImages[idx]) {
     noticia.Imagen = newsImages[idx];

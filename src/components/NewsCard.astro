@@ -82,14 +82,12 @@ const { noticia, short, link, className = "" } = Astro.props;
 
       {
         link && (
-          <div class="w-full flex justify-end md:justify-end">
-            <Buttons
-              buttons={[
-                { text: link.text, href: link.href, icon: "mdi:arrow-right" },
-              ]}
-              className=""
-            />
-          </div>
+          <Buttons
+            buttons={[
+              { text: link.text, href: link.href, icon: "mdi:arrow-right" },
+            ]}
+            className="justify-end"
+          />
         )
       }
     </div>
