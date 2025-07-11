@@ -8,9 +8,10 @@ import Card from "@components/Card.astro";
 import { texts, createCardContent } from "@utils/texts";
 
 // Obtener imágenes desde la API cacheada (SSR: usar URL absoluta)
-const baseUrl = import.meta.env.SITE_URL || Astro.site;
+let baseUrl = Astro.site;
 const fetchNewsImages = async () => {
-  const res = await fetch(`${baseUrl}/api/news-images`, {
+  const apiUrl = `${baseUrl}/api/news-images`;
+  const res = await fetch(apiUrl, {
     headers: { "x-api-key": import.meta.env.API_NEWS_IMAGES_KEY },
   });
   if (!res.ok) return [];

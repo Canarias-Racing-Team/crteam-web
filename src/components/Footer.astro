@@ -14,7 +14,11 @@ const navigationSections = [
         icon: "mdi:instagram",
         label: "Instagram",
       },
-      { href: "/Dossier de empresas Canarias Racing Team.pdf",icon: "mdi:text-box-outline", label: "Dossier de Prensa" },
+      {
+        href: "/Dossier de empresas Canarias Racing Team.pdf",
+        icon: "mdi:text-box-outline",
+        label: "Dossier de Prensa",
+      },
     ],
   },
 ] as const;
@@ -29,8 +33,7 @@ const navigationSections = [
     <Image
       src={logoCRT}
       alt="Canarias Racing Team Logo"
-      width={138}
-      height={138}
+      loading="lazy"
       sizes="(max-width: 768px) 80px, 138px"
       class="h-8 w-auto mb-4 mx-auto lg:mx-0"
     />
@@ -51,10 +54,10 @@ const navigationSections = [
     </a>
   </aside>
 
-  <div class="flex flex-row gap-16 lg:gap-20">
+  <div class="flex flex-row gap-4 justify-around self-center">
     {
       navigationSections.map((section) => (
-        <nav aria-label={section.ariaLabel} class="text-left">
+        <nav aria-label={section.ariaLabel} class="text-left sm:w-1/2">
           <p class="text-sm font-bold uppercase mb-4 text-gray-400">
             {section.title}
           </p>
@@ -76,31 +79,31 @@ const navigationSections = [
         </nav>
       ))
     }
-  </div>
 
-  <form
-    id="contact"
-    class="text-center px-4 md:px-0 lg:text-left"
-    action={`mailto:crteam@ull.edu.es`}
-    method="POST"
-    enctype="text/plain"
-  >
-    <p class="text-sm font-bold uppercase mb-4 text-gray-400">Contáctanos</p>
-    <fieldset class="w-full max-w-xs">
-      <div class="flex flex-row gap-2 join">
-        <input
-          id="email"
-          name="email"
-          type="email"
-          placeholder="username@site.com"
-          class="input join-item bg-neutral-700 border-neutral-600 text-center text-white placeholder-gray-400 w-full"
-          required
-        />
-        <button
-          class="btn join-item bg-primary text-black border-none font-semibold"
-          >Contactar</button
-        >
-      </div>
-    </fieldset>
-  </form>
+    <form
+      id="contact"
+      class="text-center px-0 lg:text-left sm:w-1/2"
+      action={`mailto:crteam@ull.edu.es`}
+      method="POST"
+      enctype="text/plain"
+    >
+      <p class="text-sm font-bold uppercase mb-4 text-gray-400 pl-3">Contáctanos</p>
+      <fieldset class="w-full max-w-xs">
+        <div class="flex flex-col md:flex-row gap-2 md:join">
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="username@site.com"
+            class="input join-item bg-neutral-700 border-neutral-600 text-center text-white placeholder-gray-400 w-full"
+            required
+          />
+          <button
+            class="btn join-item bg-primary text-black border-none font-semibold"
+            >Contactar</button
+          >
+        </div>
+      </fieldset>
+    </form>
+  </div>
 </footer>

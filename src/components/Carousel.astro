@@ -32,8 +32,7 @@ if (!items) items = [];
               <Image
                 alt={image.alt ?? `Imagen ${i + 1}`}
                 src={image.src}
-                width={456}
-                height={456}
+                inferSize
                 sizes="(max-width: 768px) 256px, 456px"
                 class="w-full h-full rounded-box object-cover object-center"
                 loading="lazy"
