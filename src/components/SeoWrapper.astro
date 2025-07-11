@@ -9,14 +9,14 @@ const {
   publishedTime = null,
   modifiedTime = null,
   author = "Canarias Racing Team",
-  image = "/og-image.png", // Default image for SEO
+  image = "og-image.png", // Default image for SEO
   section = null,
   tags = [],
 } = Astro.props;
 
 const siteUrl = Astro.site?.origin || "https://crteam.es";
 const canonicalUrl = `${siteUrl}${path}`;
-const fullImageUrl = `${siteUrl}${image}`;
+const fullImageUrl = `${siteUrl}/${image}`;
 ---
 
 <SEO
