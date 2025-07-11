@@ -9,7 +9,7 @@ import pageInsight from "astro-page-insight";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://crteam.es",
+  site: "https://www.crteam.es",
   integrations: [icon(), sitemap(), pageInsight(), /* sanity() */],
 
   vite: {
