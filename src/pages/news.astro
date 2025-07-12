@@ -7,6 +7,8 @@ import Section from "@components/Section.astro";
 import Card from "@components/Card.astro";
 import { texts, createCardContent } from "@utils/texts";
 
+export const prerender = true;
+
 // Obtener imágenes desde la API cacheada (SSR: usar URL absoluta)
 let baseUrl = Astro.site;
 const fetchNewsImages = async () => {

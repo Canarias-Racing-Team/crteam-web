@@ -3,13 +3,13 @@ import { SEO } from "astro-seo";
 
 const {
   title,
-  description,
+  description = "Canarias Racing Team - 1º Equipo de fórmula student de Canarias",
   path = "",
   type = "website",
   publishedTime = null,
   modifiedTime = null,
   author = "Canarias Racing Team",
-  image = "og-image.png", // Default image for SEO
+  image = "og-image-16:9.png", // Default image for SEO
   section = null,
   tags = [],
 } = Astro.props;
