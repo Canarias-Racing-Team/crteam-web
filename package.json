@@ -3,8 +3,9 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "dev": "npm run zip-wallpapers && astro dev",
+    "build": "npm run zip-wallpapers && astro build",
+    "zip-wallpapers": "test -d public/crteam-wallpapers && zip -r public/crteam-wallpapers.zip public/crteam-wallpapers || echo 'Directory public/crteam-wallpapers does not exist, skipping zip.'",
     "preview": "astro preview",
     "check": "astro check",
     "astro": "astro"

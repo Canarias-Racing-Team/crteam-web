@@ -55,6 +55,7 @@ npm run preview    # Previsualizar build
 - [x] **Optimización**: Imágenes, CSS y rendimiento mejorados
 - [x] **Analytics y métricas**: Vercel Analytics activo
 - [x] **SEO avanzado con metadatos dinámicos**: astro-seo y metadatos por página
+- [x] **Wallpapers**: Descarga de pack oficial desde el footer
 
 ### 🚧 Próximas mejoras
 
