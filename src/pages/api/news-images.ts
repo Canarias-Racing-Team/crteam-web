@@ -51,6 +51,7 @@ export const GET: APIRoute = async ({ request }) => {
       status: 200,
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*", // Permite cualquier origen
       },
     });
   } catch (error) {
