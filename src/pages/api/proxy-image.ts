@@ -18,21 +18,14 @@ export const GET: APIRoute = async ({ request }) => {
     });
   }
 
-  // Placeholder PNG 1x1 transparente
-  const PNG_PLACEHOLDER = Buffer.from(
-    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAgMBApU3nAAAAABJRU5ErkJggg==",
-    "base64"
-  );
-  // Función para responder placeholder
-  const respondPlaceholder = (width = 1, height = 1) =>
-    new Response(PNG_PLACEHOLDER, {
+  // Función para responder vacío si hay error
+  const respondEmpty = (error = "unknown_error") =>
+    new Response(null, {
       status: 200,
       headers: {
-        "Content-Type": "image/png",
         "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "public, max-age=3600",
-        "X-Image-Width": width.toString(),
-        "X-Image-Height": height.toString(),
+        "Cache-Control": "public, max-age=2592000",
+        "X-Proxy-Error": error,
       },
     });
 
@@ -46,7 +39,7 @@ export const GET: APIRoute = async ({ request }) => {
           headers: {
             "Content-Type": contentType,
             "Access-Control-Allow-Origin": "*",
-            "Cache-Control": "public, max-age=3600",
+            "Cache-Control": "public, max-age=2592000",
             "X-Image-Width": width.toString(),
             "X-Image-Height": height.toString(),
           },
@@ -62,10 +55,10 @@ export const GET: APIRoute = async ({ request }) => {
           },
         });
       } catch {
-        return respondPlaceholder(800, 600);
+        return respondEmpty("fetch_error");
       }
-      if (res.status === 403) return respondPlaceholder(800, 600);
-      if (!res.ok) return respondPlaceholder(800, 600);
+      if (res.status === 403) return respondEmpty("status_403");
+      if (!res.ok) return respondEmpty("status_not_ok");
       const contentType =
         res.headers.get("content-type") || "application/octet-stream";
       const imageBuffer = await res.arrayBuffer();
@@ -106,7 +99,7 @@ export const GET: APIRoute = async ({ request }) => {
         headers: {
           "Content-Type": contentType,
           "Access-Control-Allow-Origin": "*",
-          "Cache-Control": "public, max-age=3600",
+          "Cache-Control": "public, max-age=2592000",
           "X-Image-Width": width.toString(),
           "X-Image-Height": height.toString(),
         },
@@ -123,10 +116,10 @@ export const GET: APIRoute = async ({ request }) => {
         },
       });
     } catch {
-      return respondPlaceholder();
+      return respondEmpty("fetch_error");
     }
-    if (res.status === 403) return respondPlaceholder();
-    if (!res.ok) return respondPlaceholder();
+    if (res.status === 403) return respondEmpty("status_403");
+    if (!res.ok) return respondEmpty("status_not_ok");
     const contentType =
       res.headers.get("content-type") || "application/octet-stream";
     const imageBuffer = await res.arrayBuffer();
@@ -162,7 +155,7 @@ export const GET: APIRoute = async ({ request }) => {
       headers: {
         "Content-Type": contentType,
         "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "public, max-age=3600",
+        "Cache-Control": "public, max-age=2592000",
         ...(width && height
           ? {
               "X-Image-Width": width.toString(),
@@ -172,6 +165,6 @@ export const GET: APIRoute = async ({ request }) => {
       },
     });
   } catch {
-    return respondPlaceholder();
+    return respondEmpty("unknown_error");
   }
 };
