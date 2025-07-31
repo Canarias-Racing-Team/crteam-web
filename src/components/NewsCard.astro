@@ -20,7 +20,7 @@ const { noticia, short, link, className = "" } = Astro.props;
 >
   {
     noticia.Imagen && (
-      <figure class={`w-full ${short ? "h-48" : "h-96"} overflow-hidden`}>
+      <figure class="w-full aspect-[5/3] overflow-hidden flex items-center justify-center bg-base-200">
         <Image
           src={noticia.Imagen}
           alt={noticia.Nombre}
@@ -31,8 +31,8 @@ const { noticia, short, link, className = "" } = Astro.props;
               ? "(max-width: 768px) 128px, 192px"
               : "(max-width: 768px) 192px, 256px"
           }
-          class="object-cover"
-          style="height:inherit;"
+          class="object-cover w-full h-full"
+          style="display:block;"
           loading={
             typeof window !== "undefined" && window.innerWidth <= 768
               ? "lazy"
