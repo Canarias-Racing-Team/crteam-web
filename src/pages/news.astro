@@ -25,7 +25,8 @@ const noticias: NotionPageType[] = await getNotionPages();
 const newsImages: string[] = await fetchNewsImages();
 noticias.forEach((noticia, idx) => {
   if (newsImages[idx]) {
-    noticia.Imagen = newsImages[idx];
+    // Usar el proxy para evitar problemas de CORS
+    noticia.Imagen = `/api/proxy-image?url=${encodeURIComponent(newsImages[idx])}`;
   }
 });
 
