@@ -21,14 +21,45 @@ const fetchNewsImages = async () => {
   return data.images || [];
 };
 
-const noticias: NotionPageType[] = await getNotionPages();
-const newsImages: string[] = await fetchNewsImages();
-noticias.forEach((noticia, idx) => {
-  if (newsImages[idx]) {
-    // Usar el proxy para evitar problemas de CORS
-    noticia.Imagen = `/api/proxy-image?url=${encodeURIComponent(newsImages[idx])}`;
+async function fetchImageDimensions(url: string) {
+  try {
+    const res = await fetch(url, { method: "HEAD" });
+    if (!res.ok) return { width: 800, height: 600 };
+    const width = res.headers.get("X-Image-Width");
+    const height = res.headers.get("X-Image-Height");
+    return {
+      width: width ? parseInt(width) : 800,
+      height: height ? parseInt(height) : 600,
+    };
+  } catch {
+    return { width: 800, height: 600 };
   }
-});
+}
+
+const noticiasRaw: NotionPageType[] = await getNotionPages();
+const newsImages: string[] = await fetchNewsImages();
+
+const noticias: NotionPageType[] = await Promise.all(
+  noticiasRaw.map(async (noticia, idx) => {
+    let imagen = noticia.Imagen;
+    if (newsImages[idx]) {
+      imagen = `/api/proxy-image?url=${encodeURIComponent(newsImages[idx])}`;
+    }
+    let width = 800;
+    let height = 600;
+    if (imagen && imagen.startsWith("/api/proxy-image")) {
+      const dims = await fetchImageDimensions(`${baseUrl}${imagen}`);
+      width = dims.width;
+      height = dims.height;
+    }
+    return {
+      ...noticia,
+      Imagen: imagen,
+      width,
+      height,
+    };
+  })
+);
 
 // Puedes definir cuántos placeholders añadir aquí
 const placeholdersCount = 0;

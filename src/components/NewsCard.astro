@@ -24,7 +24,8 @@ const { noticia, short, link, className = "" } = Astro.props;
         <Image
           src={noticia.Imagen}
           alt={noticia.Nombre}
-          inferSize
+          width={typeof noticia.width === "number" ? noticia.width : 192}
+          height={typeof noticia.height === "number" ? noticia.height : 128}
           sizes={
             short
               ? "(max-width: 768px) 128px, 192px"
@@ -32,7 +33,11 @@ const { noticia, short, link, className = "" } = Astro.props;
           }
           class="object-cover"
           style="height:inherit;"
-          loading={typeof window !== "undefined" && window.innerWidth <= 768 ? "lazy" : "eager"}
+          loading={
+            typeof window !== "undefined" && window.innerWidth <= 768
+              ? "lazy"
+              : "eager"
+          }
         />
       </figure>
     )

@@ -42,6 +42,8 @@ export type NotionPageType = {
   url: string;
   Nombre: string;
   Autor?: string;
+  width?: number;
+  height?: number;
 };
 
 export type ImageEntry = {
