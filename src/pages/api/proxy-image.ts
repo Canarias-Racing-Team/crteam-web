@@ -1,4 +1,6 @@
 import type { APIRoute } from "astro";
+import { redis } from "@utils/redis";
+import crypto from "crypto";
 
 // Caché en memoria para dimensiones por URL
 const imageDimensionCache: Record<
@@ -18,13 +20,14 @@ export const GET: APIRoute = async ({ request }) => {
     });
   }
 
-  // Función para responder vacío si hay error
-  const respondEmpty = (error = "unknown_error") =>
-    new Response(null, {
-      status: 200,
+  // Función para responder error real si hay error
+  const respondEmpty = (error = "unknown_error", status = 410) =>
+    new Response(JSON.stringify({ error }), {
+      status,
       headers: {
+        "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "public, max-age=2592000",
+        "Cache-Control": "no-store",
         "X-Proxy-Error": error,
       },
     });
@@ -55,10 +58,10 @@ export const GET: APIRoute = async ({ request }) => {
           },
         });
       } catch {
-        return respondEmpty("fetch_error");
+        return respondEmpty("fetch_error", 502);
       }
-      if (res.status === 403) return respondEmpty("status_403");
-      if (!res.ok) return respondEmpty("status_not_ok");
+      if (res.status === 403) return respondEmpty("status_403", 403);
+      if (!res.ok) return respondEmpty("status_not_ok", res.status);
       const contentType =
         res.headers.get("content-type") || "application/octet-stream";
       const imageBuffer = await res.arrayBuffer();
@@ -86,12 +89,13 @@ export const GET: APIRoute = async ({ request }) => {
         width = buf[26] + (buf[27] << 8);
         height = buf[28] + (buf[29] << 8);
       }
-      if (!width || !height) {
-        width = 800;
-        height = 600;
+      if (!width || !height || width < 2 || height < 2) {
+        // No se pudo obtener dimensiones válidas
+        console.warn(`[proxy-image] Dimensiones inválidas para HEAD: ${url}`);
+        return respondEmpty("invalid_image_dimensions", 422);
       }
-      // Solo cachea si no es placeholder
-      if (res.status === 200 && width > 1 && height > 1) {
+      // Solo cachea si es válido
+      if (res.status === 200) {
         imageDimensionCache[url] = { width, height, contentType };
       }
       return new Response(null, {
@@ -106,7 +110,26 @@ export const GET: APIRoute = async ({ request }) => {
       });
     }
 
-    // GET: imagen completa
+    // GET: imagen completa (con caché Redis)
+    // Clave hash para Redis
+    const hash = crypto.createHash("sha256").update(url).digest("hex");
+    const redisKey = `proxy-image:${hash}`;
+    const cached = (await redis.get(redisKey)) as {
+      data: string;
+      headers: Record<string, string>;
+    } | null;
+    if (cached && cached.data && cached.headers) {
+      // Decodifica el buffer base64
+      const imageBuffer = Buffer.from(cached.data, "base64");
+      return new Response(imageBuffer, {
+        status: 200,
+        headers: {
+          ...cached.headers,
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+    }
+    // Si no hay caché, descarga de Notion
     let res;
     try {
       res = await fetch(url, {
@@ -116,10 +139,10 @@ export const GET: APIRoute = async ({ request }) => {
         },
       });
     } catch {
-      return respondEmpty("fetch_error");
+      return respondEmpty("fetch_error", 502);
     }
-    if (res.status === 403) return respondEmpty("status_403");
-    if (!res.ok) return respondEmpty("status_not_ok");
+    if (res.status === 403) return respondEmpty("status_403", 403);
+    if (!res.ok) return respondEmpty("status_not_ok", res.status);
     const contentType =
       res.headers.get("content-type") || "application/octet-stream";
     const imageBuffer = await res.arrayBuffer();
@@ -147,24 +170,32 @@ export const GET: APIRoute = async ({ request }) => {
       width = buf[26] + (buf[27] << 8);
       height = buf[28] + (buf[29] << 8);
     }
+    // Relajar chequeo: servir cualquier imagen válida por content-type
+    let headersToCache: Record<string, string> = {
+      "Content-Type": contentType,
+      "Cache-Control": "public, max-age=2592000",
+    };
     if (width && height && width > 1 && height > 1) {
       imageDimensionCache[url] = { width, height, contentType };
+      headersToCache["X-Image-Width"] = width.toString();
+      headersToCache["X-Image-Height"] = height.toString();
     }
+    await redis.set(
+      redisKey,
+      {
+        data: Buffer.from(imageBuffer).toString("base64"),
+        headers: headersToCache,
+      },
+      { ex: 86400 }
+    );
     return new Response(imageBuffer, {
       status: 200,
       headers: {
-        "Content-Type": contentType,
+        ...headersToCache,
         "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "public, max-age=2592000",
-        ...(width && height
-          ? {
-              "X-Image-Width": width.toString(),
-              "X-Image-Height": height.toString(),
-            }
-          : {}),
       },
     });
   } catch {
-    return respondEmpty("unknown_error");
+    return respondEmpty("unknown_error", 500);
   }
 };

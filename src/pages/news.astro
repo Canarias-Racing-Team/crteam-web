@@ -40,7 +40,7 @@ const noticiasRaw: NotionPageType[] = await getNotionPages();
 const newsImages: string[] = await fetchNewsImages();
 
 // Versión avanzada (con proxy y dimensiones)
-const noticias2: NotionPageType[] = await Promise.all(
+const noticias: NotionPageType[] = await Promise.all(
   noticiasRaw.map(async (noticia, idx) => {
     let imagen = noticia.Imagen;
     if (newsImages[idx]) {
@@ -61,9 +61,6 @@ const noticias2: NotionPageType[] = await Promise.all(
     };
   })
 );
-
-// Versión simple: solo saca todo de noticiasRaw, sin modificar imágenes ni dimensiones
-const noticias: NotionPageType[] = noticiasRaw;
 
 // Puedes definir cuántos placeholders añadir aquí
 const placeholdersCount = 0;
