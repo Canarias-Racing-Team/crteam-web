@@ -53,15 +53,30 @@ export const GET: APIRoute = async ({ request }) => {
         res = await fetch(url, {
           headers: {
             Range: "bytes=0-1023",
-            Referer: "https://crteam.es/",
-            "User-Agent": "Mozilla/5.0 (compatible; CRTeamBot/1.0)",
+            "User-Agent":
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
           },
         });
-      } catch {
+        console.log(`[proxy-image] HEAD fetch url: ${url}`);
+        console.log(`[proxy-image] HEAD fetch status: ${res.status}`);
+        console.log(
+          `[proxy-image] HEAD fetch headers:`,
+          Object.fromEntries(res.headers.entries())
+        );
+      } catch (e) {
+        console.error(`[proxy-image] HEAD fetch error:`, e);
         return respondEmpty("fetch_error", 502);
       }
-      if (res.status === 403) return respondEmpty("status_403", 403);
-      if (!res.ok) return respondEmpty("status_not_ok", res.status);
+      if (res.status === 403) {
+        console.warn(`[proxy-image] HEAD fetch 403 para url: ${url}`);
+        return respondEmpty("status_403", 403);
+      }
+      if (!res.ok) {
+        console.warn(
+          `[proxy-image] HEAD fetch not ok (${res.status}) para url: ${url}`
+        );
+        return respondEmpty("status_not_ok", res.status);
+      }
       const contentType =
         res.headers.get("content-type") || "application/octet-stream";
       const imageBuffer = await res.arrayBuffer();
@@ -134,15 +149,30 @@ export const GET: APIRoute = async ({ request }) => {
     try {
       res = await fetch(url, {
         headers: {
-          Referer: "https://crteam.es/",
-          "User-Agent": "Mozilla/5.0 (compatible; CRTeamBot/1.0)",
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         },
       });
-    } catch {
+      console.log(`[proxy-image] GET fetch url: ${url}`);
+      console.log(`[proxy-image] GET fetch status: ${res.status}`);
+      console.log(
+        `[proxy-image] GET fetch headers:`,
+        Object.fromEntries(res.headers.entries())
+      );
+    } catch (e) {
+      console.error(`[proxy-image] GET fetch error:`, e);
       return respondEmpty("fetch_error", 502);
     }
-    if (res.status === 403) return respondEmpty("status_403", 403);
-    if (!res.ok) return respondEmpty("status_not_ok", res.status);
+    if (res.status === 403) {
+      console.warn(`[proxy-image] GET fetch 403 para url: ${url}`);
+      return respondEmpty("status_403", 403);
+    }
+    if (!res.ok) {
+      console.warn(
+        `[proxy-image] GET fetch not ok (${res.status}) para url: ${url}`
+      );
+      return respondEmpty("status_not_ok", res.status);
+    }
     const contentType =
       res.headers.get("content-type") || "application/octet-stream";
     const imageBuffer = await res.arrayBuffer();
