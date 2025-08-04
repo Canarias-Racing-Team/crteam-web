@@ -155,10 +155,10 @@ export async function getNewsImagesFromNotion(): Promise<string[]> {
     .filter((url): url is string => typeof url === "string" && url.length > 0);
 }
 
-import fs from "fs";
-import path from "path";
-import https from "https";
-import http from "http";
+import * as fs from "fs";
+import * as path from "path";
+import * as https from "https";
+import * as http from "http";
 import { fileURLToPath } from "url";
 
 // Definir __filename y __dirname en ESM

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "download-news-images": "node -r dotenv/config -r ts-node/register scripts/download-news-images.ts",
-    "build": "npm run zip-wallpapers && npm run download-news-images && astro build",
+    "build": "npm run zip-wallpapers && astro build",
     "zip-wallpapers": "test -d public/crteam-wallpapers && zip -r public/crteam-wallpapers.zip public/crteam-wallpapers || echo 'Directory public/crteam-wallpapers does not exist, skipping zip.'",
     "preview": "astro preview",
     "check": "astro check",

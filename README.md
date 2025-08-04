@@ -13,6 +13,18 @@ Desarrollado con **Astro**, **TailwindCSS** y **DaisyUI**. Incluye sistema de no
 
 ## 💡 Desarrollo
 
+### ⚠️ Advertencia de seguridad
+
+> **Nota**: Las advertencias de seguridad relacionadas con `path-to-regexp` y dependencias de Vercel/Astro fueron solucionadas utilizando la configuración de `overrides` en `package.json`:
+>
+> ```json
+> "overrides": {
+>   "@astrojs/vercel": {
+>     "path-to-regexp": "8.2.0"
+>   }
+> }
+> ```
+
 ### Comandos principales
 
 ```bash
@@ -20,16 +32,10 @@ npm install        # Instalar dependencias
 npm run dev        # Servidor de desarrollo
 npm run build      # Construir para producción
 npm run preview    # Previsualizar build
+npm run download-news-images # Descargar imágenes de noticias desde Notion
 ```
 
-### ⚠️ Advertencia de seguridad
-
-> **Nota**: Este proyecto puede mostrar advertencias de seguridad en `npm audit` relacionadas con `path-to-regexp` y dependencias de Vercel/Astro. Estas son vulnerabilidades conocidas en las dependencias del framework y no pueden ser solucionadas manualmente por el momento. Los equipos de Vercel y Astro están trabajando en las correcciones correspondientes.
-
-> **Actualización de paquetes**: Si necesitas actualizar dependencias y encuentras conflictos con Vercel, sigue estos pasos:
-> 1. `npm uninstall @astrojs/vercel`
-> 2. `npm update` (actualizar otros paquetes)
-> 3. `npm install @astrojs/vercel` (reinstalar Vercel)
+> **Nota importante**: Es necesario ejecutar manualmente `npm run download-news-images` cada vez que se cree una noticia nueva en Notion para sincronizar las imágenes con el proyecto.
 
 ### Tecnologías
 
