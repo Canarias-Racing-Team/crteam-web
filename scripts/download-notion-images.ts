@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { getNotionPages } from "../src/utils/notion.ts";
 import fs from "fs";
 import path from "path";

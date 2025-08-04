@@ -31,7 +31,8 @@
   },
   "devDependencies": {
     "@iconify-json/mdi": "^1.2.3",
-    "astro-icon": "^1.1.5"
+    "astro-icon": "^1.1.5",
+    "ts-node": "^10.9.2"
   },
   "overrides": {
     "@astrojs/vercel": {
