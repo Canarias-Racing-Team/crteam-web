@@ -9,9 +9,10 @@ interface Props {
   link?: SectionSampleLinkType;
   short?: boolean;
   className?: string;
+  index?: number;
 }
 
-const { noticia, short, link, className = "" } = Astro.props;
+const { noticia, short, link, className = "", index = 0 } = Astro.props;
 ---
 
 <div
@@ -22,11 +23,7 @@ const { noticia, short, link, className = "" } = Astro.props;
     noticia.Imagen && (
       <figure class="w-full aspect-[5/3] overflow-hidden flex items-center justify-center bg-base-200">
         <Image
-          src={
-            noticia.Imagen
-              ? `/api/proxy-image?url=${encodeURIComponent(noticia.Imagen)}`
-              : ""
-          }
+          src={noticia.Imagen}
           alt={noticia.Nombre}
           width={typeof noticia.width === "number" ? noticia.width : 192}
           height={typeof noticia.height === "number" ? noticia.height : 128}
@@ -37,11 +34,7 @@ const { noticia, short, link, className = "" } = Astro.props;
           }
           class="object-cover w-full h-full"
           style="display:block;"
-          loading={
-            typeof window !== "undefined" && window.innerWidth <= 768
-              ? "lazy"
-              : "eager"
-          }
+          loading={index < 4 ? "eager" : "lazy"}
         />
       </figure>
     )

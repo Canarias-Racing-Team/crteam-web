@@ -36,9 +36,7 @@ const articleTitle = noticia.Nombre || "Noticia";
 const articleDescription =
   noticia.Contenido?.substring(0, 160) + "..." ||
   "Noticia del Canarias Racing Team";
-const articleImage = noticia.Imagen
-  ? `/api/proxy-image?url=${encodeURIComponent(noticia.Imagen)}`
-  : undefined;
+const articleImage = noticia.Imagen;
 const articlePath = `/news/${noticia.url}`;
 const publishedDate = noticia.Fecha
   ? new Date(noticia.Fecha).toISOString()

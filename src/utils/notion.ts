@@ -1,8 +1,37 @@
 import { Client } from "@notionhq/client";
 import type { NotionPageType } from "@types";
 
-const notion = new Client({ auth: import.meta.env.NOTION_API_KEY });
-const databaseId = import.meta.env.NOTION_DATABASE_ID;
+// Soporte para variables de entorno en Node.js y Astro
+let NOTION_API_KEY: string | undefined;
+let NOTION_DATABASE_ID: string | undefined;
+
+if (
+  typeof process !== "undefined" &&
+  process.env &&
+  process.env.NODE_ENV !== "production"
+) {
+  // Solo cargar dotenv en Node.js, no en Astro
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    require("dotenv").config();
+  } catch {}
+}
+
+if (typeof import.meta !== "undefined" && import.meta.env) {
+  NOTION_API_KEY = import.meta.env.NOTION_API_KEY;
+  NOTION_DATABASE_ID = import.meta.env.NOTION_DATABASE_ID;
+} else if (typeof process !== "undefined" && process.env) {
+  NOTION_API_KEY = process.env.NOTION_API_KEY;
+  NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID;
+}
+
+if (!NOTION_API_KEY || !NOTION_DATABASE_ID) {
+  throw new Error(
+    "Faltan las variables de entorno NOTION_API_KEY o NOTION_DATABASE_ID"
+  );
+}
+const notion = new Client({ auth: NOTION_API_KEY });
+const databaseId: string = NOTION_DATABASE_ID;
 const DEBUG = false; // Cambia a false en producción
 
 if (DEBUG) {
@@ -24,13 +53,11 @@ function slugify(text: string): string {
 // Utilidades para extraer propiedades de Notion de forma segura
 function getTitle(props: any, key: string): string {
   return props[key]?.type === "title"
-    ? (props[key].title?.[0]?.plain_text ?? "")
+    ? props[key].title?.[0]?.plain_text ?? ""
     : "";
 }
 function getCheckbox(props: any, key: string): boolean {
-  return props[key]?.type === "checkbox"
-    ? (props[key].checkbox ?? false)
-    : false;
+  return props[key]?.type === "checkbox" ? props[key].checkbox ?? false : false;
 }
 function getRichText(props: any, key: string): string {
   if (props[key]?.type === "rich_text" && Array.isArray(props[key].rich_text)) {

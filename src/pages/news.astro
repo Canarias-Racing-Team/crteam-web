@@ -6,61 +6,22 @@ import type { NotionPageType } from "@/types";
 import Section from "@components/Section.astro";
 import Card from "@components/Card.astro";
 import { texts, createCardContent } from "@utils/texts";
+import { getLocalNewsImage } from "@utils/imageUtils";
 
 export const prerender = true;
 
-// Obtener imágenes desde la API cacheada (SSR: usar URL absoluta)
-let baseUrl = Astro.site;
-const fetchNewsImages = async () => {
-  const apiUrl = `${baseUrl}/api/news-images`;
-  const res = await fetch(apiUrl, {
-    headers: { "x-api-key": import.meta.env.API_NEWS_IMAGES_KEY },
-  });
-  if (!res.ok) return [];
-  const data = await res.json();
-  return data.images || [];
-};
-
-async function fetchImageDimensions(url: string) {
-  try {
-    const res = await fetch(url, { method: "HEAD" });
-    if (!res.ok) return { width: 800, height: 600 };
-    const width = res.headers.get("X-Image-Width");
-    const height = res.headers.get("X-Image-Height");
-    return {
-      width: width ? parseInt(width) : 800,
-      height: height ? parseInt(height) : 600,
-    };
-  } catch {
-    return { width: 800, height: 600 };
-  }
-}
-
 const noticiasRaw: NotionPageType[] = await getNotionPages();
-const newsImages: string[] = await fetchNewsImages();
 
-// Versión avanzada (con proxy y dimensiones)
-const noticias: NotionPageType[] = await Promise.all(
-  noticiasRaw.map(async (noticia, idx) => {
-    let imagen = noticia.Imagen;
-    if (newsImages[idx]) {
-      imagen = `/api/proxy-image?url=${encodeURIComponent(newsImages[idx])}`;
-    }
-    let width = 800;
-    let height = 600;
-    if (imagen && imagen.startsWith("/api/proxy-image")) {
-      const dims = await fetchImageDimensions(`${baseUrl}${imagen}`);
-      width = dims.width;
-      height = dims.height;
-    }
-    return {
-      ...noticia,
-      Imagen: imagen,
-      width,
-      height,
-    };
-  })
-);
+// Usar imágenes locales
+const noticias: NotionPageType[] = noticiasRaw.map((noticia) => {
+  const imagenLocal = getLocalNewsImage(noticia.url);
+  return {
+    ...noticia,
+    Imagen: imagenLocal || "https://via.placeholder.com/800x600", // Placeholder si no hay imagen local
+    width: 800,
+    height: 600,
+  };
+});
 
 // Puedes definir cuántos placeholders añadir aquí
 const placeholdersCount = 0;
@@ -122,11 +83,12 @@ for (let i = 0; i < placeholdersCount; i++) {
       class="w-full lg:w-2/3 grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8 mt-4 lg:mt-0 h-fit"
     >
       {
-        noticias.map((noticia) => (
+        noticias.map((noticia, idx) => (
           <NewsCard
             noticia={noticia}
             short
             link={{ href: `/news/${noticia.url}`, text: "Leer más" }}
+            index={idx}
           />
         ))
       }

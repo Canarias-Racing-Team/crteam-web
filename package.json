@@ -3,9 +3,10 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "npm run zip-wallpapers && astro dev",
-    "build": "npm run zip-wallpapers && astro build",
+    "dev": "astro dev",
+    "build": "npm run zip-wallpapers && npm run download-notion-images && astro build",
     "zip-wallpapers": "test -d public/crteam-wallpapers && zip -r public/crteam-wallpapers.zip public/crteam-wallpapers || echo 'Directory public/crteam-wallpapers does not exist, skipping zip.'",
+    "download-notion-images": "npx ts-node scripts/download-notion-images.ts",
     "preview": "astro preview",
     "check": "astro check",
     "astro": "astro"
@@ -16,12 +17,15 @@
     "@astrojs/vercel": "^8.2.1",
     "@notionhq/client": "^4.0.0",
     "@tailwindcss/vite": "^4.1.11",
+    "@types/node-fetch": "^2.6.13",
     "@upstash/redis": "^1.35.1",
     "@vercel/analytics": "^1.5.0",
     "astro": "^5.11.0",
     "astro-page-insight": "^0.10.2",
     "astro-seo": "^0.8.4",
     "daisyui": "^5.0.46",
+    "dotenv": "^17.2.1",
+    "node-fetch": "^3.3.2",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3"
   },

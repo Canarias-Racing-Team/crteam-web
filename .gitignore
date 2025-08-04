@@ -22,6 +22,9 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# Ignorar imágenes de news-images pero mantener la carpeta
+src/assets/fotos/news-images/*
+
 # jetbrains setting folder
 .idea/
 
