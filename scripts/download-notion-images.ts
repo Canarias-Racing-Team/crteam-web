@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const OUTPUT_DIR = path.join(__dirname, "../public/news-images");
+const OUTPUT_DIR = path.join(__dirname, "../src/assets/fotos/news-images");
 
 async function downloadImage(url: string, filename: string) {
   const res = await fetch(url);
