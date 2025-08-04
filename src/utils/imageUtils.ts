@@ -57,10 +57,11 @@ export async function loadImageEntries(
   return entries.map(([path, mod]) => {
     const file = path.split("/").pop()!;
     const alt = file.replace(/\.\w+$/, "").replace(/[-_]/g, " ");
+    // Ajusta el tipo de src para que coincida con ImageEntry
     return {
       file,
       alt,
-      src: mod.default,
+      src: mod.default as unknown as ImageEntry["src"],
       featured: false,
     };
   });

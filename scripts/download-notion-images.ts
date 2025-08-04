@@ -1,7 +1,7 @@
 import "dotenv/config";
-import { getNotionPages } from "../src/utils/notion.ts";
-import fs from "fs";
-import path from "path";
+import { getNotionPages } from "../src/utils/notion.js";
+import * as fs from "fs";
+import * as path from "path";
 import fetch from "node-fetch";
 import { fileURLToPath } from "url";
 

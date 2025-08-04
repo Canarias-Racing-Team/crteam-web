@@ -13,14 +13,6 @@
       "@utils/*": ["src/utils/*"],
       "@assets/*": ["src/assets/*"],
       "@types": ["src/types"]
-    },
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2020",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "esModuleInterop": true,
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "outDir": "dist"
+    }
   }
 }

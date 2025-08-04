@@ -50,5 +50,5 @@ export type ImageEntry = {
   file: string;
   alt: string;
   featured: boolean;
-  src: ImageMetadata;
+  src: ImageData;
 };
