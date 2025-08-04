@@ -78,12 +78,12 @@ export function getLocalNewsImage(
   exts = [".jpg", ".jpeg", ".png", ".webp"]
 ): string | null {
   if (!fs || !path) return null;
-  const dir = path.join(process.cwd(), "src/assets/fotos/news-images");
+  const dir = path.join(process.cwd(), "public/news-images");
   for (const ext of exts) {
     const filePath = path.join(dir, `${slug}${ext}`);
     if (fs.existsSync(filePath)) {
       // Ruta relativa para import estático en Astro
-      return `/src/assets/fotos/news-images/${slug}${ext}`;
+      return `/public/news-images/${slug}${ext}`;
     }
   }
   return null;

@@ -17,11 +17,10 @@ const noticias: NotionPageType[] = noticiasRaw.map((noticia) => {
   const imagenLocal = getLocalNewsImage(noticia.url);
   return {
     ...noticia,
-    Imagen: imagenLocal || "https://via.placeholder.com/800x600", // Placeholder si no hay imagen local
-    width: 800,
-    height: 600,
+    Imagen: imagenLocal || noticia.Imagen || undefined, // No asignar imagen si no hay local
   };
 });
+console.log("Noticias con imágenes locales:", noticias);
 
 // Puedes definir cuántos placeholders añadir aquí
 const placeholdersCount = 0;

@@ -219,7 +219,7 @@ export async function downloadNewsImagesToLocal(): Promise<void> {
 
     const destDir: string = path.resolve(
       __dirname,
-      "../assets/fotos/news-images"
+      "../../public/news-images"
     );
     if (!fs.existsSync(destDir)) {
       fs.mkdirSync(destDir, { recursive: true });

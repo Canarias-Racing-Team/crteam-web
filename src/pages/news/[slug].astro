@@ -6,6 +6,8 @@ import Card from "@components/Card.astro";
 import { getNotionPages } from "@utils/notion";
 import { texts } from "@utils/texts";
 import { createCardContent } from "@utils/texts";
+import { getLocalNewsImage } from "@utils/imageUtils";
+import { undefined } from "astro:schema";
 
 export const prerender = true;
 
@@ -51,6 +53,10 @@ const articleTags = [
   "Monoplaza Eléctrico",
   "Competición Universitaria",
 ];
+
+// Sobrescribir con la imagen local si está disponible
+const localImage = getLocalNewsImage(noticia.url);
+noticia.Imagen = localImage || noticia.Imagen;
 ---
 
 <Layout
