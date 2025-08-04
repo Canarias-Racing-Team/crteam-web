@@ -4,9 +4,11 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run zip-wallpapers && npm run download-notion-images && astro build",
-    "zip-wallpapers": "test -d public/crteam-wallpapers && zip -r public/crteam-wallpapers.zip public/crteam-wallpapers || echo 'Directory public/crteam-wallpapers does not exist, skipping zip.'",
+    "build-scripts": "tsc scripts/download-notion-images.ts --outDir scripts-dist",
     "download-notion-images": "npx ts-node scripts/download-notion-images.ts",
+    "download-notion-images:js": "node scripts-dist/download-notion-images.js",
+    "build": "npm run zip-wallpapers && npm run build-scripts && npm run download-notion-images:js && astro build",
+    "zip-wallpapers": "test -d public/crteam-wallpapers && zip -r public/crteam-wallpapers.zip public/crteam-wallpapers || echo 'Directory public/crteam-wallpapers does not exist, skipping zip.'",
     "preview": "astro preview",
     "check": "astro check",
     "astro": "astro"
