@@ -68,6 +68,13 @@ npm run download-news-images # Descargar imágenes de noticias desde Notion
 - [ ] **Páginas adicionales**: About, Projects, Contact, Team, Gallery
 - [ ] **Sistema de búsqueda en noticias**
 
+### 💡 Ideas futuras
+
+- **Mejorar la gestión de contenido**: Considerar una solución más eficiente para la gestión de noticias y contenido:
+  - Usar un CMS más robusto o bien migrar a un sistema completamente local.
+  - Implementar **Astro Collections** para gestionar los posts directamente en el proyecto.
+  - Convertir los PDFs existentes a contenido web y crear un panel de control para subir PDFs e imágenes de forma sencilla.
+
 ## 🌐 URLs
 
 - **Producción**: [crteam.es](https://crteam.es)
