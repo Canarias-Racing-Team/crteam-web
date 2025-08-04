@@ -22,7 +22,11 @@ const { noticia, short, link, className = "" } = Astro.props;
     noticia.Imagen && (
       <figure class="w-full aspect-[5/3] overflow-hidden flex items-center justify-center bg-base-200">
         <Image
-          src={noticia.Imagen}
+          src={
+            noticia.Imagen
+              ? `/api/proxy-image?url=${encodeURIComponent(noticia.Imagen)}`
+              : ""
+          }
           alt={noticia.Nombre}
           width={typeof noticia.width === "number" ? noticia.width : 192}
           height={typeof noticia.height === "number" ? noticia.height : 128}
