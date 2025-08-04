@@ -1,4 +1,3 @@
-// scripts/download-news-images.ts
 // Script para descargar imágenes de Notion a /src/assets/fotos/news-images
 
 import "dotenv/config";
