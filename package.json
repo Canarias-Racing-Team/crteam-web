@@ -4,10 +4,8 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build-scripts": "tsc scripts/download-notion-images.ts --outDir scripts-dist",
-    "download-notion-images": "npx ts-node scripts/download-notion-images.ts",
-    "download-notion-images:js": "node scripts-dist/download-notion-images.js",
-    "build": "npm run zip-wallpapers && npm run build-scripts && npm run download-notion-images:js && astro build",
+    "download-news-images": "node -r dotenv/config -r ts-node/register scripts/download-news-images.ts",
+    "build": "npm run zip-wallpapers && npm run download-news-images && astro build",
     "zip-wallpapers": "test -d public/crteam-wallpapers && zip -r public/crteam-wallpapers.zip public/crteam-wallpapers || echo 'Directory public/crteam-wallpapers does not exist, skipping zip.'",
     "preview": "astro preview",
     "check": "astro check",
@@ -28,13 +26,13 @@
     "daisyui": "^5.0.46",
     "dotenv": "^17.2.1",
     "node-fetch": "^3.3.2",
-    "tailwindcss": "^4.1.11",
-    "typescript": "^5.8.3"
+    "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
     "@iconify-json/mdi": "^1.2.3",
     "astro-icon": "^1.1.5",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   },
   "overrides": {
     "@astrojs/vercel": {

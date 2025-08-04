@@ -1,38 +1,28 @@
 import { Client } from "@notionhq/client";
 import type { NotionPageType } from "@types";
+import { config } from "dotenv";
 
-// Soporte para variables de entorno en Node.js y Astro
-let NOTION_API_KEY: string | undefined;
-let NOTION_DATABASE_ID: string | undefined;
+// Cargar las variables de entorno desde el archivo .env
+config();
 
-if (
-  typeof process !== "undefined" &&
-  process.env &&
-  process.env.NODE_ENV !== "production"
-) {
-  // Solo cargar dotenv en Node.js, no en Astro
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    require("dotenv").config();
-  } catch {}
-}
-
-if (typeof import.meta !== "undefined" && import.meta.env) {
-  NOTION_API_KEY = import.meta.env.NOTION_API_KEY;
-  NOTION_DATABASE_ID = import.meta.env.NOTION_DATABASE_ID;
-} else if (typeof process !== "undefined" && process.env) {
-  NOTION_API_KEY = process.env.NOTION_API_KEY;
-  NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID;
-}
+let NOTION_API_KEY: string | undefined = process.env.NOTION_API_KEY;
+let NOTION_DATABASE_ID: string | undefined = process.env.NOTION_DATABASE_ID;
 
 if (!NOTION_API_KEY || !NOTION_DATABASE_ID) {
   throw new Error(
     "Faltan las variables de entorno NOTION_API_KEY o NOTION_DATABASE_ID"
   );
 }
+
 const notion = new Client({ auth: NOTION_API_KEY });
 const databaseId: string = NOTION_DATABASE_ID;
-const DEBUG = false; // Cambia a false en producción
+
+// Permite activar DEBUG por variable de entorno
+const DEBUG =
+  (typeof process !== "undefined" &&
+    process.env &&
+    process.env.DEBUG === "true") ||
+  false;
 
 if (DEBUG) {
   getNotionDatabaseStructure(); // El log ya está dentro de la función
@@ -163,4 +153,110 @@ export async function getNewsImagesFromNotion(): Promise<string[]> {
   return pages
     .map((page) => page.Imagen)
     .filter((url): url is string => typeof url === "string" && url.length > 0);
+}
+
+import fs from "fs";
+import path from "path";
+import https from "https";
+import http from "http";
+import { fileURLToPath } from "url";
+
+// Definir __filename y __dirname en ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+/**
+ * Descarga una imagen desde una URL y la guarda en la ruta especificada.
+ * @param url - URL de la imagen a descargar.
+ * @param dest - Ruta de destino donde se guardará la imagen.
+ * @returns Una promesa que se resuelve cuando la descarga finaliza.
+ */
+function downloadImage(url: string, dest: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const proto = url.startsWith("https") ? https : http;
+    const req = proto.get(url, (res) => {
+      if (res.statusCode !== 200) {
+        reject(
+          new Error(`Error al descargar ${url}: Código ${res.statusCode}`)
+        );
+        res.resume(); // Consume datos para liberar recursos
+        return;
+      }
+      const fileStream = fs.createWriteStream(dest);
+      res.pipe(fileStream);
+      fileStream.on("finish", () => {
+        fileStream.close();
+        resolve();
+      });
+      fileStream.on("error", (err) => {
+        // Eliminar archivo incompleto si hay error
+        fileStream.close();
+        fs.unlink(dest, () => reject(err));
+      });
+    });
+    req.on("error", (err) => {
+      // Eliminar archivo incompleto si hay error
+      if (fs.existsSync(dest)) fs.unlinkSync(dest);
+      reject(err);
+    });
+  });
+}
+
+/**
+ * Descarga todas las imágenes de Notion y las guarda en una carpeta local.
+ * @returns Una promesa que se resuelve cuando todas las imágenes han sido descargadas.
+ */
+export async function downloadNewsImagesToLocal(): Promise<void> {
+  try {
+    const pages = await getNotionPages();
+    const images = pages
+      .map((page) => ({ url: page.Imagen, slug: page.url }))
+      .filter((item): item is { url: string; slug: string } => !!item.url);
+
+    if (images.length === 0) {
+      console.error("No se encontraron imágenes para descargar.");
+      return;
+    }
+
+    const destDir: string = path.resolve(
+      __dirname,
+      "../assets/fotos/news-images"
+    );
+    if (!fs.existsSync(destDir)) {
+      fs.mkdirSync(destDir, { recursive: true });
+    }
+
+    const CONCURRENCY = 5;
+    let index = 0;
+    let downloadedCount = 0;
+
+    const downloadNext = async (): Promise<void> => {
+      if (index >= images.length) return;
+      const { url, slug } = images[index++];
+      const extension = path.extname(new URL(url).pathname);
+      const fileName = `${slug}${extension}`;
+      const destPath = path.join(destDir, fileName);
+
+      if (fs.existsSync(destPath)) {
+        return downloadNext();
+      }
+
+      try {
+        await downloadImage(url, destPath);
+        downloadedCount++;
+      } catch (err) {
+        console.error(`Error descargando ${url} (${fileName}):`, err);
+      }
+
+      return downloadNext();
+    };
+
+    // Lanzar varias descargas en paralelo
+    await Promise.all(Array.from({ length: CONCURRENCY }, downloadNext));
+    console.log(
+      `Descarga de imágenes finalizada. Total descargadas: ${downloadedCount}`
+    );
+  } catch (err) {
+    console.error("Error general en downloadNewsImagesToLocal:", err);
+    throw err;
+  }
 }
