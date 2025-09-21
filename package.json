@@ -1,7 +1,7 @@
 {
   "name": "crteam-web",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
     "download-news-images": "node -r dotenv/config -r ts-node/register scripts/download-news-images.ts",
