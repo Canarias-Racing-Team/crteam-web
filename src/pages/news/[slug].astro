@@ -34,7 +34,7 @@ if (!noticia) {
 
 // Sobrescribir con la imagen local si está disponible
 const localImage = getLocalNewsImage(noticia.url);
-noticia.Imagen = localImage || noticia.Imagen;
+noticia.Imagen = localImage || noticia.Imagen || "/og-image-3_4.png";
 
 // Datos para SEO de artículo
 const articleTitle = noticia.Nombre || "Noticia";

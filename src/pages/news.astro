@@ -17,7 +17,7 @@ const noticias: NotionPageType[] = noticiasRaw.map((noticia) => {
   const imagenLocal = getLocalNewsImage(noticia.url);
   return {
     ...noticia,
-    Imagen: imagenLocal || noticia.Imagen || undefined, // No asignar imagen si no hay local
+    Imagen: imagenLocal || noticia.Imagen || "/og-image-3_4.png", // Usar og-image si no hay imagen
   };
 });
 console.log("Noticias con imágenes locales:", noticias);
@@ -29,8 +29,7 @@ for (let i = 0; i < placeholdersCount; i++) {
   noticias.push({
     Nombre: texts.placeholders.news.title,
     Contenido: texts.placeholders.news.content,
-    Imagen:
-      "https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp",
+    Imagen: "/og-image-3_4.png",
     url: `proximamente-${i + 1}`,
     Publicado: false,
     Fecha: "",

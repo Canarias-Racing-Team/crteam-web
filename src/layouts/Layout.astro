@@ -5,6 +5,7 @@ import Footer from "@components/Footer.astro";
 import FlagDivider from "@components/FlagDivider.astro";
 import SeoWrapper from "@components/SeoWrapper.astro";
 import Analytics from "@vercel/analytics/astro";
+import  SpeedInsights  from "@vercel/speed-insights/astro"
 
 const {
   title,
@@ -71,5 +72,6 @@ const {
     <FlagDivider class="mt-5 md:mt-15" />
     <Footer />
     <Analytics />
+    <SpeedInsights />
   </body>
 </html>
