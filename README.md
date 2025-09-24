@@ -13,6 +13,13 @@ Desarrollado con **Astro**, **TailwindCSS** y **DaisyUI**. Incluye sistema de no
 
 ## 💡 Desarrollo
 
+### Configuración .env
+
+```env
+NOTION_API_KEY=
+NOTION_DATABASE_ID=
+```
+
 ### ⚠️ Advertencia de seguridad
 
 > **Nota**: Las advertencias de seguridad relacionadas con `path-to-regexp` y dependencias de Vercel/Astro fueron solucionadas utilizando la configuración de `overrides` en `package.json`:
@@ -34,8 +41,6 @@ npm run build      # Construir para producción
 npm run preview    # Previsualizar build
 npm run download-news-images # Descargar imágenes de noticias desde Notion
 ```
-
-> **Nota importante**: Es necesario ejecutar manualmente `npm run download-news-images` cada vez que se cree una noticia nueva en Notion para sincronizar las imágenes con el proyecto.
 
 ### Tecnologías
 

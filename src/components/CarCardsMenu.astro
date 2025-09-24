@@ -4,46 +4,123 @@ import type { CarComponentType } from "@/types";
 import { Icon } from "astro-icon/components";
 
 // Generar un id único si no se pasa ninguno
-let { carComponents = [], id = "", className = "" } = Astro.props;
+let {
+  carComponents = [],
+  id = "",
+  className = "",
+  autoplay = true,
+  interval = 5000,
+} = Astro.props;
 if (!id) {
   id = `carcards-${Math.random().toString(36).slice(2, 10)}`;
 }
 ---
 
-<!-- Script para manejar el cambio de cards, asegurando ejecución en cliente y acceso correcto a id -->
-<script>
+<!-- Script para manejar el cambio de cards con autoplay -->
+<script is:inline>
   document.addEventListener("DOMContentLoaded", function () {
+    // Variables para autoplay
+    var autoplayTimer = null;
+    var isAutoplayPaused = false;
+    var currentCardIndex = 0;
+
     // Buscar el contenedor principal y obtener el id real
     var mainDiv = document.querySelector("[data-id]");
     if (!mainDiv) return;
     var id = mainDiv instanceof HTMLElement ? mainDiv.dataset.id : null;
     if (!id) return;
     var menu = document.getElementById(id + "-menu");
-    if (menu) {
-      const buttons = menu.querySelectorAll("button[data-idx]");
-      const cards = document.querySelectorAll(`[id^='${id}-card-']`);
-      // Función para activar card y botón
-      function activate(idx: number) {
-        cards.forEach((el, i) => {
-          el.classList.toggle("car-card-active", i === idx);
-        });
-        buttons.forEach((b, i) => {
-          b.classList.toggle("car-menu-btn-active", i === idx);
-        });
-      }
-      // Listeners
-      buttons.forEach((btn, idx) => {
-        btn.addEventListener("click", () => activate(idx));
+    if (!menu) return;
+
+    var buttons = menu.querySelectorAll("button[data-idx]");
+    var cards = document.querySelectorAll("[id^='" + id + "-card-']");
+    var container = document.getElementById(id);
+
+    if (cards.length === 0) return;
+
+    // Función para activar card y botón
+    function activate(idx) {
+      if (idx < 0) idx = cards.length - 1;
+      if (idx >= cards.length) idx = 0;
+
+      currentCardIndex = idx;
+
+      cards.forEach(function (el, i) {
+        el.classList.toggle("car-card-active", i === idx);
       });
-      // Activar el primero por defecto
-      activate(0);
+      buttons.forEach(function (b, i) {
+        b.classList.toggle("car-menu-btn-active", i === idx);
+      });
     }
+
+    // Función para avanzar al siguiente card automáticamente
+    function nextCardAuto() {
+      activate(currentCardIndex + 1);
+    }
+
+    // Iniciar autoplay
+    function startAutoplay() {
+      if (isAutoplayPaused || !container) return;
+
+      var autoplayEnabled = container.dataset.autoplay === "true";
+      if (!autoplayEnabled) return;
+
+      var intervalValue = container.dataset.interval || "5000";
+      var interval = parseInt(intervalValue);
+
+      clearTimeout(autoplayTimer);
+      autoplayTimer = setTimeout(function () {
+        if (!isAutoplayPaused) {
+          nextCardAuto();
+          startAutoplay();
+        }
+      }, interval);
+    }
+
+    // Pausar autoplay temporalmente
+    function pauseAutoplay(duration) {
+      duration = duration || 10000;
+      isAutoplayPaused = true;
+      clearTimeout(autoplayTimer);
+
+      setTimeout(function () {
+        isAutoplayPaused = false;
+        startAutoplay();
+      }, duration);
+    }
+
+    // Listeners para navegación manual
+    buttons.forEach(function (btn, idx) {
+      btn.addEventListener("click", function () {
+        activate(idx);
+        pauseAutoplay(); // Pausar cuando el usuario interactúa
+      });
+    });
+
+    // Pausar autoplay en hover
+    if (container) {
+      container.addEventListener("mouseenter", function () {
+        isAutoplayPaused = true;
+        clearTimeout(autoplayTimer);
+      });
+
+      container.addEventListener("mouseleave", function () {
+        isAutoplayPaused = false;
+        startAutoplay();
+      });
+    }
+
+    // Activar el primero por defecto e iniciar autoplay
+    activate(0);
+    startAutoplay();
   });
 </script>
 
 <div
   id={id}
   data-id={id}
+  data-autoplay={autoplay}
+  data-interval={interval}
   class={`join join-vertical md:join-horizontal gap-2 w-full ${className}`}
 >
   <div class="join-item h-full">

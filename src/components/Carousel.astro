@@ -3,7 +3,13 @@ import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import type { CarouselItemType } from "@types";
 
-let { items, id, className = "" } = Astro.props;
+let {
+  items,
+  id,
+  className = "",
+  autoplay = true,
+  interval = 4000,
+} = Astro.props;
 // Protección extra: nunca null/undefined y siempre array
 if (!Array.isArray(items))
   items =
@@ -16,7 +22,12 @@ if (!items) items = [];
 {
   Array.isArray(items) && items.length > 0 ? (
     <div class={className}>
-      <div class="carousel w-full h-full" id={id}>
+      <div
+        class="custom-carousel w-full h-full relative overflow-hidden"
+        id={id}
+        data-autoplay={autoplay}
+        data-interval={interval}
+      >
         {/* Carousel items */}
         {items.map((image: CarouselItemType, i: number) => {
           if (!image || typeof image !== "object" || !("src" in image))
@@ -27,7 +38,7 @@ if (!items) items = [];
           return (
             <div
               id={slideId}
-              class={`carousel-item relative w-full h-full items-center justify-center transition-opacity duration-500 ease-in-out ${i === 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+              class={`custom-carousel-item absolute inset-0 w-full h-full flex items-center justify-center transition-opacity duration-500 ease-in-out ${i === 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
             >
               <Image
                 alt={image.alt ?? `Imagen ${i + 1}`}
@@ -71,62 +82,132 @@ if (!items) items = [];
   ) : null
 }
 <script is:inline>
-  // Mantiene el color primario en el botón activo y gestiona la visibilidad de los slides usando opacity/transform
-  function setActiveCarouselBtn(selectedIdx = null) {
-    const total = document.querySelectorAll('[id^="carousel-btn-"]').length;
-    let idx = selectedIdx;
-    if (idx === null) {
-      const hash = window.location.hash || "#slide1";
-      for (let i = 1; i <= total; i++) {
-        if (hash === `#slide${i}` || (!window.location.hash && i === 1)) {
-          idx = i;
-          break;
-        }
-      }
-      if (!idx) idx = 1;
-    }
-    for (let i = 1; i <= total; i++) {
-      const btn = document.getElementById(`carousel-btn-${i}`);
-      if (btn) {
-        if (i === idx) {
-          btn.classList.add("btn-primary");
-          btn.setAttribute("aria-current", "page");
-        } else {
-          btn.classList.remove("btn-primary");
-          btn.removeAttribute("aria-current");
-        }
-      }
-    }
-    // Mostrar solo el slide activo usando opacity y pointer-events
-    document.querySelectorAll(".carousel-item").forEach((item, i) => {
-      if (i === idx - 1) {
-        item.classList.add("opacity-100", "pointer-events-auto");
-        item.classList.remove("opacity-0", "pointer-events-none");
+  let autoplayTimer = null;
+  let isAutoplayPaused = false;
+  let currentSlideIndex = 1;
+
+  // Función simple para mostrar un slide específico
+  function showSlide(slideNumber) {
+    const carouselItems = document.querySelectorAll(".custom-carousel-item");
+    const carouselBtns = document.querySelectorAll('[id^="carousel-btn-"]');
+
+    if (carouselItems.length === 0) return; // Normalizar número de slide
+    const total = carouselItems.length;
+    if (slideNumber < 1) slideNumber = total;
+    if (slideNumber > total) slideNumber = 1;
+
+    currentSlideIndex = slideNumber;
+
+    // Ocultar todos los slides y actualizar botones
+    carouselItems.forEach((item, i) => {
+      if (i === slideNumber - 1) {
+        // Mostrar slide activo
+        item.style.opacity = "1";
+        item.style.pointerEvents = "auto";
+        item.style.zIndex = "10";
       } else {
-        item.classList.remove("opacity-100", "pointer-events-auto");
-        item.classList.add("opacity-0", "pointer-events-none");
+        // Ocultar slide inactivo
+        item.style.opacity = "0";
+        item.style.pointerEvents = "none";
+        item.style.zIndex = "1";
+      }
+    });
+
+    // Actualizar botones
+    carouselBtns.forEach((btn, i) => {
+      if (i + 1 === slideNumber) {
+        btn.classList.add("btn-primary");
+        btn.setAttribute("aria-current", "page");
+      } else {
+        btn.classList.remove("btn-primary");
+        btn.removeAttribute("aria-current");
       }
     });
   }
-  // Sincroniza el slide activo con el hash o el primero
-  function syncActiveSlide() {
-    setActiveCarouselBtn();
-  }
-  window.addEventListener("hashchange", syncActiveSlide);
-  window.addEventListener("DOMContentLoaded", syncActiveSlide);
 
-  // Al hacer clic en flechas o números, solo cambia el hash (lo que dispara la lógica de actualización)
-  document.addEventListener("click", function (e) {
-    const target = e.target.closest('a[href^="#slide"]');
-    if (target) {
-      e.preventDefault();
-      const hash = target.getAttribute("href");
-      if (hash && window.location.hash !== hash) {
-        window.location.hash = hash;
-      } else {
-        // Si ya está en el hash, forzar actualización visual
-        syncActiveSlide();
+  // Navegar al siguiente slide automáticamente
+  function nextSlideAuto() {
+    showSlide(currentSlideIndex + 1);
+  }
+
+  // Iniciar autoplay
+  function startAutoplay() {
+    if (isAutoplayPaused) return;
+
+    const carousel = document.querySelector(".custom-carousel");
+    if (!carousel) return;
+
+    const autoplayEnabled = carousel.dataset.autoplay === "true";
+    if (!autoplayEnabled) return;
+
+    const interval = parseInt(carousel.dataset.interval) || 4000;
+
+    clearTimeout(autoplayTimer);
+    autoplayTimer = setTimeout(() => {
+      if (!isAutoplayPaused) {
+        nextSlideAuto();
+        startAutoplay();
       }
+    }, interval);
+  }
+
+  // Pausar autoplay temporalmente
+  function pauseAutoplay(duration = 8000) {
+    isAutoplayPaused = true;
+    clearTimeout(autoplayTimer);
+
+    setTimeout(() => {
+      isAutoplayPaused = false;
+      startAutoplay();
+    }, duration);
+  }
+
+  // Inicializar carrusel
+  document.addEventListener("DOMContentLoaded", () => {
+    // Mostrar primer slide
+    showSlide(1);
+
+    // Iniciar autoplay
+    startAutoplay();
+
+    // Pausar en hover
+    const carousel = document.querySelector(".custom-carousel");
+    if (carousel) {
+      carousel.addEventListener("mouseenter", () => {
+        isAutoplayPaused = true;
+        clearTimeout(autoplayTimer);
+      });
+
+      carousel.addEventListener("mouseleave", () => {
+        isAutoplayPaused = false;
+        startAutoplay();
+      });
+    }
+  });
+
+  // Manejar navegación manual
+  document.addEventListener("click", (e) => {
+    // Botones numerados
+    const carouselBtn = e.target.closest('[id^="carousel-btn-"]');
+    if (carouselBtn) {
+      e.preventDefault();
+      const slideNum = parseInt(carouselBtn.textContent);
+      if (slideNum) {
+        showSlide(slideNum);
+        pauseAutoplay();
+      }
+      return;
+    }
+
+    // Flechas
+    const arrowBtn = e.target.closest(".btn-circle");
+    if (arrowBtn && arrowBtn.getAttribute("aria-label")) {
+      e.preventDefault();
+      const isNext = arrowBtn.getAttribute("aria-label") === "Siguiente";
+      const newSlide = isNext ? currentSlideIndex + 1 : currentSlideIndex - 1;
+      showSlide(newSlide);
+      pauseAutoplay();
+      return;
     }
   });
 </script>

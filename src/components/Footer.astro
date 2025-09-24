@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
+import { texts } from "@utils/texts";
 import logoCRT from "@assets/fotos/logos-crteam/CRTEAM BLANCO.png";
 const year = new Date().getFullYear();
 
@@ -10,17 +11,17 @@ const navigationSections = [
     ariaLabel: "Información y Redes Sociales",
     items: [
       {
-        href: "https://instagram.com/canariasracingteam",
+        href: texts.links.instagram,
         icon: "mdi:instagram",
         label: "Instagram",
       },
       {
-        href: "/Dossier de empresas Canarias Racing Team.pdf",
+        href: texts.links.dossier,
         icon: "mdi:text-box-outline",
         label: "Dossier de Empresa",
       },
       {
-        href: "/crteam-wallpapers.zip",
+        href: texts.links.wallpapers,
         icon: "mdi:wallpaper",
         label: "Wallpapers (.zip)",
       },
