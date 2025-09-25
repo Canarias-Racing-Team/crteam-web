@@ -26,21 +26,19 @@ const buttons = [
   `}
 >
   <div class="hero-overlay bg-opacity-70 absolute inset-0"></div>
-  <div class="w-full flex justify-center">
-    <h1
-      class="text-4xl md:text-6xl lg:text-8xl max-w-[814.2px] min-w-[315px] z-10"
-    >
-      <span class="grid w-full place-items-center gap-x-2 md:gap-x-4 font-black tracking-wider leading-none">
-        <span
-          class="text-white col-start-1 row-start-1 text-right w-full"
+  <div class="w-full flex justify-center px-4">
+    <h1 class="text-4xl md:text-6xl lg:text-8xl max-w-[814.2px] w-full z-10">
+      <span
+        class="grid w-full place-items-center gap-x-2 md:gap-x-4 font-black tracking-wider leading-none"
+      >
+        <span class="text-white col-start-1 row-start-1 text-right w-full"
           >OCHO</span
         >
         <span
           class="text-outline-white col-start-2 row-start-1 text-left w-full"
           >ISLAS</span
         >
-        <span
-          class="text-secondary col-start-1 row-start-2 text-right w-full"
+        <span class="text-secondary col-start-1 row-start-2 text-right w-full"
           >TRES</span
         >
         <span
@@ -50,13 +48,25 @@ const buttons = [
       </span>
     </h1>
   </div>
-  <div id="subtitle" class="flex flex-col items-center z-10 mt-4">
-    <p class="text-md md:text-2xl">Primer Equipo de Fórmula Student de Canarias</p>
-    <Buttons
-      buttons={buttons}
-      buttonClass="btn btn-primary btn-sm md:btn-lg"
-      className="md:join-horizontal mt-5 md:mt-6"
-    />
+  <div class="w-full flex justify-center px-4">
+    <div
+      id="subtitle"
+      class="flex flex-col items-center z-10 mt-4 mx-2 text-center max-w-[814.2px] w-full"
+    >
+      <p
+        class="text-md md:text-2xl text-base-content/70 font-bold"
+        style="text-align:center !important; text-transform:uppercase !important;"
+      >
+        Primer Equipo de Fórmula Student de Canarias
+      </p>
+      <div class="w-full flex justify-center">
+        <Buttons
+          buttons={buttons}
+          buttonClass="btn btn-primary btn-sm md:btn-lg"
+          className="md:join-horizontal mt-5 md:mt-6"
+        />
+      </div>
+    </div>
   </div>
 </section>
 

@@ -48,19 +48,30 @@ if (!items) items = [];
                 class="w-full h-full rounded-box object-cover object-center"
                 loading="lazy"
               />
-              <div class="absolute top-1/2 right-5 left-5 flex -translate-y-1/2 transform justify-between">
-                <a href={prevId} class="btn btn-circle" aria-label="Anterior">
-                  <Icon name="mdi:chevron-left" class="h-5 w-5" />
+              <div class="absolute top-1/2 right-2 left-2 sm:right-4 sm:left-4 md:right-6 md:left-6 flex -translate-y-1/2 transform justify-between">
+                <a
+                  href={prevId}
+                  class="btn btn-circle btn-sm sm:btn-md bg-black/70 hover:bg-black/90 text-white border-none backdrop-blur-sm"
+                  aria-label="Anterior"
+                >
+                  <Icon name="mdi:chevron-left" class="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
-                <a href={nextId} class="btn btn-circle" aria-label="Siguiente">
-                  <Icon name="mdi:chevron-right" class="h-5 w-5" />
+                <a
+                  href={nextId}
+                  class="btn btn-circle btn-sm sm:btn-md bg-black/70 hover:bg-black/90 text-white border-none backdrop-blur-sm"
+                  aria-label="Siguiente"
+                >
+                  <Icon
+                    name="mdi:chevron-right"
+                    class="h-4 w-4 sm:h-5 sm:w-5"
+                  />
                 </a>
               </div>
             </div>
           );
         })}
       </div>
-      <div class="carousel-buttons flex justify-center join mt-4">
+      <div class="carousel-buttons flex justify-center join mt-4 px-2">
         {/* Carousel buttons */}
         {items.map((item: CarouselItemType, i: number) => {
           if (!item || typeof item !== "object" || !("src" in item))
@@ -70,7 +81,7 @@ if (!items) items = [];
             <a
               href={`#slide${idx}`}
               id={`carousel-btn-${idx}`}
-              class="btn btn-circle btn-sm join-item btn-primary"
+              class="btn btn-circle btn-xs sm:btn-sm join-item btn-primary min-h-6 h-6 w-6 sm:min-h-8 sm:h-8 sm:w-8 text-xs sm:text-sm"
               data-slide-idx={i}
             >
               {idx}

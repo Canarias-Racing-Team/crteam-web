@@ -59,14 +59,71 @@ const { title, description, path, image } = Astro.props;
       onload="this.media='all'"
     />
   </head>
-  <body>
+  <body class="overflow-x-hidden">
     <Navbar />
-    <main id="main-content">
+    <main id="main-content" class="overflow-x-hidden">
       <slot />
     </main>
     <FlagDivider class="mt-5 md:mt-15" />
     <Footer />
     <Analytics />
     <SpeedInsights />
+
+    <script is:inline>
+      // Fix para viewport height en móviles (prevenir rebote)
+      function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty("--vh", `${vh}px`);
+      }
+
+      // Prevenir scroll bounce en iOS
+      function preventBounce() {
+        let startY = 0;
+
+        document.addEventListener(
+          "touchstart",
+          function (e) {
+            startY = e.touches[0].pageY;
+          },
+          { passive: false }
+        );
+
+        document.addEventListener(
+          "touchmove",
+          function (e) {
+            const y = e.touches[0].pageY;
+            const scrollTop =
+              document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight =
+              document.documentElement.scrollHeight ||
+              document.body.scrollHeight;
+            const clientHeight =
+              document.documentElement.clientHeight ||
+              document.body.clientHeight;
+
+            // Prevenir scroll bounce en la parte superior
+            if (scrollTop <= 0 && y > startY) {
+              e.preventDefault();
+            }
+
+            // Prevenir scroll bounce en la parte inferior
+            if (scrollTop + clientHeight >= scrollHeight && y < startY) {
+              e.preventDefault();
+            }
+          },
+          { passive: false }
+        );
+      }
+
+      // Inicializar al cargar la página
+      setViewportHeight();
+      preventBounce();
+
+      // Actualizar en resize
+      window.addEventListener("resize", setViewportHeight);
+      window.addEventListener("orientationchange", function () {
+        setTimeout(setViewportHeight, 100);
+      });
+    </script>
   </body>
 </html>
