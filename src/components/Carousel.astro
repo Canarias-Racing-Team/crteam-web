@@ -40,14 +40,18 @@ if (!items) items = [];
               id={slideId}
               class={`custom-carousel-item absolute inset-0 w-full h-full flex items-center justify-center transition-opacity duration-500 ease-in-out ${i === 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
             >
-              <Image
-                alt={image.alt ?? `Imagen ${i + 1}`}
-                src={image.src}
-                inferSize
-                sizes="(max-width: 768px) 256px, 456px"
-                class="w-full h-full rounded-box object-cover object-center"
-                loading="lazy"
-              />
+              <div class="loading-container relative w-full h-full flex items-center justify-center">
+                <span class="loading loading-spinner" />
+                <Image
+                  alt={image.alt ?? `Imagen ${i + 1}`}
+                  src={image.src}
+                  inferSize
+                  sizes="(max-width: 768px) 256px, 456px"
+                  class="w-full h-full rounded-box object-cover object-center hidden"
+                  loading="lazy"
+                  onload="this.parentElement.querySelector('.loading')?.remove(); this.classList.remove('hidden');"
+                />
+              </div>
               <div class="absolute top-1/2 right-2 left-2 sm:right-4 sm:left-4 md:right-6 md:left-6 flex -translate-y-1/2 transform justify-between">
                 <a
                   href={prevId}
@@ -71,7 +75,7 @@ if (!items) items = [];
           );
         })}
       </div>
-      <div class="carousel-buttons flex justify-center join mt-4 px-2">
+      <div class="carousel-buttons flex flex-wrap justify-center gap-2 mt-4 px-2 sm:px-4">
         {/* Carousel buttons */}
         {items.map((item: CarouselItemType, i: number) => {
           if (!item || typeof item !== "object" || !("src" in item))
@@ -81,8 +85,12 @@ if (!items) items = [];
             <a
               href={`#slide${idx}`}
               id={`carousel-btn-${idx}`}
-              class="btn btn-circle btn-xs sm:btn-sm join-item btn-primary min-h-6 h-6 w-6 sm:min-h-8 sm:h-8 sm:w-8 text-xs sm:text-sm"
+              class="btn btn-circle btn-xs sm:btn-sm btn-primary min-h-6 h-6 w-6 sm:min-h-8 sm:h-8 sm:w-8 text-xs sm:text-sm"
               data-slide-idx={i}
+              style={{
+                fontSize: "0.75rem", // Ajustar tamaño de fuente para móviles
+                padding: "0.25rem", // Reducir padding en botones pequeños
+              }}
             >
               {idx}
             </a>
