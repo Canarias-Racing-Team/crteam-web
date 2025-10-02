@@ -45,24 +45,25 @@ if (!items) items = [];
               class={`custom-carousel-item absolute inset-0 w-full h-full flex items-center justify-center transition-opacity duration-500 ease-in-out ${i === 0 ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
             >
               <div class="loading-container relative w-full h-full flex items-center justify-center">
-                <span class="loading loading-spinner loading-md" />
+                {/* Solo muestra el spinner si no hay imagen */}
+                {!image.src && (
+                  <span class="loading loading-spinner loading-md" />
+                )}
                 {isAstroAsset ? (
                   <Image
                     alt={image.alt ?? `Imagen ${i + 1}`}
                     src={image.src}
                     inferSize
                     sizes="(max-width: 768px) 256px, 456px"
-                    class="w-full h-full rounded-box object-cover object-center hidden"
+                    class="w-full h-full rounded-box object-cover object-center"
                     loading="lazy"
-                    onload="this.parentElement.querySelector('.loading')?.remove(); this.classList.remove('hidden');"
                   />
                 ) : (
                   <img
                     alt={image.alt ?? `Imagen ${i + 1}`}
                     src={image.src}
-                    class="w-full h-full rounded-box object-cover object-center hidden"
+                    class="w-full h-full rounded-box object-cover object-center"
                     loading="lazy"
-                    onload="this.parentElement.querySelector('.loading')?.remove(); this.classList.remove('hidden');"
                   />
                 )}
               </div>

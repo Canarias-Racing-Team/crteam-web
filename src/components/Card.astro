@@ -20,7 +20,7 @@ const {
   {
     image && (
       <figure class="w-full h-full relative">
-        <span class="loading loading-spinner loading-xs" />
+        {/* <span class="loading loading-spinner loading-xs" /> */}
         <Image
           src={image.src}
           alt={image.name || image.alt || "Imagen"}
@@ -29,7 +29,7 @@ const {
           class="object-cover"
           style="height:inherit;"
           loading="lazy"
-          onload="this.parentElement.querySelector('.loading')?.remove(); this.classList.remove('hidden');"
+          // onload="this.parentElement.querySelector('.loading')?.remove(); this.classList.remove('hidden');"
         />
       </figure>
     )
