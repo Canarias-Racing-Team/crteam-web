@@ -14,13 +14,13 @@ const DEBUG = false;
 /**
  * Carga imágenes desde `/src/assets/fotos/{folder}`.
  * Si se pasa una lista de archivos, solo carga esos; si no, carga todas las de la carpeta.
+ * Devuelve un array ordenado alfabéticamente por nombre de archivo.
  */
-
 export async function loadImageEntries(
   folder: string,
   fileNames?: string[]
 ): Promise<ImageEntry[]> {
-  // Siempre carga todas las imágenes de la carpeta usando import.meta.glob
+  // Carga todas las imágenes de la carpeta usando import.meta.glob
   let imageModules = import.meta.glob<{ default: ImageMetadata }>(
     "/src/assets/fotos/**/*.{jpg,jpeg,png,webp,JPG}",
     { eager: true }
@@ -40,6 +40,9 @@ export async function loadImageEntries(
     entries = entries.filter(([path]) => fileSet.has(path.split("/").pop()!));
   }
 
+  // Ordena alfabéticamente por nombre de archivo
+  entries.sort((a, b) => a[0].localeCompare(b[0]));
+
   // Debug: muestra información de las imágenes cargadas
   if (DEBUG) {
     console.log(
@@ -56,7 +59,7 @@ export async function loadImageEntries(
   }
   return entries.map(([path, mod]) => {
     const file = path.split("/").pop()!;
-    const alt = file.replace(/\.\w+$/, "").replace(/[-_]/g, " ");
+    const alt = file.replace(/\.[\w]+$/, "").replace(/[-_]/g, " ");
     // Ajusta el tipo de src para que coincida con ImageEntry
     return {
       file,

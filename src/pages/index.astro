@@ -79,6 +79,10 @@ try {
       `${carComponentImages.length > 0 ? "✅" : "❌"} ${carComponentImages.length} carComponents`,
     ].join(", ")
   );
+  // Log para depuración de los src de las imágenes del carrusel de equipo
+  // teamPictures.forEach((img, i) => {
+  //   console.log(`[SSR][teamPictures][${i}] src:`, img.src);
+  // });
 } catch (error) {
   console.error("❌ Error loading pictures data:", error);
 }

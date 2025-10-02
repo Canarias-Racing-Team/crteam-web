@@ -35,6 +35,10 @@ if (!items) items = [];
           const slideId = `slide${i + 1}`;
           const prevId = `#slide${((i - 1 + items.length) % items.length) + 1}`;
           const nextId = `#slide${((i + 1) % items.length) + 1}`;
+          const isAstroAsset =
+            typeof image.src === "object" &&
+            image.src !== null &&
+            "src" in image.src;
           return (
             <div
               id={slideId}
@@ -42,15 +46,25 @@ if (!items) items = [];
             >
               <div class="loading-container relative w-full h-full flex items-center justify-center">
                 <span class="loading loading-spinner loading-md" />
-                <Image
-                  alt={image.alt ?? `Imagen ${i + 1}`}
-                  src={image.src}
-                  inferSize
-                  sizes="(max-width: 768px) 256px, 456px"
-                  class="w-full h-full rounded-box object-cover object-center hidden"
-                  loading="lazy"
-                  onload="this.parentElement.querySelector('.loading')?.remove(); this.classList.remove('hidden');"
-                />
+                {isAstroAsset ? (
+                  <Image
+                    alt={image.alt ?? `Imagen ${i + 1}`}
+                    src={image.src}
+                    inferSize
+                    sizes="(max-width: 768px) 256px, 456px"
+                    class="w-full h-full rounded-box object-cover object-center hidden"
+                    loading="lazy"
+                    onload="this.parentElement.querySelector('.loading')?.remove(); this.classList.remove('hidden');"
+                  />
+                ) : (
+                  <img
+                    alt={image.alt ?? `Imagen ${i + 1}`}
+                    src={image.src}
+                    class="w-full h-full rounded-box object-cover object-center hidden"
+                    loading="lazy"
+                    onload="this.parentElement.querySelector('.loading')?.remove(); this.classList.remove('hidden');"
+                  />
+                )}
               </div>
               <div class="absolute top-1/2 right-2 left-2 sm:right-4 sm:left-4 md:right-6 md:left-6 flex -translate-y-1/2 transform justify-between">
                 <a
