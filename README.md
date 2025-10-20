@@ -83,7 +83,7 @@ npm run download-news-images # Descargar imágenes de noticias desde Notion
 ## 🌐 URLs
 
 - **Producción**: [crteam.es](https://crteam.es)
-- **Desarrollo**: `localhost:4321`
+- **Desarrollo**: `localhost:[PORT]`
 
 ---
 
