@@ -8,7 +8,7 @@ import Card from "@components/Card.astro";
 import { texts, createCardContent } from "@utils/texts";
 import { getLocalNewsImage } from "@utils/imageUtils";
 
-export const prerender = true;
+export const prerender = false;
 
 const noticiasRaw: NotionPageType[] = await getNotionPages();
 
@@ -44,7 +44,7 @@ for (let i = 0; i < placeholdersCount; i++) {
   path="/news"
 >
   <Section id="news" className="py-15 gap-4">
-    <aside
+    <!-- <aside
       id="titles"
       class="w-full lg:w-1/3 flex flex-col gap-4 lg:sticky lg:self-start lg:h-fit lg:top-25"
     >
@@ -75,10 +75,10 @@ for (let i = 0; i < placeholdersCount; i++) {
           >
         </form>
       </Card>
-    </aside>
+    </aside> -->
     <div
       id="content"
-      class="w-full lg:w-2/3 grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8 mt-4 lg:mt-0 h-fit"
+      class="w-full grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8 mt-4 lg:mt-0 h-fit"
     >
       {
         noticias.map((noticia, idx) => (
